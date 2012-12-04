@@ -1,0 +1,10 @@
+.settings
+.svn
+.classpath
+.project
+lib/xper3API-1.0.jar
+lib/xper3API-1.0-sources.jar
+target/test-classes
+target/classes
+target/maven-archiver
+target/mkey-plus-API-0.0.1-SNAPSHOT.jar
