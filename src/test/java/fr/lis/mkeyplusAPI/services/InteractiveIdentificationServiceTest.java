@@ -57,7 +57,7 @@ public class InteractiveIdentificationServiceTest {
 
 	@Test
 	public void testGetDescriptiveDataXper() throws Exception {
-		InteractiveIdentificationService.getDescriptiveData(descriptorsInKb, itemsInKB, dbName, login,
+		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInKb, itemsInKB, dbName, login,
 				password, InteractiveIdentificationService.XPER_SORT);
 	}
 
