@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.CategoricalDescriptor;
 import model.Description;
@@ -48,9 +49,12 @@ public class InteractiveIdentificationService {
 	 * @return
 	 * @throws Exception
 	 */
-	public static LinkedHashMap<Descriptor, Float> getDescriptiveData(List<Descriptor> descriptors,
-			List<Item> items, String dbName, String login, String password, int scoreMethod) throws Exception {
-		LinkedHashMap<Descriptor, Float> descriptorsWithScoresMap = new LinkedHashMap<Descriptor, Float>();
+	public static Map<String, Object> getDescriptiveData(List<Descriptor> descriptors, List<Item> items,
+			String dbName, String login, String password, int scoreMethod) throws Exception {
+		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
+
+		Map<String, Object> finalData = new HashMap<String, Object>();
+
 		DescriptorTree dependencyTree = DescriptorTreeManagementService.read(DescriptorTree.DEPENDENCY_TYPE,
 				true, dbName, login, password);
 
@@ -78,8 +82,8 @@ public class InteractiveIdentificationService {
 								descriptor.getId()).getChildNodes()) {
 							Descriptor childDescriptorInList = null;
 							long childDescriptorId = childNode.getDescriptor().getId();
-							for(Descriptor  temp : descriptors)
-								if(childDescriptorId == temp.getId())
+							for (Descriptor temp : descriptors)
+								if (childDescriptorId == temp.getId())
 									childDescriptorInList = temp;
 
 							if (childDescriptorInList.isCategoricalType()) {
@@ -111,17 +115,18 @@ public class InteractiveIdentificationService {
 					float dp2 = dpScore;
 
 					if (dp1 == dp2)
-						descriptorsWithScoresMap.put(desc, dpScore);
+						descriptorsScoresMap.put(desc, dpScore);
 
 				}
 			}
 
 		} else {
 			for (Descriptor descriptor : descriptors)
-				descriptorsWithScoresMap.put(descriptor, new Float(-1));
+				descriptorsScoresMap.put(descriptor, new Float(-1));
 		}
 
-		return descriptorsWithScoresMap;
+		finalData.put("descriptorsScoresMap", descriptorsScoresMap);
+		return finalData;
 	}
 
 	/**
