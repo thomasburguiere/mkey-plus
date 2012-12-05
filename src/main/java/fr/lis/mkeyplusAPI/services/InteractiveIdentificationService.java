@@ -39,6 +39,9 @@ public class InteractiveIdentificationService {
 	// true, dbName, login, password);
 
 	/**
+	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
+	 * power. This map is sorted by the discriminant power of the descriptors, in descending order
+	 * 
 	 * @param descriptors
 	 * @param items
 	 * @param dbName
