@@ -51,9 +51,9 @@ public class InteractiveIdentificationService {
 	 * @return
 	 * @throws Exception
 	 */
-	public static LinkedHashMap<Descriptor, Float> getDescriptiveData(List<Descriptor> descriptors,
+	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
 			List<Item> items, String dbName, String login, String password, int scoreMethod) throws Exception {
-		LinkedHashMap<Descriptor, Float> descriptorsWithScoresMap = new LinkedHashMap<Descriptor, Float>();
+		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 		DescriptorTree dependencyTree = DescriptorTreeManagementService.read(DescriptorTree.DEPENDENCY_TYPE,
 				true, dbName, login, password);
 
@@ -114,17 +114,17 @@ public class InteractiveIdentificationService {
 					float dp2 = dpScore;
 
 					if (dp1 == dp2)
-						descriptorsWithScoresMap.put(desc, dpScore);
+						descriptorsScoresMap.put(desc, dpScore);
 
 				}
 			}
 
 		} else {
 			for (Descriptor descriptor : descriptors)
-				descriptorsWithScoresMap.put(descriptor, new Float(-1));
+				descriptorsScoresMap.put(descriptor, new Float(-1));
 		}
 
-		return descriptorsWithScoresMap;
+		return descriptorsScoresMap;
 	}
 
 	/**
