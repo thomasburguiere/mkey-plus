@@ -81,8 +81,8 @@ public class InteractiveIdentificationService {
 								descriptor.getId()).getChildNodes()) {
 							Descriptor childDescriptorInList = null;
 							long childDescriptorId = childNode.getDescriptor().getId();
-							for(Descriptor  temp : descriptors)
-								if(childDescriptorId == temp.getId())
+							for (Descriptor temp : descriptors)
+								if (childDescriptorId == temp.getId())
 									childDescriptorInList = temp;
 
 							if (childDescriptorInList.isCategoricalType()) {
