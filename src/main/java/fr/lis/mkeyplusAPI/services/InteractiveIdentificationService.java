@@ -132,7 +132,18 @@ public class InteractiveIdentificationService {
 	 */
 	public static void getRemainingItems(Description descriptions, String dbName, String login,
 			String password) {
-
+		List<Item> remainingItems = new ArrayList<Item>();
+		for (Descriptor descriptor : descriptions.getDescriptionElements().keySet()) {
+			if (descriptor.isCategoricalType()) {
+				List<State> selectedStates = descriptions.getDescriptionElement(descriptor.getId())
+						.getStates();
+				
+			} else if (descriptor.isQuantitativeType()) {
+				QuantitativeMeasure measure = descriptions.getDescriptionElement(descriptor.getId())
+						.getQuantitativeMeasure();
+				
+			}
+		}
 	}
 
 	/**
