@@ -81,12 +81,10 @@ public class InteractiveIdentificationService {
 							// asserting the discrimant power of the child descriptors (if any) and setting
 							// the
 							// discriminant power of a child node to its father, if it is greater
-							float tempDiscriminantPower = 0;
 							discriminantPower = considerChildNodeDiscriminantPower(descriptors, items,
 									dbName, login, password, scoreMethod, dependencyTree, discriminantPower,
-									descriptor, tempDiscriminantPower);
+									descriptor);
 						}
-
 						tempMap.put(descriptor, new Float(discriminantPower));
 					}
 				}
@@ -131,9 +129,11 @@ public class InteractiveIdentificationService {
 	 */
 	private static float considerChildNodeDiscriminantPower(List<Descriptor> descriptors, List<Item> items,
 			String dbName, String login, String password, int scoreMethod, DescriptorTree dependencyTree,
-			float discriminantPower, Descriptor descriptor, float tempDiscriminantPower) throws Exception {
-		for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(
-				descriptor.getId()).getChildNodes()) {
+			float discriminantPower, Descriptor descriptor) throws Exception {
+
+		float tempDiscriminantPower = 0;
+		for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId())
+				.getChildNodes()) {
 			Descriptor childDescriptorInList = null;
 			long childDescriptorId = childNode.getDescriptor().getId();
 			for (Descriptor temp : descriptors)
@@ -142,12 +142,12 @@ public class InteractiveIdentificationService {
 
 			if (childDescriptorInList.isCategoricalType()) {
 				tempDiscriminantPower = categoricalDescriptorScore(
-						(CategoricalDescriptor) childDescriptorInList, items, dbName,
-						login, password, dependencyTree, scoreMethod);
+						(CategoricalDescriptor) childDescriptorInList, items, dbName, login, password,
+						dependencyTree, scoreMethod);
 			} else if (childDescriptorInList.isQuantitativeType()) {
 				tempDiscriminantPower = quantitativeDescriptorScore(
-						(QuantitativeDescriptor) childDescriptorInList, items, dbName,
-						login, password, scoreMethod, dependencyTree);
+						(QuantitativeDescriptor) childDescriptorInList, items, dbName, login, password,
+						scoreMethod, dependencyTree);
 			}
 			if (tempDiscriminantPower > discriminantPower)
 				discriminantPower = tempDiscriminantPower;
