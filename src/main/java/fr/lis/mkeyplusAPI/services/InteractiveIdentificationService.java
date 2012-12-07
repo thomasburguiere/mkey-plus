@@ -30,13 +30,19 @@ import utils.Utils;
  */
 public class InteractiveIdentificationService {
 
-	// private static DescriptorTree dependencyTree;
-
 	public static final int SCORE_XPER = 0;
 	public static final int SCORE_SOKAL_MICHENER = 1;
 	public static final int SCORE_JACCARD = 2;
 
-	// true, dbName, login, password);
+	public static final int LOGICAL_OPERATOR_AND = 3;
+	public static final int LOGICAL_OPERATOR_OR = 4;
+
+	public static final int COMPARISON_OPERATOR_GREATER_THAN = 5;
+	public static final int COMPARISON_OPERATOR_STRICTLY_GREATER_THAN = 6;
+	public static final int COMPARISON_OPERATOR_LOWER_THAN = 7;
+	public static final int COMPARISON_OPERATOR_STRICTLY_LOWER_THAN = 8;
+	public static final int COMPARISON_OPERATOR_CONTAINS = 9;
+	public static final int COMPARISON_OPERATOR_DOES_NOT_CONTAIN = 10;
 
 	/**
 	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
@@ -192,12 +198,12 @@ public class InteractiveIdentificationService {
 			if (checkedStatesInReferenceDescription.contains(selectedStateInSubmittedDescription))
 				commonValues++;
 
-		case OPERATOR_AND:
 		switch (logicalOperator) {
+		case LOGICAL_OPERATOR_AND:
 			if (checkedStatesInReferenceDescription.size() == commonValues)
 				return true;
 			return false;
-		case OPERATOR_OR:
+		case LOGICAL_OPERATOR_OR:
 			if (commonValues >= 1)
 				return true;
 			return false;
