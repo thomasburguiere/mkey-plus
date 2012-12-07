@@ -172,6 +172,38 @@ public class InteractiveIdentificationService {
 				
 			}
 		}
+	/**
+	 * This method loops over the states checked in a description (e.g. submitted by a user), compares them
+	 * with the states checked in a reference description (e.g. a knowledge base description) an returns true
+	 * if the states from the first description are compatible with the reference description, using a
+	 * specified comparion operator
+	 * 
+	 * @param selectedStatesInSubmittedDescription
+	 * @param checkedStatesInReferenceDescription
+	 * @param operator
+	 * @return
+	 */
+	private static boolean matchDescriptionStates(List<State> selectedStatesInSubmittedDescription,
+			List<State> checkedStatesInReferenceDescription, int operator) {
+		int commonValues = 0;
+
+		for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription)
+			if (checkedStatesInReferenceDescription.contains(selectedStateInSubmittedDescription))
+				commonValues++;
+
+		switch (operator) {
+		case OPERATOR_AND:
+			if (checkedStatesInReferenceDescription.size() == commonValues)
+				return true;
+			return false;
+		case OPERATOR_OR:
+			if (commonValues >= 1)
+				return true;
+			return false;
+
+		default:
+			return false;
+		}
 	}
 
 	/**
