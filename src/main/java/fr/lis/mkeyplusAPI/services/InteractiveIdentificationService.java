@@ -172,6 +172,7 @@ public class InteractiveIdentificationService {
 				
 			}
 		}
+	}
 	/**
 	 * This method loops over the states checked in a description (e.g. submitted by a user), compares them
 	 * with the states checked in a reference description (e.g. a knowledge base description) an returns true
