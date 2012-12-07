@@ -164,21 +164,58 @@ public class InteractiveIdentificationService {
 	/**
 	 * @param descriptions
 	 */
-	public static void getRemainingItems(Description descriptions, String dbName, String login,
-			String password) {
-		List<Item> remainingItems = new ArrayList<Item>();
-		for (Descriptor descriptor : descriptions.getDescriptionElements().keySet()) {
-			if (descriptor.isCategoricalType()) {
-				List<State> selectedStates = descriptions.getDescriptionElement(descriptor.getId())
-						.getStates();
-				
-			} else if (descriptor.isQuantitativeType()) {
-				QuantitativeMeasure measure = descriptions.getDescriptionElement(descriptor.getId())
-						.getQuantitativeMeasure();
-				
+	public static List<Item> getRemainingItems(Description descriptions, List<Item> remainingItems,
+			String dbName, String login, String password) {
+		List<Item> itemsToRemove = new ArrayList<Item>();
+		for (Item item : remainingItems) {
+			for (Descriptor descriptor : descriptions.getDescriptionElements().keySet()) {
+				if (descriptor.isCategoricalType()) {
+					List<State> checkedStatesInSubmittedDescription = descriptions.getDescriptionElement(
+							descriptor.getId()).getStates();
+					List<State> checkedStatesInKnowledgeBaseDescription = item.getDescription()
+							.getDescriptionElement(descriptor.getId()).getStates();
+
+					if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
+							checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR))
+						itemsToRemove.add(item);
+
+				} else if (descriptor.isQuantitativeType()) {
+					QuantitativeMeasure submittedMeasure = descriptions.getDescriptionElement(
+							descriptor.getId()).getQuantitativeMeasure();
+					QuantitativeMeasure knowledgeBaseMeasure = item.getDescription()
+							.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
+
+					if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
+							COMPARISON_OPERATOR_CONTAINS))
+						itemsToRemove.add(item);
+
+				}
 			}
 		}
+		remainingItems.removeAll(itemsToRemove);
+		return remainingItems;
 	}
+
+	/**
+	 * This methods compares the {@link QuantitativeMeasure} in a submitted description (e.g. by a user)
+	 * 
+	 * @param submittedMeasure
+	 * @param referenceMeasure
+	 * @param comparisonOperator
+	 * @return
+	 */
+	private static boolean matchDescriptionsQuantitativeMeasures(QuantitativeMeasure submittedMeasure,
+			QuantitativeMeasure referenceMeasure, int comparisonOperator) {
+		switch (comparisonOperator) {
+		case COMPARISON_OPERATOR_CONTAINS:
+			return referenceMeasure.contains(submittedMeasure);
+
+		default:
+			return false;
+		}
+
+	}
+
 	/**
 	 * This method loops over the states checked in a submitted description (e.g. by a user), compares them
 	 * with the states checked in a reference description (e.g. a knowledge base description) an returns true
