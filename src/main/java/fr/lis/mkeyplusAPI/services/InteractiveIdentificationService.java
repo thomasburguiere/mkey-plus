@@ -162,15 +162,24 @@ public class InteractiveIdentificationService {
 	}
 
 	/**
-	 * @param descriptions
+	 * This method receives a list of Items, and a Description, which contains the description of one
+	 * unitentified Item, according to one or several descriptors. It then loops over the Items passed in
+	 * parameter, and eliminiates those who are not compatible with the description of the unidentified Item.
+	 * 
+	 * @param description
+	 * @param remainingItems
+	 * @param dbName
+	 * @param login
+	 * @param password
+	 * @return
 	 */
-	public static List<Item> getRemainingItems(Description descriptions, List<Item> remainingItems,
+	public static List<Item> getRemainingItems(Description description, List<Item> remainingItems,
 			String dbName, String login, String password) {
 		List<Item> itemsToRemove = new ArrayList<Item>();
 		for (Item item : remainingItems) {
-			for (Descriptor descriptor : descriptions.getDescriptionElements().keySet()) {
+			for (Descriptor descriptor : description.getDescriptionElements().keySet()) {
 				if (descriptor.isCategoricalType()) {
-					List<State> checkedStatesInSubmittedDescription = descriptions.getDescriptionElement(
+					List<State> checkedStatesInSubmittedDescription = description.getDescriptionElement(
 							descriptor.getId()).getStates();
 					List<State> checkedStatesInKnowledgeBaseDescription = item.getDescription()
 							.getDescriptionElement(descriptor.getId()).getStates();
@@ -180,7 +189,7 @@ public class InteractiveIdentificationService {
 						itemsToRemove.add(item);
 
 				} else if (descriptor.isQuantitativeType()) {
-					QuantitativeMeasure submittedMeasure = descriptions.getDescriptionElement(
+					QuantitativeMeasure submittedMeasure = description.getDescriptionElement(
 							descriptor.getId()).getQuantitativeMeasure();
 					QuantitativeMeasure knowledgeBaseMeasure = item.getDescription()
 							.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
