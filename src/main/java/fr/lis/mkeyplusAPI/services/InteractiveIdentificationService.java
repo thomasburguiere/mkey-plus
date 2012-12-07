@@ -32,9 +32,9 @@ public class InteractiveIdentificationService {
 
 	// private static DescriptorTree dependencyTree;
 
-	public static final int XPER_SORT = 0;
-	public static final int SOKAL_MICHENER = 1;
-	public static final int JACCARD = 2;
+	public static final int SCORE_XPER = 0;
+	public static final int SCORE_SOKAL_MICHENER = 1;
+	public static final int SCORE_JACCARD = 2;
 
 	// true, dbName, login, password);
 
@@ -328,13 +328,13 @@ public class InteractiveIdentificationService {
 		float out = 0;
 
 		// // Sokal & Michener method
-		if (scoreMethod == SOKAL_MICHENER) {
+		if (scoreMethod == SCORE_SOKAL_MICHENER) {
 			out = 1 - ((commonPresent + commonAbsent) / (commonPresent + commonAbsent + other));
 			// round to 10^-3
 			out = Utils.roundFloat(out, 3);
 		}
 		// // Jaccard Method
-		else if (scoreMethod == SOKAL_MICHENER) {
+		else if (scoreMethod == SCORE_SOKAL_MICHENER) {
 			try {
 				// // case where description are empty
 				out = 1 - (commonPresent / (commonPresent + other));
@@ -394,7 +394,7 @@ public class InteractiveIdentificationService {
 		}
 
 		switch (scoreMethod) {
-		case XPER_SORT:
+		case SCORE_XPER:
 			if ((commonPercentage <= 0)) {
 				out = 1;
 			} else {
@@ -402,11 +402,11 @@ public class InteractiveIdentificationService {
 			}
 			break;
 		//
-		case SOKAL_MICHENER:
+		case SCORE_SOKAL_MICHENER:
 			out = 1 - (commonPercentage / 100);
 			break;
 		//
-		case JACCARD:
+		case SCORE_JACCARD:
 			out = 1 - (commonPercentage / 100);
 			break;
 
