@@ -242,8 +242,10 @@ public class InteractiveIdentificationService {
 		int commonValues = 0;
 
 		for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription)
-			if (checkedStatesInReferenceDescription.contains(selectedStateInSubmittedDescription))
-				commonValues++;
+			for (State checkedStateInReferenceDescription : checkedStatesInReferenceDescription)
+				if (checkedStateInReferenceDescription
+						.hasSameNameAsState(selectedStateInSubmittedDescription))
+					commonValues++;
 
 		switch (logicalOperator) {
 		case LOGICAL_OPERATOR_AND:
