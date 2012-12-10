@@ -164,7 +164,8 @@ public class InteractiveIdentificationService {
 	/**
 	 * This method receives a list of Items, and a Description, which contains the description of one
 	 * unitentified Item, according to one or several descriptors. It then loops over the Items passed in
-	 * parameter, and eliminiates those who are not compatible with the description of the unidentified Item.
+	 * parameter, eliminates those who are not compatible with the description of the unidentified Item, and
+	 * returns the list of the remaining Items compatible with the description of the unidentified Item
 	 * 
 	 * @param description
 	 * @param remainingItems
