@@ -3,8 +3,12 @@ package fr.lis.mkeyplusAPI.services;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import model.CategoricalDescriptor;
+import model.Description;
+import model.DescriptionElementState;
 import model.Descriptor;
 import model.Item;
+import model.State;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -61,15 +65,37 @@ public class InteractiveIdentificationServiceTest {
 				password, InteractiveIdentificationService.SCORE_XPER, true);
 	}
 
-//	@Test
-//	public void testGetDescriptiveDataJaccard() throws Exception {
-//		InteractiveIdentificationService.getDescriptiveData(descriptorsInKb, itemsInKB, dbName, login,
-//				password, InteractiveIdentificationService.JACCARD);
-//	}
-//
-//	@Test
-//	public void testGetDescriptiveDataSokalMichener() throws Exception {
-//		InteractiveIdentificationService.getDescriptiveData(descriptorsInKb, itemsInKB, dbName, login,
-//				password, InteractiveIdentificationService.SOKAL_MICHENER);
-//	}
+	// @Test
+	// public void testGetDescriptiveDataJaccard() throws Exception {
+	// InteractiveIdentificationService.getDescriptiveData(descriptorsInKb, itemsInKB, dbName, login,
+	// password, InteractiveIdentificationService.JACCARD);
+	// }
+	//
+	// @Test
+	// public void testGetDescriptiveDataSokalMichener() throws Exception {
+	// InteractiveIdentificationService.getDescriptiveData(descriptorsInKb, itemsInKB, dbName, login,
+	// password, InteractiveIdentificationService.SOKAL_MICHENER);
+	// }
+
+	@Test
+	public void testGetRemainingItems() throws Exception {
+		Description testDescription = new Description();
+		CategoricalDescriptor ringsOnTail = null;
+		for (Descriptor desc : descriptorsInKb)
+			if (desc.getName().toLowerCase().startsWith("rings on tail"))
+				ringsOnTail = (CategoricalDescriptor) desc;
+		DescriptionElementState ringsOnTailDescriptionElementState = new DescriptionElementState();
+
+		State selectedState = new State("present");
+		State unSelectedState = new State("absent");
+		selectedState.setCategoricalDescriptor(ringsOnTail);
+		unSelectedState.setCategoricalDescriptor(ringsOnTail);
+
+		ringsOnTailDescriptionElementState.addState(selectedState);
+		testDescription.addDescriptionElement(ringsOnTail, ringsOnTailDescriptionElementState);
+
+		InteractiveIdentificationService.getRemainingItems(testDescription, itemsInKB, dbName, login,
+				password);
+
+	}
 }
