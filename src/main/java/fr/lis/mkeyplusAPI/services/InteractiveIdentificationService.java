@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.CategoricalDescriptor;
 import model.Description;
@@ -15,7 +16,9 @@ import model.Item;
 import model.QuantitativeDescriptor;
 import model.QuantitativeMeasure;
 import model.State;
+import services.DescriptorManagementService;
 import services.DescriptorTreeManagementService;
+import services.ItemManagementService;
 import utils.Utils;
 
 /**
@@ -117,6 +120,35 @@ public class InteractiveIdentificationService {
 		}
 
 		return descriptorsScoresMap;
+	}
+
+	/**
+	 * @param dbName
+	 * @param login
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
+	public static Map<String, Object> getDescriptiveData(String dbName, String login, String password)
+			throws Exception {
+		HashMap<String, Object> descriptiveData = new LinkedHashMap<String, Object>();
+
+		List<Item> itemsInKB = ItemManagementService.readAll(true, true, dbName, login, password);
+		descriptiveData.put("itemList", itemsInKB);
+
+		List<Descriptor> descriptorsInKb = DescriptorManagementService.readAll(true, dbName, login, password);
+		descriptiveData.put("descriptorList", descriptorsInKb);
+
+		DescriptorTree dependencyTree = DescriptorTreeManagementService.read(DescriptorTree.DEPENDENCY_TYPE,
+				true, dbName, login, password);
+		descriptiveData.put("dependencyTree", dependencyTree);
+
+		descriptiveData
+				.put("descriptorsScoreMap",
+						getDescriptorsScoreMap(descriptorsInKb, itemsInKB, dbName, login, password,
+								SCORE_XPER, true));
+
+		return descriptiveData;
 	}
 
 	/**
