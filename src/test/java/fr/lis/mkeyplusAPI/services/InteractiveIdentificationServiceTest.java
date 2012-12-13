@@ -65,9 +65,9 @@ public class InteractiveIdentificationServiceTest {
 	// }
 
 	@Test
-	public void testGetDescriptiveDataXper() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInKb, itemsInKB, dbName, login,
-				password, InteractiveIdentificationService.SCORE_XPER, true);
+	public void testGetDescriptorScoreMapXperSort() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInKb, itemsInKB,
+				dependencyTreeInKB, InteractiveIdentificationService.SCORE_XPER, true);
 	}
 
 	// @Test

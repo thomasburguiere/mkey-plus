@@ -18,6 +18,7 @@ import model.QuantitativeMeasure;
 import model.State;
 import services.DescriptorManagementService;
 import services.DescriptorTreeManagementService;
+import services.ImportService;
 import services.ItemManagementService;
 import utils.Utils;
 
@@ -62,11 +63,9 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
-			List<Item> items, String dbName, String login, String password, int scoreMethod,
-			boolean considerChildScore) throws Exception {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScore)
+			throws Exception {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
-		DescriptorTree dependencyTree = DescriptorTreeManagementService.read(DescriptorTree.DEPENDENCY_TYPE,
-				true, dbName, login, password);
 
 		if (items.size() > 1) {
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
@@ -79,20 +78,17 @@ public class InteractiveIdentificationService {
 					else {
 						if (descriptor.isCategoricalType()) {
 							discriminantPower = categoricalDescriptorScore(
-									(CategoricalDescriptor) descriptor, items, dbName, login, password,
-									dependencyTree, 0);
+									(CategoricalDescriptor) descriptor, items, dependencyTree, 0);
 						} else if (descriptor.isQuantitativeType())
 							discriminantPower = quantitativeDescriptorScore(
-									(QuantitativeDescriptor) descriptor, items, dbName, login, password,
-									scoreMethod, dependencyTree);
+									(QuantitativeDescriptor) descriptor, items, scoreMethod, dependencyTree);
 
 						if (considerChildScore) {
 							// asserting the discrimant power of the child descriptors (if any) and setting
 							// the
 							// discriminant power of a child node to its father, if it is greater
 							discriminantPower = considerChildNodeDiscriminantPower(descriptors, items,
-									dbName, login, password, scoreMethod, dependencyTree, discriminantPower,
-									descriptor);
+									scoreMethod, dependencyTree, discriminantPower, descriptor);
 						}
 						tempMap.put(descriptor, new Float(discriminantPower));
 					}
@@ -143,10 +139,8 @@ public class InteractiveIdentificationService {
 				true, dbName, login, password);
 		descriptiveData.put("dependencyTree", dependencyTree);
 
-		descriptiveData
-				.put("descriptorsScoreMap",
-						getDescriptorsScoreMap(descriptorsInKb, itemsInKB, dbName, login, password,
-								SCORE_XPER, true));
+		descriptiveData.put("descriptorsScoreMap",
+				getDescriptorsScoreMap(descriptorsInKb, itemsInKB, dependencyTree, SCORE_XPER, true));
 
 		return descriptiveData;
 	}
@@ -154,9 +148,6 @@ public class InteractiveIdentificationService {
 	/**
 	 * @param descriptors
 	 * @param items
-	 * @param dbName
-	 * @param login
-	 * @param password
 	 * @param scoreMethod
 	 * @param dependencyTree
 	 * @param discriminantPower
@@ -166,8 +157,8 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	private static float considerChildNodeDiscriminantPower(List<Descriptor> descriptors, List<Item> items,
-			String dbName, String login, String password, int scoreMethod, DescriptorTree dependencyTree,
-			float discriminantPower, Descriptor descriptor) throws Exception {
+			int scoreMethod, DescriptorTree dependencyTree, float discriminantPower, Descriptor descriptor)
+			throws Exception {
 
 		float tempDiscriminantPower = 0;
 		for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId())
@@ -180,12 +171,10 @@ public class InteractiveIdentificationService {
 
 			if (childDescriptorInList.isCategoricalType()) {
 				tempDiscriminantPower = categoricalDescriptorScore(
-						(CategoricalDescriptor) childDescriptorInList, items, dbName, login, password,
-						dependencyTree, scoreMethod);
+						(CategoricalDescriptor) childDescriptorInList, items, dependencyTree, scoreMethod);
 			} else if (childDescriptorInList.isQuantitativeType()) {
 				tempDiscriminantPower = quantitativeDescriptorScore(
-						(QuantitativeDescriptor) childDescriptorInList, items, dbName, login, password,
-						scoreMethod, dependencyTree);
+						(QuantitativeDescriptor) childDescriptorInList, items, scoreMethod, dependencyTree);
 			}
 			if (tempDiscriminantPower > discriminantPower)
 				discriminantPower = tempDiscriminantPower;
@@ -297,17 +286,13 @@ public class InteractiveIdentificationService {
 	/**
 	 * @param descriptor
 	 * @param remainingItems
-	 * @param dbName
-	 * @param login
-	 * @param password
 	 * @param dependencyTree
 	 * @param scoreMethod
 	 * @return
 	 * @throws Exception
 	 */
 	public static float categoricalDescriptorScore(CategoricalDescriptor descriptor,
-			List<Item> remainingItems, String dbName, String login, String password,
-			DescriptorTree dependencyTree, int scoreMethod) throws Exception {
+			List<Item> remainingItems, DescriptorTree dependencyTree, int scoreMethod) throws Exception {
 		int cpt = 0;
 		float score = 0;
 		boolean isAlwaysDescribed = true;
@@ -403,8 +388,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static float quantitativeDescriptorScore(QuantitativeDescriptor descriptor,
-			List<Item> remainingItems, String dbName, String login, String password, int scoreMethod,
-			DescriptorTree dependencyTree) throws Exception {
+			List<Item> remainingItems, int scoreMethod, DescriptorTree dependencyTree) throws Exception {
 
 		int cpt = 0;
 		float score = 0;
