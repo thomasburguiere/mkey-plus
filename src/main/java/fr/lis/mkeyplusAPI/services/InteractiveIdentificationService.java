@@ -18,7 +18,6 @@ import model.QuantitativeMeasure;
 import model.State;
 import services.DescriptorManagementService;
 import services.DescriptorTreeManagementService;
-import services.ImportService;
 import services.ItemManagementService;
 import utils.Utils;
 
@@ -125,7 +124,7 @@ public class InteractiveIdentificationService {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String, Object> getDescriptiveData(String dbName, String login, String password)
+	public static Map<String, Object> getPersistedDescriptiveData(String dbName, String login, String password)
 			throws Exception {
 		HashMap<String, Object> descriptiveData = new LinkedHashMap<String, Object>();
 
