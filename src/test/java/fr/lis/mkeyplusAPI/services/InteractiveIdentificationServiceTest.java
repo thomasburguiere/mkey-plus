@@ -7,6 +7,7 @@ import model.CategoricalDescriptor;
 import model.Description;
 import model.DescriptionElementState;
 import model.Descriptor;
+import model.DescriptorTree;
 import model.Item;
 import model.State;
 
@@ -14,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import services.DescriptorManagementService;
+import services.DescriptorTreeManagementService;
 import services.ItemManagementService;
 import utils.Utils;
 
@@ -25,6 +27,7 @@ public class InteractiveIdentificationServiceTest {
 
 	private static List<Item> itemsInKB;
 	private static List<Descriptor> descriptorsInKb;
+	private static DescriptorTree dependencyTreeInKB;
 
 	@Test
 	public void init() throws Exception {
@@ -35,6 +38,8 @@ public class InteractiveIdentificationServiceTest {
 		dbName = Utils.getBundleConfElement("hibernate.connection.database.dbName");
 		password = Utils.getBundleConfElement("hibernate.connection.database.password");
 
+		dependencyTreeInKB = DescriptorTreeManagementService.read(DescriptorTree.DEPENDENCY_TYPE, true,
+				dbName, login, password);
 		itemsInKB = ItemManagementService.readAll(true, true, dbName, login, password);
 		descriptorsInKb = DescriptorManagementService.readAll(true, dbName, login, password);
 	}
