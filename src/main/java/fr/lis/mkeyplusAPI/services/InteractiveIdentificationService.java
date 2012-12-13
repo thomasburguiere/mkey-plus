@@ -62,8 +62,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScore)
-			throws Exception {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScore) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
@@ -156,8 +155,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	private static float considerChildNodeDiscriminantPower(List<Descriptor> descriptors, List<Item> items,
-			int scoreMethod, DescriptorTree dependencyTree, float discriminantPower, Descriptor descriptor)
-			throws Exception {
+			int scoreMethod, DescriptorTree dependencyTree, float discriminantPower, Descriptor descriptor) {
 
 		float tempDiscriminantPower = 0;
 		for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId())
@@ -291,7 +289,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static float categoricalDescriptorScore(CategoricalDescriptor descriptor,
-			List<Item> remainingItems, DescriptorTree dependencyTree, int scoreMethod) throws Exception {
+			List<Item> remainingItems, DescriptorTree dependencyTree, int scoreMethod) {
 		int cpt = 0;
 		float score = 0;
 		boolean isAlwaysDescribed = true;
@@ -387,7 +385,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static float quantitativeDescriptorScore(QuantitativeDescriptor descriptor,
-			List<Item> remainingItems, int scoreMethod, DescriptorTree dependencyTree) throws Exception {
+			List<Item> remainingItems, int scoreMethod, DescriptorTree dependencyTree) {
 
 		int cpt = 0;
 		float score = 0;
