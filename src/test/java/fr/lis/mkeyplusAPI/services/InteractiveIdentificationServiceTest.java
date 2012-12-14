@@ -12,6 +12,7 @@ import model.Item;
 import model.State;
 
 import org.apache.log4j.Logger;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import services.DescriptorManagementService;
@@ -29,8 +30,8 @@ public class InteractiveIdentificationServiceTest {
 	private static List<Descriptor> descriptorsInKb;
 	private static DescriptorTree dependencyTreeInKB;
 
-	@Test
-	public void init() throws Exception {
+	@BeforeClass
+	public static void init() throws Exception {
 
 		// set test properties file
 		Utils.setBundleConf(ResourceBundle.getBundle("confTest"));
