@@ -20,7 +20,7 @@ import services.DescriptorTreeManagementService;
 import services.ItemManagementService;
 import utils.Utils;
 
-public class InteractiveIdentificationServiceTest {
+public class InteractiveIdentificationServiceTestDB {
 	public Logger logger = Logger.getRootLogger();
 	private static String login;
 	private static String dbName;
