@@ -3,7 +3,6 @@ package fr.lis.mkeyplusAPI.services;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,9 +21,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import IO.parser.SDDSaxParser;
-
 import utils.Utils;
+import IO.parser.SDDSaxParser;
 
 public class InteractiveIdentificationServiceTestSDD {
 	public Logger logger = Logger.getRootLogger();
