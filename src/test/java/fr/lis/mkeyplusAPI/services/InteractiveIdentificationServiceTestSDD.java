@@ -65,6 +65,9 @@ public class InteractiveIdentificationServiceTestSDD {
 
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
@@ -82,6 +85,9 @@ public class InteractiveIdentificationServiceTestSDD {
 
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testInitializeIds() throws Exception {
 		long descriptorCounter = 0;
@@ -124,6 +130,9 @@ public class InteractiveIdentificationServiceTestSDD {
 			}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testInitializeEmptyDescriptions() throws Exception {
 		for (Item itemInSDD : itemsInSDD) {
@@ -139,6 +148,9 @@ public class InteractiveIdentificationServiceTestSDD {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testSelectOrInitializeDependencyTree() throws Exception {
 		dependencyTreeInSDD = null;
@@ -157,6 +169,9 @@ public class InteractiveIdentificationServiceTestSDD {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testGetAllDescriptorScores() throws Exception {
 		for (Descriptor descriptor : descriptorsInSDD) {
@@ -169,6 +184,12 @@ public class InteractiveIdentificationServiceTestSDD {
 		}
 	}
 
+	
+	
+	
+	/**
+	 * @throws Exception
+	 */
 	@Test
 	public void testGetScoreMap() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
