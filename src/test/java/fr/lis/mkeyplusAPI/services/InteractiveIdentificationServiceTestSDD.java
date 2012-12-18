@@ -87,6 +87,7 @@ public class InteractiveIdentificationServiceTestSDD {
 	}
 
 	/**
+	 * test comment 2
 	 * @throws Exception
 	 */
 	@Test
