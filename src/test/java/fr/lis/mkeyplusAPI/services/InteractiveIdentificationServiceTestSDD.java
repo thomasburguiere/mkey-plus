@@ -66,6 +66,7 @@ public class InteractiveIdentificationServiceTestSDD {
 	}
 
 	/**
+	 * test comment 1
 	 * @throws Exception
 	 */
 	public void testParse() throws Exception {
