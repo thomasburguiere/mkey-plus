@@ -9,6 +9,7 @@ import java.util.Map;
 
 import model.CategoricalDescriptor;
 import model.Description;
+import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
 import model.DescriptorTree;
@@ -79,12 +80,14 @@ public class InteractiveIdentificationService {
 									(CategoricalDescriptor) descriptor, items, dependencyTree, 0);
 						} else if (descriptor.isQuantitativeType())
 							discriminantPower = quantitativeDescriptorScore(
-									(QuantitativeDescriptor) descriptor, items, scoreMethod, dependencyTree);
+									(QuantitativeDescriptor) descriptor, items, dependencyTree, scoreMethod);
 
 						if (considerChildScore) {
-							// asserting the discrimant power of the child descriptors (if any) and setting
+							// asserting the discriminant power of the child
+							// descriptors (if any) and setting
 							// the
-							// discriminant power of a child node to its father, if it is greater
+							// discriminant power of a child node to its father,
+							// if it is greater
 							discriminantPower = considerChildNodeDiscriminantPower(descriptors, items,
 									scoreMethod, dependencyTree, discriminantPower, descriptor);
 						}
@@ -104,7 +107,6 @@ public class InteractiveIdentificationService {
 
 					if (dp1 == dp2)
 						descriptorsScoresMap.put(desc, dpScore);
-
 				}
 			}
 
@@ -171,7 +173,7 @@ public class InteractiveIdentificationService {
 						(CategoricalDescriptor) childDescriptorInList, items, dependencyTree, scoreMethod);
 			} else if (childDescriptorInList.isQuantitativeType()) {
 				tempDiscriminantPower = quantitativeDescriptorScore(
-						(QuantitativeDescriptor) childDescriptorInList, items, scoreMethod, dependencyTree);
+						(QuantitativeDescriptor) childDescriptorInList, items, dependencyTree, scoreMethod);
 			}
 			if (tempDiscriminantPower > discriminantPower)
 				discriminantPower = tempDiscriminantPower;
@@ -310,13 +312,15 @@ public class InteractiveIdentificationService {
 						List<State> statesList2 = remainingItems.get(j)
 								.getDescriptionElement(descriptor.getId()).getStates();
 
-						// if at least one description is empty for the current character
+						// if at least one description is empty for the current
+						// character
 						if ((statesList1 != null && statesList1.size() == 0)
 								|| (statesList2 != null && statesList2.size() == 0)) {
 							isAlwaysDescribed = false;
 						}
 
-						// if one description is unknown and the other have 0 state checked
+						// if one description is unknown and the other have 0
+						// state checked
 						if ((statesList1 == null && statesList2 != null && statesList2.size() == 0)
 								|| (statesList2 == null && statesList1 != null && statesList1.size() == 0)) {
 							score++;
@@ -351,7 +355,6 @@ public class InteractiveIdentificationService {
 						}
 						cpt++;
 					}
-
 				}
 			}
 		}
@@ -360,16 +363,19 @@ public class InteractiveIdentificationService {
 			score = score / cpt;
 		}
 
-		// increasing artificially the score of character containing only described taxa
+		// increasing artificially the score of character containing only
+		// described taxa
 		// if (isAlwaysDescribed && score > 0) {
 		// score = (float) ((float) score + (float) 2.0);
 		// }
 
 		// fewStatesCharacterFirst option handling
-		// if (utils.isFewStatesCharacterFirst() && score > 0 && character.getStates().size() >= 2) {
+		// if (utils.isFewStatesCharacterFirst() && score > 0 &&
+		// character.getStates().size() >= 2) {
 		// // increasing artificially score of character with few states
 		// float coeff = (float) 1
-		// - ((float) character.getStates().size() / (float) maxNbStatesPerCharacter);
+		// - ((float) character.getStates().size() / (float)
+		// maxNbStatesPerCharacter);
 		// score = (float) (score + coeff);
 		// }
 
@@ -385,7 +391,7 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static float quantitativeDescriptorScore(QuantitativeDescriptor descriptor,
-			List<Item> remainingItems, int scoreMethod, DescriptorTree dependencyTree) {
+			List<Item> remainingItems, DescriptorTree dependencyTree, int scoreMethod) {
 
 		int cpt = 0;
 		float score = 0;
@@ -394,6 +400,7 @@ public class InteractiveIdentificationService {
 
 		for (int i = 0; i < remainingItems.size() - 1; i++) {
 			for (int j = i + 1; j < remainingItems.size(); j++) {
+
 				// if the descriptor is applicable for both of these items
 				if ((!isInapplicable(node, remainingItems.get(i)) && !isInapplicable(node,
 						remainingItems.get(j)))) {
@@ -467,7 +474,8 @@ public class InteractiveIdentificationService {
 			int scoreMethod) {
 		float out = 0;
 
-		float commonPercentage = 0; // percentage of common values which are shared
+		float commonPercentage = 0; // percentage of common values which are
+									// shared
 
 		QuantitativeMeasure quantitativeMeasure1 = item1.getDescription()
 				.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
