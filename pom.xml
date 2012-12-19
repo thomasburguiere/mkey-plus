@@ -14,7 +14,7 @@
 
 
 
-		<!-- Hibernate dependancies -->
+		<!-- Hibernate dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
