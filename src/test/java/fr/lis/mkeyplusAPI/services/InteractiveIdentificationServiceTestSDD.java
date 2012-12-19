@@ -194,8 +194,9 @@ public class InteractiveIdentificationServiceTestSDD {
 	 */
 	@Test
 	public void testGetScoreMap() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
-				dependencyTreeInSDD, 1, true);
+		Object map = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+		logger.info("done");
 	}
 
 }
