@@ -433,6 +433,12 @@ public class InteractiveIdentificationService {
 		case COMPARISON_OPERATOR_CONTAINS:
 			return referenceMeasure.contains(submittedMeasure);
 
+		case COMPARISON_OPERATOR_GREATER_THAN:
+			return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, false);
+
+		case COMPARISON_OPERATOR_LOWER_THAN:
+			return referenceMeasure.isLowerOrEqualTo(submittedMeasure, false);
+
 		default:
 			return false;
 		}
