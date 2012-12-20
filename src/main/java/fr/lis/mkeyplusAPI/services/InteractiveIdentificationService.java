@@ -69,7 +69,7 @@ public class InteractiveIdentificationService {
 						&& ((CategoricalDescriptor) descriptor).getStates().size() <= 0)
 					discriminantPower = 0;
 				else {
-					discriminantPower = getMaximumDiscriminantPower(descriptor, items, 0, scoreMethod,
+					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
 							considerChildScores, dependencyTree);
 				}
 
@@ -97,7 +97,7 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
-	private static float getMaximumDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
+	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree) {
 		float out = 0;
 		int cpt = 0;
@@ -146,10 +146,8 @@ public class InteractiveIdentificationService {
 					.getChildNodes()) {
 				Descriptor childDescriptor = childNode.getDescriptor(); // WILL NOT WORK WITH HIBERNATE (lazy
 																		// instanciation exception)
-				out = Math.max(
-						value,
-						getMaximumDiscriminantPower(childDescriptor, items, out, scoreMethod, true,
-								dependencyTree));
+				out = Math.max(value,
+						getDiscriminantPower(childDescriptor, items, out, scoreMethod, true, dependencyTree));
 			}
 		}
 		return Math.max(out, value);
