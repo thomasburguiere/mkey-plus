@@ -8,12 +8,12 @@ import java.util.ResourceBundle;
 
 import model.CategoricalDescriptor;
 import model.Dataset;
+import model.Description;
 import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
 import model.DescriptorTree;
 import model.Item;
-import model.QuantitativeDescriptor;
 import model.QuantitativeMeasure;
 import model.State;
 
@@ -66,7 +66,6 @@ public class InteractiveIdentificationServiceTestSDD {
 	}
 
 	/**
-	 * test comment 1
 	 * @throws Exception
 	 */
 	public void testParse() throws Exception {
@@ -87,7 +86,6 @@ public class InteractiveIdentificationServiceTestSDD {
 	}
 
 	/**
-	 * test comment 2
 	 * @throws Exception
 	 */
 	@Test
@@ -174,29 +172,67 @@ public class InteractiveIdentificationServiceTestSDD {
 	/**
 	 * @throws Exception
 	 */
-	@Test
-	public void testGetAllDescriptorScores() throws Exception {
-		for (Descriptor descriptor : descriptorsInSDD) {
-			if (descriptor.isCategoricalType())
-				InteractiveIdentificationService.categoricalDescriptorScore(
-						(CategoricalDescriptor) descriptor, itemsInSDD, dependencyTreeInSDD, 0);
-			else if (descriptor.isQuantitativeType())
-				InteractiveIdentificationService.quantitativeDescriptorScore(
-						(QuantitativeDescriptor) descriptor, itemsInSDD, dependencyTreeInSDD, 0);
-		}
-	}
+	// @Test
+	// public void testGetAllDescriptorScores() throws Exception {
+	// for (Descriptor descriptor : descriptorsInSDD) {
+	// InteractiveIdentificationService.getDiscriminantPower(descriptor, itemsInSDD, 0,
+	// InteractiveIdentificationService.SCORE_XPER, true, dependencyTreeInSDD);
+	// }
+	// }
 
-	
-	
-	
 	/**
 	 * @throws Exception
 	 */
+	// @Test
+	// public void testGetScoreMap() throws Exception {
+	// Object map = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
+	// dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+	// logger.info("done");
+	// }
+
 	@Test
-	public void testGetScoreMap() throws Exception {
-		Object map = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
+	public void testIdentificationIteration1() throws Exception {
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+
+		Descriptor d = null;
+		State s = new State("glabrous");
+		for (Descriptor desc : descriptorsInSDD) {
+			if (desc.getName().toLowerCase().indexOf("rosette leaves <indumentum>") != -1)
+				d = desc;
+		}
+
+		Description description = new Description();
+		DescriptionElementState des = new DescriptionElementState();
+		des.addState(s);
+		description.addDescriptionElement(d, des);
+
+		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
+
+		descriptorsInSDD.remove(d);
 		logger.info("done");
 	}
 
+	@Test
+	public void testIdentificationIteration2() throws Exception {
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+
+		Descriptor d = null;
+		State s = new State("auriculate");
+		for (Descriptor desc : descriptorsInSDD) {
+			if (desc.getName().toLowerCase().equals("cauline leaves <base>"))
+				d = desc;
+		}
+
+		Description description = new Description();
+		DescriptionElementState des = new DescriptionElementState();
+		des.addState(s);
+		description.addDescriptionElement(d, des);
+
+		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
+
+		descriptorsInSDD.remove(d);
+		logger.info("done");
+	}
 }
