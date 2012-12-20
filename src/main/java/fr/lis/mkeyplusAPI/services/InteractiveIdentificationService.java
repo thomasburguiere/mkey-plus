@@ -341,9 +341,18 @@ public class InteractiveIdentificationService {
 	// END OF DISCRIMINANT POWER CALCULATION FUNCTIONS
 
 	// IDENTIFICATION FUNCTIONS
-
-	public static List<Item> getRemainingItems(Description description, List<Item> remainingItems,
-			String dbName, String login, String password) {
+	/**
+	 * This method receives a list of {@link Item}s, and a {@link Description}, which contains the description
+	 * of one unitentified Item, according to one or several {@link Descriptor}s. It then loops over the Items
+	 * passed in parameter, eliminates those who are not compatible with the description of the unidentified
+	 * Item, and returns the list of the remaining Items compatible with the description of the unidentified
+	 * Item
+	 * 
+	 * @param description
+	 * @param remainingItems
+	 * @return
+	 */
+	public static List<Item> getRemainingItems(Description description, List<Item> remainingItems) {
 		List<Item> itemsToRemove = new ArrayList<Item>();
 		for (Item item : remainingItems) {
 			for (Descriptor descriptor : description.getDescriptionElements().keySet()) {
