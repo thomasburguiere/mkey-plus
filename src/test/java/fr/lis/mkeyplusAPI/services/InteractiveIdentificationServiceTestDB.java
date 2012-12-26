@@ -100,8 +100,7 @@ public class InteractiveIdentificationServiceTestDB {
 		ringsOnTailDescriptionElementState.addState(selectedState);
 		testDescription.addDescriptionElement(ringsOnTail, ringsOnTailDescriptionElementState);
 
-		InteractiveIdentificationService.getRemainingItems(testDescription, itemsInKB, dbName, login,
-				password);
+		InteractiveIdentificationService.getRemainingItems(testDescription, itemsInKB);
 
 	}
 }
