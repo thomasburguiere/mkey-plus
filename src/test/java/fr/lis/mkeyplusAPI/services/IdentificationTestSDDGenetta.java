@@ -21,10 +21,11 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import utils.Utils;
-import IO.parser.SDDSaxParser;
+import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
 
-public class InteractiveIdentificationServiceTestSDD {
+import utils.Utils;
+
+public class IdentificationTestSDDGenetta {
 	public Logger logger = Logger.getRootLogger();
 
 	private static Dataset datasetInSDD;
@@ -32,7 +33,7 @@ public class InteractiveIdentificationServiceTestSDD {
 	private static List<Descriptor> descriptorsInSDD;
 	private static DescriptorTree dependencyTreeInSDD;
 	private static List<DescriptorTree> descriptorTreesInSDD;
-	private static String sddUrlString = "http://localhost:8080/miscFiles/Cichorieae-fullSDD.xml";
+	private static String sddUrlString = "http://localhost:8080/miscFiles/genetta.sdd.xml";
 
 	/**
 	 * initial method which parses the original SDD file
@@ -192,13 +193,14 @@ public class InteractiveIdentificationServiceTestSDD {
 
 	@Test
 	public void testIdentificationIteration1() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
-				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 
 		Descriptor d = null;
-		State s = new State("glabrous");
+
+		State s = new State("dark");
 		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().indexOf("rosette leaves <indumentum>") != -1)
+			if (desc.getName().toLowerCase().indexOf("coat of forefoot") != -1)
 				d = desc;
 		}
 
@@ -215,13 +217,14 @@ public class InteractiveIdentificationServiceTestSDD {
 
 	@Test
 	public void testIdentificationIteration2() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD, itemsInSDD,
-				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 
 		Descriptor d = null;
-		State s = new State("auriculate");
+
+		State s = new State("strong (inferior to 1 - 0.12)");
 		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().equals("cauline leaves <base>"))
+			if (desc.getName().toLowerCase().indexOf("interorbital constriction") != -1)
 				d = desc;
 		}
 
