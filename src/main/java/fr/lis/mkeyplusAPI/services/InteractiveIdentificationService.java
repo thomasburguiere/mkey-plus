@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import utils.Utils;
-
 import model.CategoricalDescriptor;
 import model.Description;
 import model.Descriptor;
@@ -17,6 +15,9 @@ import model.Item;
 import model.QuantitativeDescriptor;
 import model.QuantitativeMeasure;
 import model.State;
+import utils.Utils;
+import fr.lis.mkeyplusAPI.model.ExtCategoricalDescriptor;
+import fr.lis.mkeyplusAPI.model.ExtQuantitativeDescriptor;
 
 /**
  * This class contains all the methods necessary to perform an Interactive Identification it is closely based
@@ -164,8 +165,8 @@ public class InteractiveIdentificationService {
 		float commonPresent = 0; // nb of common points which are present
 		float other = 0;
 
-		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
-		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
+//		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
 			return -1;
 
 		List<State> statesList1 = item1.getDescriptionElement(descriptor.getId()).getStates();
@@ -228,8 +229,8 @@ public class InteractiveIdentificationService {
 		float commonPercentage = 0; // percentage of common values which are
 		// shared
 
-		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
-		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
+//		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
 			return -1;
 
 		QuantitativeMeasure quantitativeMeasure1 = item1.getDescription()
@@ -296,6 +297,29 @@ public class InteractiveIdentificationService {
 				}
 			}
 			return isInapplicable(descriptorNode.getParentNode(), item);
+		}
+		return false;
+	}
+
+	private static boolean isInapplicable(Descriptor descriptor, Item item) {
+		if (descriptor.isCategoricalType()) {
+			if (((ExtCategoricalDescriptor) descriptor).getParentDescriptor() != null) {
+				for (State state : ((ExtCategoricalDescriptor) descriptor).getInapplicableStates()) {
+					if (item.getDescriptionElement(descriptor.getId()).containsState(state.getId())) {
+						return true;
+					}
+				}
+				return isInapplicable(((ExtCategoricalDescriptor) descriptor).getParentDescriptor(), item);
+			}
+		} else if (descriptor.isQuantitativeType()) {
+			if (((ExtQuantitativeDescriptor) descriptor).getParentDescriptor() != null) {
+				for (State state : ((ExtQuantitativeDescriptor) descriptor).getInapplicableStates()) {
+					if (item.getDescriptionElement(descriptor.getId()).containsState(state.getId())) {
+						return true;
+					}
+				}
+				return isInapplicable(((ExtQuantitativeDescriptor) descriptor).getParentDescriptor(), item);
+			}
 		}
 		return false;
 	}
@@ -434,10 +458,10 @@ public class InteractiveIdentificationService {
 			return referenceMeasure.contains(submittedMeasure);
 
 		case COMPARISON_OPERATOR_GREATER_THAN:
-			return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, false);
+			return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, true);
 
 		case COMPARISON_OPERATOR_LOWER_THAN:
-			return referenceMeasure.isLowerOrEqualTo(submittedMeasure, false);
+			return referenceMeasure.isLowerOrEqualTo(submittedMeasure, true);
 
 		default:
 			return false;
