@@ -136,9 +136,23 @@ public class InteractiveIdentificationService {
 		}
 	}
 
-	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsing4Threads(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores)
-			throws InterruptedException {
+	/**
+	 * 
+	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
+	 * power. This map is sorted by the discriminant power of the descriptors, in descending order. The map is
+	 * generated using 4 separate threads, each working on sublist of descriptors
+	 * 
+	 * @param descriptors
+	 * @param items
+	 * @param dependencyTree
+	 * @param scoreMethod
+	 * @param considerChildScores
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsing4Threads(
+			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+			boolean considerChildScores) throws InterruptedException {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
@@ -159,15 +173,15 @@ public class InteractiveIdentificationService {
 			DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
 					scoreMethod, considerChildScores, dependencyTree);
 			Thread t1 = new Thread(r1);
-			
+
 			DescriptorScoreMapRunnable r2 = new DescriptorScoreMapRunnable(descriptorList2, items,
 					scoreMethod, considerChildScores, dependencyTree);
 			Thread t2 = new Thread(r2);
-			
+
 			DescriptorScoreMapRunnable r3 = new DescriptorScoreMapRunnable(descriptorList3, items,
 					scoreMethod, considerChildScores, dependencyTree);
 			Thread t3 = new Thread(r3);
-			
+
 			DescriptorScoreMapRunnable r4 = new DescriptorScoreMapRunnable(descriptorList4, items,
 					scoreMethod, considerChildScores, dependencyTree);
 			Thread t4 = new Thread(r4);
@@ -274,7 +288,7 @@ public class InteractiveIdentificationService {
 		float commonPresent = 0; // nb of common points which are present
 		float other = 0;
 
-//		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		// DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
 		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
 			return -1;
 
@@ -338,7 +352,7 @@ public class InteractiveIdentificationService {
 		float commonPercentage = 0; // percentage of common values which are
 		// shared
 
-//		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		// DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
 		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
 			return -1;
 
