@@ -221,6 +221,108 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
+	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsingNThreads(
+			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+			boolean considerChildScores, int nThreads) throws InterruptedException {
+		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
+
+		if (items.size() > 1) {
+			int slicer = descriptors.size() / nThreads;
+
+			List<List<Descriptor>> subLists = new ArrayList<List<Descriptor>>();
+
+			int i;
+			for (i = 0; i < nThreads - 1; i++) {
+				subLists.add(descriptors.subList(slicer * i, slicer * (i + 1)));
+			}
+			subLists.add(descriptors.subList(slicer * i, descriptors.size()));
+
+			// List<Descriptor> descriptorList1 = descriptors.subList(0, slicer);
+			// List<Descriptor> descriptorList2 = descriptors.subList(slicer, slicer * 2);
+			// List<Descriptor> descriptorList3 = descriptors.subList(slicer * 2, slicer * 3);
+			// List<Descriptor> descriptorList4 = descriptors.subList(slicer * 3, descriptors.size());
+			// descriptors.
+
+			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
+
+			List<HashMap<Descriptor, Float>> tempMapList = new ArrayList<HashMap<Descriptor, Float>>();
+			DescriptorScoreMapRunnable[] runnables = new DescriptorScoreMapRunnable[nThreads];
+			Thread[] threads = new Thread[nThreads];
+
+			for (int j = 0; j < nThreads ; j++) {
+				runnables[j] = new DescriptorScoreMapRunnable(subLists.get(j), items, scoreMethod,
+						considerChildScores, dependencyTree);
+				threads[j] = new Thread(runnables[j]);
+			}
+			// HashMap<Descriptor, Float> tempMap1 = new HashMap<Descriptor, Float>();
+			// HashMap<Descriptor, Float> tempMap2 = new HashMap<Descriptor, Float>();
+			// HashMap<Descriptor, Float> tempMap3 = new HashMap<Descriptor, Float>();
+			// HashMap<Descriptor, Float> tempMap4 = new HashMap<Descriptor, Float>();
+
+			// DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
+			// scoreMethod, considerChildScores, dependencyTree);
+			// Thread t1 = new Thread(r1);
+			//
+			// DescriptorScoreMapRunnable r2 = new DescriptorScoreMapRunnable(descriptorList2, items,
+			// scoreMethod, considerChildScores, dependencyTree);
+			// Thread t2 = new Thread(r2);
+			//
+			// DescriptorScoreMapRunnable r3 = new DescriptorScoreMapRunnable(descriptorList3, items,
+			// scoreMethod, considerChildScores, dependencyTree);
+			// Thread t3 = new Thread(r3);
+			//
+			// DescriptorScoreMapRunnable r4 = new DescriptorScoreMapRunnable(descriptorList4, items,
+			// scoreMethod, considerChildScores, dependencyTree);
+			// Thread t4 = new Thread(r4);
+
+			for (int j = 0; j < nThreads; j++) {
+				threads[j].start();
+			}
+			// t1.start();
+			// t2.start();
+			// t3.start();
+			// t4.start();
+
+			for (int j = 0; j < nThreads; j++) {
+				threads[j].join();
+			}
+
+			// t1.join();
+			// t2.join();
+			// t3.join();
+			// t4.join();
+
+			for (int j = 0; j < nThreads; j++) {
+				tempMap.putAll(runnables[j].getTempMap());
+			}
+			// tempMap1 = r1.getTempMap();
+			// tempMap2 = r2.getTempMap();
+			// tempMap3 = r3.getTempMap();
+			// tempMap4 = r4.getTempMap();
+			// tempMap.putAll(tempMap1);
+			// tempMap.putAll(tempMap2);
+			// tempMap.putAll(tempMap3);
+			// tempMap.putAll(tempMap4);
+
+			// sorting the final LinkedHashMap
+			List<Float> mapValues = new ArrayList<Float>(tempMap.values());
+			Collections.sort(mapValues, Collections.reverseOrder());
+
+			for (Float dpScore : mapValues) {
+				for (Descriptor desc : tempMap.keySet()) {
+					float dp1 = tempMap.get(desc);
+					float dp2 = dpScore;
+
+					if (dp1 == dp2)
+						descriptorsScoresMap.put(desc, dpScore);
+				}
+			}
+
+		}
+
+		return descriptorsScoresMap;
+	}
+
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree) {
 		float out = 0;
