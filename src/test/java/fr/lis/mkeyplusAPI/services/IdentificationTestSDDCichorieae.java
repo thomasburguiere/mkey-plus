@@ -193,7 +193,7 @@ public class IdentificationTestSDDCichorieae {
 
 	@Test
 	public void testIdentificationIteration1() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 
 		Descriptor d = null;
