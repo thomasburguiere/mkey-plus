@@ -191,45 +191,64 @@ public class IdentificationTestSDDCichorieae {
 	// logger.info("done");
 	// }
 	@Test
+	public void testScore8Threads() throws Exception {
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
+				InteractiveIdentificationService.SCORE_XPER, true, 8);
+	}
+	@Test
+	public void testScore7Threads() throws Exception {
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
+				InteractiveIdentificationService.SCORE_XPER, true, 7);
+	}
+
+	@Test
 	public void testScore6Threads() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,6);
+				InteractiveIdentificationService.SCORE_XPER, true, 6);
 	}
 
 	@Test
 	public void testScore5Threads() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,5);
+				InteractiveIdentificationService.SCORE_XPER, true, 5);
 	}
 
 	@Test
 	public void testScore4Threads() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,4);
+				InteractiveIdentificationService.SCORE_XPER, true, 4);
 	}
 
 	@Test
 	public void testScore3Threads() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,3);
+				InteractiveIdentificationService.SCORE_XPER, true, 3);
 	}
 
 	@Test
 	public void testScore2Threads() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,2);
+				InteractiveIdentificationService.SCORE_XPER, true, 2);
+	}
+	@Test
+	public void testScore1Threads() throws Exception {
+		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
+				InteractiveIdentificationService.SCORE_XPER, true, 1);
 	}
 
 	@Test
 	public void testIdentificationIteration1() throws Exception {
 		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true,4);
+				InteractiveIdentificationService.SCORE_XPER, true, 4);
 
 		Descriptor d = null;
 		State s = new State("glabrous");
