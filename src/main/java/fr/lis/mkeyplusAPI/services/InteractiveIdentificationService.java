@@ -231,7 +231,7 @@ public class InteractiveIdentificationService {
 
 			List<List<Descriptor>> subLists = new ArrayList<List<Descriptor>>();
 
-			int i;
+			int i = 0;
 			for (i = 0; i < nThreads - 1; i++) {
 				subLists.add(descriptors.subList(slicer * i, slicer * (i + 1)));
 			}
