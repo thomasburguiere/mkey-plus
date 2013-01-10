@@ -29,7 +29,7 @@ public class SDDSaxParser {
 	public SDDSaxParser(String filePath) throws SAXException, IOException {
 		XMLReader saxReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
-		SDDContentHandler handler = new SDDContentHandler();
+		ExtSDDContentHandler handler = new ExtSDDContentHandler();
 		saxReader.setContentHandler(handler);
 
 		InputSource is = null;
@@ -50,7 +50,7 @@ public class SDDSaxParser {
 	public SDDSaxParser(URL sddFilePublicURL) throws IOException, SAXException {
 		XMLReader saxReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
-		SDDContentHandler handler = new SDDContentHandler();
+		ExtSDDContentHandler handler = new ExtSDDContentHandler();
 		saxReader.setContentHandler(handler);
 
 		InputSource is = null;
