@@ -106,6 +106,8 @@ public class SDDContentHandler implements ContentHandler {
 	private State currentState = null;
 	// current Description
 	private Description currentDescription = null;
+	// current DescriptionElementState
+	private DescriptionElementState currentDescriptionElementState = null;
 	// current item
 	private Item currentItem = null;
 	// <Detail> content of the current Item
@@ -181,6 +183,11 @@ public class SDDContentHandler implements ContentHandler {
 
 			// <Label> in <Dataset>
 			else if (localName.equals("Label") && inDataset) {
+				buffer = new StringBuffer();
+			}
+			
+			// <Note> in <Dataset>
+			else if (localName.equals("Note") && inDataset) {
 				buffer = new StringBuffer();
 			}
 
@@ -908,15 +915,15 @@ public class SDDContentHandler implements ContentHandler {
 			// <Categorical> in <SummaryData>
 			else if (localName.equals("Categorical") && inSummaryData) {
 				inCategorical = false;
-				DescriptionElementState descriptionElementState = new DescriptionElementState();
+				currentDescriptionElementState  = new DescriptionElementState();
 				if (dataUnavailableFlag) {
-					descriptionElementState.setUnknown(true);
+					currentDescriptionElementState.setUnknown(true);
 					currentDescription.addDescriptionElement(currentDescriptionDescriptor,
-							descriptionElementState);
+							currentDescriptionElementState);
 				} else {
-					descriptionElementState.setStates(currentStatesList);
+					currentDescriptionElementState.setStates(currentStatesList);
 					currentDescription.addDescriptionElement(currentDescriptionDescriptor,
-							descriptionElementState);
+							currentDescriptionElementState);
 				}
 				currentDescriptionDescriptor = null;
 				currentStatesList = null;
@@ -926,19 +933,25 @@ public class SDDContentHandler implements ContentHandler {
 			// <Quantitative> in <SummaryData>
 			else if (localName.equals("Quantitative") && inSummaryData) {
 				inQuantitative = false;
-				DescriptionElementState descriptionElementState = new DescriptionElementState();
+				currentDescriptionElementState  = new DescriptionElementState();
 				if (dataUnavailableFlag) {
-					descriptionElementState.setUnknown(true);
+					currentDescriptionElementState.setUnknown(true);
 					currentDescription.addDescriptionElement(currentDescriptionDescriptor,
-							descriptionElementState);
+							currentDescriptionElementState);
 				} else {
-					descriptionElementState.setQuantitativeMeasure(currentQuantitativeMeasure);
+					currentDescriptionElementState.setQuantitativeMeasure(currentQuantitativeMeasure);
 					currentDescription.addDescriptionElement(currentDescriptionDescriptor,
-							descriptionElementState);
+							currentDescriptionElementState);
 				}
 				currentDescriptionDescriptor = null;
 				currentQuantitativeMeasure = null;
 				dataUnavailableFlag = false;
+			}
+
+			// <Note> in <Categorical> or <Quantitative> in <SummaryData>
+			else if (localName.equals("Note") && inSummaryData) {
+				currentDescriptionElementState.setNote(buffer.toString());
+				
 			}
 
 			// <Measure> in <Quantitative>
