@@ -3362,7 +3362,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -3621,7 +3621,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -3633,7 +3633,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -3718,7 +3718,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -3954,7 +3954,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="ub">
@@ -4351,7 +4351,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -4363,7 +4363,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -4672,7 +4672,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -4684,7 +4684,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -5301,7 +5301,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="LE">
@@ -5505,7 +5505,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -5517,7 +5517,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -6183,7 +6183,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="nf">
@@ -6413,7 +6413,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -6425,7 +6425,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -7029,7 +7029,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="lH">
@@ -7184,7 +7184,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -7196,7 +7196,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -7702,7 +7702,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="TI">
@@ -7876,7 +7876,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -7888,7 +7888,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -8373,7 +8373,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -8385,7 +8385,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -8882,7 +8882,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="XK">
@@ -8945,7 +8945,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>cm</Label>
@@ -8983,7 +8983,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -9292,7 +9292,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="lL">
@@ -9446,7 +9446,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -9458,7 +9458,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -9702,7 +9702,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -9714,7 +9714,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -9989,7 +9989,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10001,7 +10001,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10261,7 +10261,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10273,7 +10273,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10523,7 +10523,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10681,7 +10681,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10838,7 +10838,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10969,7 +10969,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -10981,7 +10981,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11048,7 +11048,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11115,7 +11115,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11127,7 +11127,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11139,7 +11139,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11206,7 +11206,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11218,7 +11218,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11275,7 +11275,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11332,7 +11332,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11349,7 +11349,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11361,7 +11361,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11458,7 +11458,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11667,7 +11667,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11679,7 +11679,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -11990,7 +11990,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 </QuantitativeCharacter>
 <CategoricalCharacter id="Vp">
@@ -12110,7 +12110,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -12287,7 +12287,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -12299,7 +12299,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -12737,7 +12737,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>wahr</ValuesAreInteger>
+<ValuesAreInteger>true</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -12749,7 +12749,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13171,7 +13171,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13306,7 +13306,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13362,7 +13362,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13413,7 +13413,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13509,7 +13509,7 @@
 </Representation>
 <Assumptions>
 <MeasurementScale>Ratio</MeasurementScale>
-<ValuesAreInteger>falsch</ValuesAreInteger>
+<ValuesAreInteger>false</ValuesAreInteger>
 </Assumptions>
 <MeasurementUnit>
 <Label>mm</Label>
@@ -13606,7 +13606,7 @@
 <Role>InteractiveIdentification</Role>
 <Role>TerminologyReporting</Role>
 </DesignedFor>
-<ShouldContainAllCharacters>wahr</ShouldContainAllCharacters>
+<ShouldContainAllCharacters>true</ShouldContainAllCharacters>
 <Nodes>
 <Node id="U">
 <DescriptiveConcept ref="d"/>
