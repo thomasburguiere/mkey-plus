@@ -1,7 +1,6 @@
 package fr.lis.mkeyplusAPI.io.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import model.Dataset;
@@ -21,8 +20,8 @@ import fr.lis.mkeyplusAPI.model.ExtQuantitativeDescriptor;
 public class ExtSDDContentHandler extends SDDContentHandler implements ContentHandler {
 	public ExtSDDContentHandler() {
 		super();
-		this.dataset = new Dataset();
-		this.ratingsCounter = new HashMap<Descriptor, Integer>();
+//		this.dataset = new Dataset();
+//		this.ratingsCounter = new HashMap<Descriptor, Integer>();
 	}
 
 	public void startElement(String nameSpaceURI, String localName, String rawName, Attributes attributes)
