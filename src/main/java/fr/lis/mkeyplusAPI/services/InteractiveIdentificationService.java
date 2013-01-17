@@ -357,6 +357,11 @@ public class InteractiveIdentificationService {
 			isAlwaysDescribed = false;
 		}
 
+		if(item1.getDescriptionElement(descriptor.getId()).isUnknown())
+			statesList1 = descriptor.getStates();
+		if(item2.getDescriptionElement(descriptor.getId()).isUnknown())
+			statesList2 = descriptor.getStates();
+			
 		for (State state : descriptor.getStates()) {
 			if (statesList1.contains(state)) {
 				if (statesList2.contains(state)) {
