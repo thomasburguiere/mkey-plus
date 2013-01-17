@@ -239,7 +239,6 @@ public class InteractiveIdentificationService {
 
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
 
-			List<HashMap<Descriptor, Float>> tempMapList = new ArrayList<HashMap<Descriptor, Float>>();
 			DescriptorScoreMapRunnable[] runnables = new DescriptorScoreMapRunnable[nThreads];
 			Thread[] threads = new Thread[nThreads];
 
