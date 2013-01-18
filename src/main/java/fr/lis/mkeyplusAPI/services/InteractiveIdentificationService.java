@@ -247,7 +247,7 @@ public class InteractiveIdentificationService {
 						considerChildScores, dependencyTree);
 				threads[j] = new Thread(runnables[j]);
 			}
-			
+
 			for (int j = 0; j < nThreads; j++)
 				threads[j].start();
 
@@ -320,7 +320,7 @@ public class InteractiveIdentificationService {
 			out = out / cpt;
 
 		// recursive DP calculation of child descriptors
-		if (considerChildScores) {
+		if (considerChildScores && dependencyTree.getNodeContainingDescriptor(descriptor.getId()) != null) {
 			for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId())
 					.getChildNodes()) {
 				Descriptor childDescriptor = childNode.getDescriptor(); // WILL NOT WORK WITH HIBERNATE (lazy
@@ -357,11 +357,11 @@ public class InteractiveIdentificationService {
 			isAlwaysDescribed = false;
 		}
 
-		if(item1.getDescriptionElement(descriptor.getId()).isUnknown())
+		if (item1.getDescriptionElement(descriptor.getId()).isUnknown())
 			statesList1 = descriptor.getStates();
-		if(item2.getDescriptionElement(descriptor.getId()).isUnknown())
+		if (item2.getDescriptionElement(descriptor.getId()).isUnknown())
 			statesList2 = descriptor.getStates();
-			
+
 		for (State state : descriptor.getStates()) {
 			if (statesList1.contains(state)) {
 				if (statesList2.contains(state)) {
@@ -472,7 +472,7 @@ public class InteractiveIdentificationService {
 	}
 
 	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item) {
-		if (descriptorNode.getParentNode() != null) {
+		if (descriptorNode != null && descriptorNode.getParentNode() != null) {
 			for (State state : descriptorNode.getInapplicableStates()) {
 				if (item.getDescriptionElement(descriptorNode.getParentNode().getDescriptor().getId())
 						.containsState(state.getId())) {
