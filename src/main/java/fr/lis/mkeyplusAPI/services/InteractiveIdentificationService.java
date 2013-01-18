@@ -343,8 +343,8 @@ public class InteractiveIdentificationService {
 		float commonPresent = 0; // nb of common points which are present
 		float other = 0;
 
-		// DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
-		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
+		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
 			return -1;
 
 		List<State> statesList1 = item1.getDescriptionElement(descriptor.getId()).getStates();
@@ -412,8 +412,8 @@ public class InteractiveIdentificationService {
 		float commonPercentage = 0; // percentage of common values which are
 		// shared
 
-		// DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
-		if ((isInapplicable(descriptor, item1) || isInapplicable(descriptor, item2)))
+		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
 			return -1;
 
 		QuantitativeMeasure quantitativeMeasure1 = item1.getDescription()
