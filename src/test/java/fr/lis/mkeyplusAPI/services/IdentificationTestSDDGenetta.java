@@ -1,6 +1,5 @@
 package fr.lis.mkeyplusAPI.services;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -21,9 +20,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
-
 import utils.Utils;
+import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
 
 public class IdentificationTestSDDGenetta {
 	public Logger logger = Logger.getRootLogger();
@@ -48,14 +46,13 @@ public class IdentificationTestSDDGenetta {
 
 		datasetInSDD = null;
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
 
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
@@ -72,14 +69,12 @@ public class IdentificationTestSDDGenetta {
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
-
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
@@ -193,7 +188,7 @@ public class IdentificationTestSDDGenetta {
 
 	@Test
 	public void testIdentificationIteration1() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 
 		Descriptor d = null;
@@ -217,7 +212,7 @@ public class IdentificationTestSDDGenetta {
 
 	@Test
 	public void testIdentificationIteration2() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 
 		Descriptor d = null;

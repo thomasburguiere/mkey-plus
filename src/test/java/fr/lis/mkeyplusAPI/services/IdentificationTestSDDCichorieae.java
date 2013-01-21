@@ -1,6 +1,5 @@
 package fr.lis.mkeyplusAPI.services;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -21,9 +20,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
-
 import utils.Utils;
+import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
 
 public class IdentificationTestSDDCichorieae {
 	public Logger logger = Logger.getRootLogger();
@@ -48,14 +46,13 @@ public class IdentificationTestSDDCichorieae {
 
 		datasetInSDD = null;
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
 
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
@@ -72,14 +69,13 @@ public class IdentificationTestSDDCichorieae {
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
 
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
@@ -192,61 +188,61 @@ public class IdentificationTestSDDCichorieae {
 	// }
 	@Test
 	public void testScore8Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 8);
 	}
 	@Test
 	public void testScore7Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 7);
 	}
 
 	@Test
 	public void testScore6Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 6);
 	}
 
 	@Test
 	public void testScore5Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 5);
 	}
 
 	@Test
 	public void testScore4Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 4);
 	}
 
 	@Test
 	public void testScore3Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 3);
 	}
 
 	@Test
 	public void testScore2Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 2);
 	}
 	@Test
 	public void testScore1Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 1);
 	}
 
 	@Test
 	public void testIdentificationIteration1() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 4);
 
@@ -270,7 +266,7 @@ public class IdentificationTestSDDCichorieae {
 
 	@Test
 	public void testIdentificationIteration2() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true);
 
@@ -294,7 +290,7 @@ public class IdentificationTestSDDCichorieae {
 
 	@Test
 	public void testIdentificationIteration3() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true);
 

@@ -1,6 +1,5 @@
 package fr.lis.mkeyplusAPI.services;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.ResourceBundle;
 
 import model.CategoricalDescriptor;
 import model.Dataset;
-import model.Description;
 import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
@@ -21,9 +19,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
-
 import utils.Utils;
+import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
 
 public class IdentificationTestSDDArchaeo {
 	public Logger logger = Logger.getRootLogger();
@@ -48,14 +45,13 @@ public class IdentificationTestSDDArchaeo {
 
 		datasetInSDD = null;
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
 
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
@@ -63,11 +59,9 @@ public class IdentificationTestSDDArchaeo {
 		itemsInSDD = datasetInSDD.getItems();
 		descriptorsInSDD = datasetInSDD.getDescriptors();
 		descriptorTreesInSDD = datasetInSDD.getDescriptorTrees();
-		
-		
-		
-		//initialize IDs
-		
+
+		// initialize IDs
+
 		long descriptorCounter = 0;
 		long stateCounter = 0;
 		for (Descriptor dInSdd : descriptorsInSDD) {
@@ -107,7 +101,7 @@ public class IdentificationTestSDDArchaeo {
 				descriptorNodeCounter++;
 			}
 		DescriptorTree depTree = null;
-		//select or initialize the dependency tree
+		// select or initialize the dependency tree
 		dependencyTreeInSDD = null;
 		if (descriptorTreesInSDD.size() > 0) {
 			depTree = descriptorTreesInSDD.get(0);
@@ -122,9 +116,9 @@ public class IdentificationTestSDDArchaeo {
 			for (Descriptor descriptor : datasetInSDD.getDescriptors())
 				depTree.addNode(new DescriptorNode(descriptor));
 		}
-		
+
 		dependencyTreeInSDD = depTree;
-		
+
 		// initialize empty descriptions
 		for (Item itemInSDD : itemsInSDD) {
 			for (Descriptor descriptor : descriptorsInSDD) {
@@ -137,8 +131,6 @@ public class IdentificationTestSDDArchaeo {
 				}
 			}
 		}
-		
-		
 
 	}
 
@@ -148,14 +140,13 @@ public class IdentificationTestSDDArchaeo {
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
-		InputStream httpStream = null;
 
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
 		urlConnection = sddFileUrl.openConnection();
 		// Open data stream to test the connection
-		httpStream = urlConnection.getInputStream();
+		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
 		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
@@ -268,14 +259,15 @@ public class IdentificationTestSDDArchaeo {
 	// }
 	@Test
 	public void testScore8Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 8);
 		logger.info("done");
 	}
+
 	@Test
 	public void testScore7Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 7);
 		logger.info("done");
@@ -283,14 +275,14 @@ public class IdentificationTestSDDArchaeo {
 
 	@Test
 	public void testScore6Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 6);
 	}
 
 	@Test
 	public void testScore5Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 5);
 		logger.info("done");
@@ -298,14 +290,14 @@ public class IdentificationTestSDDArchaeo {
 
 	@Test
 	public void testScore4Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 4);
 	}
 
 	@Test
 	public void testScore3Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 3);
 		logger.info("done");
@@ -313,18 +305,17 @@ public class IdentificationTestSDDArchaeo {
 
 	@Test
 	public void testScore2Threads() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
 				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
 				InteractiveIdentificationService.SCORE_XPER, true, 2);
 		logger.info("done");
 	}
+
 	@Test
 	public void testScore() throws Exception {
-		Object scoremap = InteractiveIdentificationService.getDescriptorsScoreMap(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true);
+		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 		logger.info("done");
 	}
-
 
 }
