@@ -66,6 +66,7 @@ public class IdentificationTestSDDCichorieae {
 	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;

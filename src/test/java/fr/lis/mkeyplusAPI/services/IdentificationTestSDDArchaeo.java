@@ -137,6 +137,7 @@ public class IdentificationTestSDDArchaeo {
 	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
