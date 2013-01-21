@@ -39,7 +39,7 @@ public class IdentificationTestSDDCichorieae {
 	 * @throws Exception
 	 */
 	@BeforeClass
-	public static void parse() throws Exception {
+	public static void parseAndInitializeIdsAndSelectOrInitializeDependencyTree() throws Exception {
 
 		// set test properties file
 		Utils.setBundleConf(ResourceBundle.getBundle("confTest"));
@@ -55,11 +55,83 @@ public class IdentificationTestSDDCichorieae {
 		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve the dataset
-		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
+		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
 
 		itemsInSDD = datasetInSDD.getItems();
 		descriptorsInSDD = datasetInSDD.getDescriptors();
 		descriptorTreesInSDD = datasetInSDD.getDescriptorTrees();
+
+		// initialize IDs
+
+		long descriptorCounter = 0;
+		long stateCounter = 0;
+		for (Descriptor dInSdd : descriptorsInSDD) {
+			dInSdd.setId(descriptorCounter);
+			descriptorCounter++;
+			if (dInSdd.isCategoricalType()) {
+				for (State s : ((CategoricalDescriptor) dInSdd).getStates()) {
+					s.setId(stateCounter);
+					stateCounter++;
+				}
+			}
+		}
+
+		long itemCounter = 0;
+		long measureCounter = 0;
+		long descriptionCounter = 0;
+		long descriptionElementStateCounter = 0;
+		for (Item itemInSDD : itemsInSDD) {
+			itemInSDD.setId(itemCounter);
+			itemCounter++;
+			itemInSDD.getDescription().setId(descriptionCounter);
+			descriptionCounter++;
+			for (DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
+				des.setId(descriptionElementStateCounter);
+				descriptionElementStateCounter++;
+				if (des.getQuantitativeMeasure() != null) {
+					des.getQuantitativeMeasure().setId(measureCounter);
+					measureCounter++;
+				}
+			}
+		}
+
+		long descriptorNodeCounter = 0;
+		for (DescriptorTree tree : datasetInSDD.getDescriptorTrees())
+			for (DescriptorNode node : tree.getNodes()) {
+				node.setId(descriptorNodeCounter);
+				descriptorNodeCounter++;
+			}
+		DescriptorTree depTree = null;
+		// select or initialize the dependency tree
+		dependencyTreeInSDD = null;
+		if (descriptorTreesInSDD.size() > 0) {
+			depTree = descriptorTreesInSDD.get(0);
+			for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
+				DescriptorTree tree = descriptorTreesInSDD.get(i);
+				if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE))
+					depTree = tree;
+			}
+		} else {
+			depTree = new DescriptorTree();
+			depTree.setType(DescriptorTree.DEPENDENCY_TYPE);
+			for (Descriptor descriptor : datasetInSDD.getDescriptors())
+				depTree.addNode(new DescriptorNode(descriptor));
+		}
+
+		dependencyTreeInSDD = depTree;
+
+		// initialize empty descriptions
+		for (Item itemInSDD : itemsInSDD) {
+			for (Descriptor descriptor : descriptorsInSDD) {
+				if (itemInSDD.getDescriptionElement(descriptor.getId()) == null) {
+					DescriptionElementState descriptionElementState = new DescriptionElementState();
+					if (descriptor.isQuantitativeType()) {
+						descriptionElementState.setQuantitativeMeasure(new QuantitativeMeasure());
+					}
+					itemInSDD.addDescriptionElement(descriptor, descriptionElementState);
+				}
+			}
+		}
 
 	}
 
