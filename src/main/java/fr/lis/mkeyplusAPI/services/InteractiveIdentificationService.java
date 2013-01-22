@@ -46,9 +46,6 @@ public class InteractiveIdentificationService {
 	public static final int COMPARISON_OPERATOR_CONTAINS = 9;
 	public static final int COMPARISON_OPERATOR_DOES_NOT_CONTAIN = 10;
 
-	private static final ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime()
-			.availableProcessors());
-
 	// DISCRIMINANT POWER FUNCTIONS
 
 	/**
@@ -66,17 +63,17 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
-			DescriptionElementState[][] descriptionMatrix) {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
 			Future<Object[]>[] futures = new Future[descriptors.size()];
 			int i = 0;
 			for (Descriptor descriptor : descriptors) {
-				futures[i] = InteractiveIdentificationService.exec
-						.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree, scoreMethod,
-								considerChildScores, descriptor, descriptionMatrix));
+				futures[i] = exec.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree,
+						scoreMethod, considerChildScores, descriptor, descriptionMatrix));
 				i++;
 			}
 			try {
@@ -85,12 +82,14 @@ public class InteractiveIdentificationService {
 				}
 				// InteractiveIdentificationService.exec.shutdown();
 
-				}
-
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException ex) {
 				ex.printStackTrace();
+			}
+			finally{
+				exec.shutdown();
+				exec = null;
 			}
 		} else {
 			for (Descriptor descriptor : descriptors)
@@ -772,6 +771,25 @@ public class InteractiveIdentificationService {
 			return false;
 		}
 
+	}
+
+	/**
+	 * @param items
+	 * @param descriptors
+	 * @return
+	 */
+	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
+			List<Descriptor> descriptors) {
+		int nItems = items.size();
+		int nDescriptors = descriptors.size();
+		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
+		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
+			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
+				descriptionMatrix[itemIndex][descriptorIndex] = items.get(itemIndex).getDescriptionElement(
+						descriptors.get(descriptorIndex).getId());
+			}
+		}
+		return descriptionMatrix;
 	}
 
 }

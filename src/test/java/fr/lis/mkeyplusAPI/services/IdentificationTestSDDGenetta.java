@@ -43,24 +43,24 @@ public class IdentificationTestSDDGenetta {
 	public static void parseAndInitializeIdsAndSelectOrInitializeDependencyTree() throws Exception {
 
 		// set test properties file
-		Utils.setBundleConf(ResourceBundle.getBundle("confTest"));
+				Utils.setBundleConf(ResourceBundle.getBundle("confTest"));
 
-		datasetInSDD = null;
-		URLConnection urlConnection = null;
+				datasetInSDD = null;
+				URLConnection urlConnection = null;
 
-		// testing the sdd URL validity
-		URL sddFileUrl = new URL(sddUrlString);
-		// open URL (HTTP query)
-		urlConnection = sddFileUrl.openConnection();
-		// Open data stream to test the connection
-		urlConnection.getInputStream();
+				// testing the sdd URL validity
+				URL sddFileUrl = new URL(sddUrlString);
+				// open URL (HTTP query)
+				urlConnection = sddFileUrl.openConnection();
+				// Open data stream to test the connection
+				urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve thevi dataset
 		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
 
-		itemsInSDD = datasetInSDD.getItems();
-		descriptorsInSDD = datasetInSDD.getDescriptors();
-		descriptorTreesInSDD = datasetInSDD.getDescriptorTrees();
+				itemsInSDD = datasetInSDD.getItems();
+				descriptorsInSDD = datasetInSDD.getDescriptors();
+				descriptorTreesInSDD = datasetInSDD.getDescriptorTrees();
 
 		// initialize IDs
 
