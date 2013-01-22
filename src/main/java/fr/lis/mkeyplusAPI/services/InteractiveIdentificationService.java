@@ -83,7 +83,7 @@ public class InteractiveIdentificationService {
 					Object[] result = fute.get();
 					descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
 				}
-				InteractiveIdentificationService.exec.shutdown();
+//				InteractiveIdentificationService.exec.shutdown();
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -793,4 +793,9 @@ public class InteractiveIdentificationService {
 		return descriptionMatrix;
 	}
 
+	@Override 
+	public void finalize() throws Throwable{
+		InteractiveIdentificationService.exec.shutdownNow();
+		super.finalize();
+	}
 }
