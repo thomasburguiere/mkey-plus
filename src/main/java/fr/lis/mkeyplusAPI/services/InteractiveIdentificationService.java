@@ -46,9 +46,6 @@ public class InteractiveIdentificationService {
 	public static final int COMPARISON_OPERATOR_CONTAINS = 9;
 	public static final int COMPARISON_OPERATOR_DOES_NOT_CONTAIN = 10;
 
-	private static final ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime()
-			.availableProcessors());
-
 	// DISCRIMINANT POWER FUNCTIONS
 
 	/**
@@ -67,15 +64,16 @@ public class InteractiveIdentificationService {
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
 			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 		DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
 		if (items.size() > 1) {
 			Future<Object[]>[] futures = new Future[descriptors.size()];
 			int i = 0;
 			for (Descriptor descriptor : descriptors) {
-				futures[i] = InteractiveIdentificationService.exec
-						.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree, scoreMethod,
-								considerChildScores, descriptor,descriptionMatrix));
+				futures[i] = exec.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree,
+						scoreMethod, considerChildScores, descriptor, descriptionMatrix));
 				i++;
 			}
 			try {
@@ -83,12 +81,16 @@ public class InteractiveIdentificationService {
 					Object[] result = fute.get();
 					descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
 				}
-//				InteractiveIdentificationService.exec.shutdown();
-				
+				// InteractiveIdentificationService.exec.shutdown();
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException ex) {
 				ex.printStackTrace();
+			}
+			finally{
+				exec.shutdown();
+				exec = null;
 			}
 		} else {
 			for (Descriptor descriptor : descriptors)
@@ -440,7 +442,7 @@ public class InteractiveIdentificationService {
 		List<State> statesList1 = des1.getStates();
 		List<State> statesList2 = des2.getStates();
 		List<State> everyStates = descriptor.getStates();
-		
+
 		// if at least one description is empty for the current
 		// character
 		if ((statesList1 != null && statesList1.size() == 0)
@@ -608,7 +610,7 @@ public class InteractiveIdentificationService {
 		DescriptionElementState description = item.getDescriptionElement(descriptor.getId());
 		if (descriptor.isCategoricalType()) {
 			if (((ExtCategoricalDescriptor) descriptor).getParentDescriptor() != null) {
-				
+
 				for (State state : ((ExtCategoricalDescriptor) descriptor).getInapplicableStates()) {
 					if (description.containsState(state.getId())) {
 						return true;
@@ -780,7 +782,7 @@ public class InteractiveIdentificationService {
 	 * @return
 	 */
 	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
-		List<Descriptor> descriptors) {
+			List<Descriptor> descriptors) {
 		int nItems = items.size();
 		int nDescriptors = descriptors.size();
 		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
@@ -793,9 +795,4 @@ public class InteractiveIdentificationService {
 		return descriptionMatrix;
 	}
 
-	@Override 
-	public void finalize() throws Throwable{
-		InteractiveIdentificationService.exec.shutdownNow();
-		super.finalize();
-	}
 }
