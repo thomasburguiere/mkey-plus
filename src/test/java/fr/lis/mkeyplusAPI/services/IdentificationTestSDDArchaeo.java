@@ -317,6 +317,7 @@ public class IdentificationTestSDDArchaeo {
 		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 		logger.info("done");
+		int t = 10;
 	}
 
 }
