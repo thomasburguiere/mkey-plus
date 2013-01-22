@@ -76,7 +76,7 @@ public class InteractiveIdentificationService {
 			for (Descriptor descriptor : descriptors) {
 				futures[i] = InteractiveIdentificationService.exec
 						.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree, scoreMethod,
-								considerChildScores, descriptor,descriptionMatrix));
+								considerChildScores, descriptor, descriptionMatrix));
 				i++;
 			}
 			try {
@@ -86,7 +86,7 @@ public class InteractiveIdentificationService {
 				// InteractiveIdentificationService.exec.shutdown();
 
 				}
-				
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException ex) {
@@ -440,7 +440,7 @@ public class InteractiveIdentificationService {
 		List<State> statesList1 = des1.getStates();
 		List<State> statesList2 = des2.getStates();
 		List<State> everyStates = descriptor.getStates();
-		
+
 		// if at least one description is empty for the current
 		// character
 		if ((statesList1 != null && statesList1.size() == 0)
@@ -608,7 +608,7 @@ public class InteractiveIdentificationService {
 		DescriptionElementState description = item.getDescriptionElement(descriptor.getId());
 		if (descriptor.isCategoricalType()) {
 			if (((ExtCategoricalDescriptor) descriptor).getParentDescriptor() != null) {
-				
+
 				for (State state : ((ExtCategoricalDescriptor) descriptor).getInapplicableStates()) {
 					if (description.containsState(state.getId())) {
 						return true;
