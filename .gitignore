@@ -5,3 +5,4 @@
 lib/xper3API-1.0.jar
 lib/xper3API-1.0-sources.jar
 target
+*.class
