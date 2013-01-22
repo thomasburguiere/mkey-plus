@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import model.CategoricalDescriptor;
 import model.Description;
@@ -42,7 +46,56 @@ public class InteractiveIdentificationService {
 	public static final int COMPARISON_OPERATOR_CONTAINS = 9;
 	public static final int COMPARISON_OPERATOR_DOES_NOT_CONTAIN = 10;
 
+	private static final ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime()
+			.availableProcessors());
+	
+
 	// DISCRIMINANT POWER FUNCTIONS
+
+	/**
+	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
+	 * power. This map is sorted by the discriminant power of the descriptors, in descending order
+	 * 
+	 * @param descriptors
+	 * @param items
+	 * @param dbName
+	 * @param login
+	 * @param password
+	 * @param scoreMethod
+	 * @param considerChildScore
+	 * @return
+	 * @throws Exception
+	 */
+	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
+		List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
+
+		if (items.size() > 1) {
+			Future<Object[]>[] futures = new Future[descriptors.size()];
+			int i = 0;
+			for (Descriptor descriptor : descriptors){
+				futures[i] = InteractiveIdentificationService.exec.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree, scoreMethod, considerChildScores, descriptor));
+				i++;
+			}
+			try{
+				for(Future<Object[]> fute : futures){
+					Object[] result = fute.get();
+					descriptorsScoresMap.put((Descriptor)result[0],(Float)result[1]);
+				}
+			}
+			catch(InterruptedException e){
+				e.printStackTrace();
+			}
+			catch(ExecutionException ex){
+				ex.printStackTrace();
+			}
+		} else {
+			for (Descriptor descriptor : descriptors)
+				descriptorsScoresMap.put(descriptor, new Float(-1));
+		}
+
+		return descriptorsScoresMap;
+	}
 
 	/**
 	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant

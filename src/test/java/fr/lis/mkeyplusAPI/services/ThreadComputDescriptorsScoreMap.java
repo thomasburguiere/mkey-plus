@@ -41,6 +41,8 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 					considerChildScores, dependencyTree);
 
 		}
+
+		
 		output[0] = descriptor;
 		output[1] = discriminantPower;
 		return output;
