@@ -8,6 +8,7 @@ import java.util.List;
 
 import model.CategoricalDescriptor;
 import model.Description;
+import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
 import model.DescriptorTree;
