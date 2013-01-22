@@ -66,9 +66,10 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+			DescriptionElementState[][] descriptionMatrix) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
-		DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
+
 		if (items.size() > 1) {
 			Future<Object[]>[] futures = new Future[descriptors.size()];
 			int i = 0;
@@ -81,9 +82,10 @@ public class InteractiveIdentificationService {
 			try {
 				for (Future<Object[]> fute : futures) {
 					Object[] result = fute.get();
-					descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
 				}
-				InteractiveIdentificationService.exec.shutdown();
+				// InteractiveIdentificationService.exec.shutdown();
+
+				}
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -113,10 +115,9 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+			DescriptionElementState[][] descriptionMatrix) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
-
-		DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
 
 		if (items.size() > 1) {
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
@@ -185,7 +186,7 @@ public class InteractiveIdentificationService {
 					discriminantPower = 0;
 				else {
 					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
-							considerChildScores, dependencyTree, null);
+							considerChildScores, dependencyTree, descriptionMatrix);
 				}
 				tempMap.put(descriptor, discriminantPower);
 			}
@@ -212,11 +213,11 @@ public class InteractiveIdentificationService {
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsing4Threads(
 			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores) throws InterruptedException {
+			boolean considerChildScores, DescriptionElementState[][] descriptionMatrix)
+			throws InterruptedException {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
-			DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
 
 			int quarter = descriptors.size() / 4;
 			List<Descriptor> descriptorList1 = descriptors.subList(0, quarter);
@@ -285,12 +286,11 @@ public class InteractiveIdentificationService {
 
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsingNThreads(
 			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores, int nThreads) throws InterruptedException {
+			boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix)
+			throws InterruptedException {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
-
-			DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
 
 			int slicer = descriptors.size() / nThreads;
 
@@ -772,25 +772,6 @@ public class InteractiveIdentificationService {
 			return false;
 		}
 
-	}
-
-	/**
-	 * @param items
-	 * @param descriptors
-	 * @return
-	 */
-	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
-		List<Descriptor> descriptors) {
-		int nItems = items.size();
-		int nDescriptors = descriptors.size();
-		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
-		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
-			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
-				descriptionMatrix[itemIndex][descriptorIndex] = items.get(itemIndex).getDescriptionElement(
-						descriptors.get(descriptorIndex).getId());
-			}
-		}
-		return descriptionMatrix;
 	}
 
 }
