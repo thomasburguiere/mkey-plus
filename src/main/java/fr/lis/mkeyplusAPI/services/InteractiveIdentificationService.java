@@ -347,8 +347,11 @@ public class InteractiveIdentificationService {
 		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
 			return -1;
 
-		List<State> statesList1 = item1.getDescriptionElement(descriptor.getId()).getStates();
-		List<State> statesList2 = item2.getDescriptionElement(descriptor.getId()).getStates();
+		DescriptionElementState des1 = item1.getDescriptionElement(descriptor.getId());
+		DescriptionElementState des2 = item2.getDescriptionElement(descriptor.getId());
+
+		List<State> statesList1 = des1.getStates();
+		List<State> statesList2 = des2.getStates();
 
 		// if at least one description is empty for the current
 		// character
@@ -357,9 +360,9 @@ public class InteractiveIdentificationService {
 			isAlwaysDescribed = false;
 		}
 
-		if (item1.getDescriptionElement(descriptor.getId()).isUnknown())
+		if (des1.isUnknown())
 			statesList1 = descriptor.getStates();
-		if (item2.getDescriptionElement(descriptor.getId()).isUnknown())
+		if (des2.isUnknown())
 			statesList2 = descriptor.getStates();
 
 		for (State state : descriptor.getStates()) {
