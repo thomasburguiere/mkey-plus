@@ -314,10 +314,13 @@ public class IdentificationTestSDDArchaeo {
 
 	@Test
 	public void testScore() throws Exception {
-		int test = 2;
+		Chrono c = new Chrono();
+		c.start();
 		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 		logger.info("done");
+		c.stop();
+		System.out.println(c.delayString());
 	}
 
 }

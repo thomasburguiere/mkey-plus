@@ -406,7 +406,8 @@ public class InteractiveIdentificationService {
 
 		List<State> statesList1 = des1.getStates();
 		List<State> statesList2 = des2.getStates();
-
+		List<State> everyStates = descriptor.getStates();
+		
 		// if at least one description is empty for the current
 		// character
 		if ((statesList1 != null && statesList1.size() == 0)
@@ -415,11 +416,11 @@ public class InteractiveIdentificationService {
 		}
 
 		if (des1.isUnknown())
-			statesList1 = descriptor.getStates();
+			statesList1 = everyStates;
 		if (des2.isUnknown())
-			statesList2 = descriptor.getStates();
+			statesList2 = everyStates;
 
-		for (State state : descriptor.getStates()) {
+		for (State state : everyStates) {
 			if (statesList1.contains(state)) {
 				if (statesList2.contains(state)) {
 					commonPresent++;
@@ -477,6 +478,7 @@ public class InteractiveIdentificationService {
 				.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
 		QuantitativeMeasure quantitativeMeasure2 = item2.getDescription()
 				.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
+		
 		if (quantitativeMeasure1 == null || quantitativeMeasure2 == null) {
 			return 0;
 		} else {
@@ -542,10 +544,12 @@ public class InteractiveIdentificationService {
 	}
 
 	private static boolean isInapplicable(Descriptor descriptor, Item item) {
+		DescriptionElementState description = item.getDescriptionElement(descriptor.getId());
 		if (descriptor.isCategoricalType()) {
 			if (((ExtCategoricalDescriptor) descriptor).getParentDescriptor() != null) {
+				
 				for (State state : ((ExtCategoricalDescriptor) descriptor).getInapplicableStates()) {
-					if (item.getDescriptionElement(descriptor.getId()).containsState(state.getId())) {
+					if (description.containsState(state.getId())) {
 						return true;
 					}
 				}
@@ -554,7 +558,7 @@ public class InteractiveIdentificationService {
 		} else if (descriptor.isQuantitativeType()) {
 			if (((ExtQuantitativeDescriptor) descriptor).getParentDescriptor() != null) {
 				for (State state : ((ExtQuantitativeDescriptor) descriptor).getInapplicableStates()) {
-					if (item.getDescriptionElement(descriptor.getId()).containsState(state.getId())) {
+					if (description.containsState(state.getId())) {
 						return true;
 					}
 				}
