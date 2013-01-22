@@ -65,11 +65,11 @@ public class InteractiveIdentificationServiceTestDB {
 	//
 	// }
 
-	@Test
-	public void testGetDescriptorScoreMapXperSort() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInKb, itemsInKB,
-				dependencyTreeInKB, InteractiveIdentificationService.SCORE_XPER, true);
-	}
+//	@Test
+//	public void testGetDescriptorScoreMapXperSort() throws Exception {
+//		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInKb, itemsInKB,
+//				dependencyTreeInKB, InteractiveIdentificationService.SCORE_XPER, true);
+//	}
 
 	// @Test
 	// public void testGetDescriptiveDataJaccard() throws Exception {

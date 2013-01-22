@@ -32,6 +32,7 @@ public class IdentificationTestSDDCichorieae {
 	private static DescriptorTree dependencyTreeInSDD;
 	private static List<DescriptorTree> descriptorTreesInSDD;
 	private static String sddUrlString = "http://localhost:8080/miscFiles/Cichorieae-fullSDD.xml";
+	private static DescriptionElementState[][] descriptionMatrixInSDD;
 
 	/**
 	 * initial method which parses the original SDD file
@@ -54,7 +55,7 @@ public class IdentificationTestSDDCichorieae {
 		// Open data stream to test the connection
 		urlConnection.getInputStream();
 
-		// parsing the sdd to retrieve the dataset
+		// parsing the sdd to retrieve thevi dataset
 		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
 
 		itemsInSDD = datasetInSDD.getItems();
@@ -130,6 +131,17 @@ public class IdentificationTestSDDCichorieae {
 					}
 					itemInSDD.addDescriptionElement(descriptor, descriptionElementState);
 				}
+			}
+		}
+
+		// initialize descriptionMatrix
+		int nItems = itemsInSDD.size();
+		int nDescriptors = descriptorsInSDD.size();
+		descriptionMatrixInSDD = new DescriptionElementState[nItems][nDescriptors];
+		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
+			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
+				descriptionMatrixInSDD[itemIndex][descriptorIndex] = itemsInSDD.get(itemIndex)
+						.getDescriptionElement(descriptorsInSDD.get(descriptorIndex).getId());
 			}
 		}
 
@@ -261,127 +273,68 @@ public class IdentificationTestSDDCichorieae {
 	// }
 	@Test
 	public void testScore8Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 8);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 8,
+				descriptionMatrixInSDD);
+		logger.info("done");
 	}
+
 	@Test
 	public void testScore7Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 7);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 7,
+				descriptionMatrixInSDD);
+		logger.info("done");
 	}
 
 	@Test
 	public void testScore6Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 6);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 6,
+				descriptionMatrixInSDD);
 	}
 
 	@Test
 	public void testScore5Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 5);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 5,
+				descriptionMatrixInSDD);
+		logger.info("done");
 	}
 
 	@Test
 	public void testScore4Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 4);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 4,
+				descriptionMatrixInSDD);
 	}
 
 	@Test
 	public void testScore3Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 3);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 3,
+				descriptionMatrixInSDD);
+		logger.info("done");
 	}
 
 	@Test
 	public void testScore2Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 2);
-	}
-	@Test
-	public void testScore1Threads() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 1);
-	}
-
-	@Test
-	public void testIdentificationIteration1() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true, 4);
-
-		Descriptor d = null;
-		State s = new State("glabrous");
-		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().indexOf("rosette leaves <indumentum>") != -1)
-				d = desc;
-		}
-
-		Description description = new Description();
-		DescriptionElementState des = new DescriptionElementState();
-		des.addState(s);
-		description.addDescriptionElement(d, des);
-
-		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
-
-		descriptorsInSDD.remove(d);
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 2,
+				descriptionMatrixInSDD);
 		logger.info("done");
 	}
 
 	@Test
-	public void testIdentificationIteration2() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true);
-
-		Descriptor d = null;
-		State s = new State("auriculate");
-		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().equals("cauline leaves <base>"))
-				d = desc;
-		}
-
-		Description description = new Description();
-		DescriptionElementState des = new DescriptionElementState();
-		des.addState(s);
-		description.addDescriptionElement(d, des);
-
-		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
-
-		descriptorsInSDD.remove(d);
+	public void testScore() throws Exception {
+		Chrono c = new Chrono();
+		c.start();
+		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
+				descriptionMatrixInSDD);
 		logger.info("done");
+		c.stop();
+		System.out.println(c.delayString());
 	}
 
-	@Test
-	public void testIdentificationIteration3() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMapUsing4Threads(
-				descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-				InteractiveIdentificationService.SCORE_XPER, true);
-
-		Descriptor d = null;
-		State s = new State("terete");
-		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().equals("flowering stems <section>"))
-				d = desc;
-		}
-
-		Description description = new Description();
-		DescriptionElementState des = new DescriptionElementState();
-		des.addState(s);
-		description.addDescriptionElement(d, des);
-
-		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
-
-		descriptorsInSDD.remove(d);
-		logger.info("done");
-	}
 }

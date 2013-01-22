@@ -32,6 +32,7 @@ public class IdentificationTestSDDGenetta {
 	private static DescriptorTree dependencyTreeInSDD;
 	private static List<DescriptorTree> descriptorTreesInSDD;
 	private static String sddUrlString = "http://localhost:8080/miscFiles/genetta.sdd.xml";
+	private static DescriptionElementState[][] descriptionMatrixInSDD;
 
 	/**
 	 * initial method which parses the original SDD file
@@ -39,7 +40,7 @@ public class IdentificationTestSDDGenetta {
 	 * @throws Exception
 	 */
 	@BeforeClass
-	public static void parse() throws Exception {
+	public static void parseAndInitializeIdsAndSelectOrInitializeDependencyTree() throws Exception {
 
 		// set test properties file
 		Utils.setBundleConf(ResourceBundle.getBundle("confTest"));
@@ -54,12 +55,95 @@ public class IdentificationTestSDDGenetta {
 		// Open data stream to test the connection
 		urlConnection.getInputStream();
 
-		// parsing the sdd to retrieve the dataset
-		datasetInSDD = new SDDSaxParser(sddFileUrl).getDataset();
+		// parsing the sdd to retrieve thevi dataset
+		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
 
 		itemsInSDD = datasetInSDD.getItems();
 		descriptorsInSDD = datasetInSDD.getDescriptors();
 		descriptorTreesInSDD = datasetInSDD.getDescriptorTrees();
+
+		// initialize IDs
+
+		long descriptorCounter = 0;
+		long stateCounter = 0;
+		for (Descriptor dInSdd : descriptorsInSDD) {
+			dInSdd.setId(descriptorCounter);
+			descriptorCounter++;
+			if (dInSdd.isCategoricalType()) {
+				for (State s : ((CategoricalDescriptor) dInSdd).getStates()) {
+					s.setId(stateCounter);
+					stateCounter++;
+				}
+			}
+		}
+
+		long itemCounter = 0;
+		long measureCounter = 0;
+		long descriptionCounter = 0;
+		long descriptionElementStateCounter = 0;
+		for (Item itemInSDD : itemsInSDD) {
+			itemInSDD.setId(itemCounter);
+			itemCounter++;
+			itemInSDD.getDescription().setId(descriptionCounter);
+			descriptionCounter++;
+			for (DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
+				des.setId(descriptionElementStateCounter);
+				descriptionElementStateCounter++;
+				if (des.getQuantitativeMeasure() != null) {
+					des.getQuantitativeMeasure().setId(measureCounter);
+					measureCounter++;
+				}
+			}
+		}
+
+		long descriptorNodeCounter = 0;
+		for (DescriptorTree tree : datasetInSDD.getDescriptorTrees())
+			for (DescriptorNode node : tree.getNodes()) {
+				node.setId(descriptorNodeCounter);
+				descriptorNodeCounter++;
+			}
+		DescriptorTree depTree = null;
+		// select or initialize the dependency tree
+		dependencyTreeInSDD = null;
+		if (descriptorTreesInSDD.size() > 0) {
+			depTree = descriptorTreesInSDD.get(0);
+			for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
+				DescriptorTree tree = descriptorTreesInSDD.get(i);
+				if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE))
+					depTree = tree;
+			}
+		} else {
+			depTree = new DescriptorTree();
+			depTree.setType(DescriptorTree.DEPENDENCY_TYPE);
+			for (Descriptor descriptor : datasetInSDD.getDescriptors())
+				depTree.addNode(new DescriptorNode(descriptor));
+		}
+
+		dependencyTreeInSDD = depTree;
+
+		// initialize empty descriptions
+		for (Item itemInSDD : itemsInSDD) {
+			for (Descriptor descriptor : descriptorsInSDD) {
+				if (itemInSDD.getDescriptionElement(descriptor.getId()) == null) {
+					DescriptionElementState descriptionElementState = new DescriptionElementState();
+					if (descriptor.isQuantitativeType()) {
+						descriptionElementState.setQuantitativeMeasure(new QuantitativeMeasure());
+					}
+					itemInSDD.addDescriptionElement(descriptor, descriptionElementState);
+				}
+			}
+		}
+
+		// initialize descriptionMatrix
+		int nItems = itemsInSDD.size();
+		int nDescriptors = descriptorsInSDD.size();
+		descriptionMatrixInSDD = new DescriptionElementState[nItems][nDescriptors];
+		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
+			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
+				descriptionMatrixInSDD[itemIndex][descriptorIndex] = itemsInSDD.get(itemIndex)
+						.getDescriptionElement(descriptorsInSDD.get(descriptorIndex).getId());
+			}
+		}
 
 	}
 
@@ -70,6 +154,7 @@ public class IdentificationTestSDDGenetta {
 	public void testParse() throws Exception {
 
 		URLConnection urlConnection = null;
+
 		// testing the sdd URL validity
 		URL sddFileUrl = new URL(sddUrlString);
 		// open URL (HTTP query)
@@ -186,52 +271,70 @@ public class IdentificationTestSDDGenetta {
 	// dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 	// logger.info("done");
 	// }
-
 	@Test
-	public void testIdentificationIteration1() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
-				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
-
-		Descriptor d = null;
-
-		State s = new State("dark");
-		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().indexOf("coat of forefoot") != -1)
-				d = desc;
-		}
-
-		Description description = new Description();
-		DescriptionElementState des = new DescriptionElementState();
-		des.addState(s);
-		description.addDescriptionElement(d, des);
-
-		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
-
-		descriptorsInSDD.remove(d);
+	public void testScore8Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 8,
+				descriptionMatrixInSDD);
 		logger.info("done");
 	}
 
 	@Test
-	public void testIdentificationIteration2() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
-				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
-
-		Descriptor d = null;
-
-		State s = new State("strong (inferior to 1 - 0.12)");
-		for (Descriptor desc : descriptorsInSDD) {
-			if (desc.getName().toLowerCase().indexOf("interorbital constriction") != -1)
-				d = desc;
-		}
-
-		Description description = new Description();
-		DescriptionElementState des = new DescriptionElementState();
-		des.addState(s);
-		description.addDescriptionElement(d, des);
-
-		itemsInSDD = InteractiveIdentificationService.getRemainingItems(description, itemsInSDD);
-
-		descriptorsInSDD.remove(d);
+	public void testScore7Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 7,
+				descriptionMatrixInSDD);
 		logger.info("done");
 	}
+
+	@Test
+	public void testScore6Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 6,
+				descriptionMatrixInSDD);
+	}
+
+	@Test
+	public void testScore5Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 5,
+				descriptionMatrixInSDD);
+		logger.info("done");
+	}
+
+	@Test
+	public void testScore4Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 4,
+				descriptionMatrixInSDD);
+	}
+
+	@Test
+	public void testScore3Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 3,
+				descriptionMatrixInSDD);
+		logger.info("done");
+	}
+
+	@Test
+	public void testScore2Threads() throws Exception {
+		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 2,
+				descriptionMatrixInSDD);
+		logger.info("done");
+	}
+
+	@Test
+	public void testScore() throws Exception {
+		Chrono c = new Chrono();
+		c.start();
+		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
+				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
+				descriptionMatrixInSDD);
+		logger.info("done");
+		c.stop();
+		System.out.println(c.delayString());
+	}
+
 }
