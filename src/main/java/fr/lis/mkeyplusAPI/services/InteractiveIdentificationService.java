@@ -68,14 +68,14 @@ public class InteractiveIdentificationService {
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
 			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
-
+		DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
 		if (items.size() > 1) {
 			Future<Object[]>[] futures = new Future[descriptors.size()];
 			int i = 0;
 			for (Descriptor descriptor : descriptors) {
 				futures[i] = InteractiveIdentificationService.exec
 						.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree, scoreMethod,
-								considerChildScores, descriptor));
+								considerChildScores, descriptor,descriptionMatrix));
 				i++;
 			}
 			try {
@@ -83,6 +83,8 @@ public class InteractiveIdentificationService {
 					Object[] result = fute.get();
 					descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
 				}
+				InteractiveIdentificationService.exec.shutdown();
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException ex) {
@@ -764,7 +766,7 @@ public class InteractiveIdentificationService {
 	 * @return
 	 */
 	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
-			List<Descriptor> descriptors) {
+		List<Descriptor> descriptors) {
 		int nItems = items.size();
 		int nDescriptors = descriptors.size();
 		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
@@ -774,7 +776,6 @@ public class InteractiveIdentificationService {
 						descriptors.get(descriptorIndex).getId());
 			}
 		}
-
 		return descriptionMatrix;
 	}
 
