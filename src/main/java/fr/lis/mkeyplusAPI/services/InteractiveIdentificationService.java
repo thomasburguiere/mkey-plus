@@ -423,7 +423,7 @@ public class InteractiveIdentificationService {
 		float other = 0;
 
 		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
-		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
+		if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
 			return -1;
 
 		DescriptionElementState des1 = null;
@@ -507,7 +507,7 @@ public class InteractiveIdentificationService {
 		// shared
 
 		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
-		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
+		if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
 			return -1;
 
 		DescriptionElementState des1 = null;
@@ -575,14 +575,28 @@ public class InteractiveIdentificationService {
 	}
 
 	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item) {
+		return isInapplicable(descriptorNode, item, null);
+	}
+
+	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item,
+			DescriptionElementState[][] descriptionMatrix) {
 		if (descriptorNode != null && descriptorNode.getParentNode() != null) {
-			for (State state : descriptorNode.getInapplicableStates()) {
-				if (item.getDescriptionElement(descriptorNode.getParentNode().getDescriptor().getId())
-						.containsState(state.getId())) {
+			List<State> inapplicableStates = descriptorNode.getInapplicableStates();
+			DescriptionElementState description = descriptionMatrix[(int) item.getId()][(int) descriptorNode
+					.getParentNode().getDescriptor().getId()];
+			for (int i = 0; i < inapplicableStates.size(); i++) {
+				State state = inapplicableStates.get(i);
+				// if (descriptionMatrix == null) {
+				// if (item.getDescriptionElement(descriptorNode.getParentNode().getDescriptor().getId())
+				// .containsState(state.getId()))
+				// return true;
+				// } else {
+				if (description.containsState(state.getId())) {
 					return true;
 				}
+				// }
 			}
-			return isInapplicable(descriptorNode.getParentNode(), item);
+			return isInapplicable(descriptorNode.getParentNode(), item, descriptionMatrix);
 		}
 		return false;
 	}
