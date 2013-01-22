@@ -8,6 +8,7 @@ import java.util.List;
 
 import model.CategoricalDescriptor;
 import model.Description;
+import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
 import model.DescriptorTree;
@@ -61,6 +62,8 @@ public class InteractiveIdentificationService {
 			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
+		DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
+
 		if (items.size() > 1) {
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
 			float discriminantPower = -1;
@@ -71,7 +74,7 @@ public class InteractiveIdentificationService {
 					discriminantPower = 0;
 				else {
 					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
-							considerChildScores, dependencyTree);
+							considerChildScores, dependencyTree, descriptionMatrix);
 				}
 
 				tempMap.put(descriptor, discriminantPower);
@@ -105,15 +108,18 @@ public class InteractiveIdentificationService {
 		private boolean considerChildScores;
 		private DescriptorTree dependencyTree;
 		private HashMap<Descriptor, Float> tempMap;
+		private DescriptionElementState[][] descriptionMatrix;
 
 		public DescriptorScoreMapRunnable(List<Descriptor> descriptorList, List<Item> items, int scoreMethod,
-				boolean considerChildScores, DescriptorTree dependencyTree) {
+				boolean considerChildScores, DescriptorTree dependencyTree,
+				DescriptionElementState[][] descriptionMatrix) {
 			this.descriptorList = descriptorList;
 			this.items = items;
 			this.scoreMethod = scoreMethod;
 			this.considerChildScores = considerChildScores;
 			this.dependencyTree = dependencyTree;
 			this.tempMap = new HashMap<Descriptor, Float>();
+			this.descriptionMatrix = descriptionMatrix;
 		}
 
 		@Override
@@ -125,7 +131,7 @@ public class InteractiveIdentificationService {
 					discriminantPower = 0;
 				else {
 					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
-							considerChildScores, dependencyTree);
+							considerChildScores, dependencyTree, null);
 				}
 				tempMap.put(descriptor, discriminantPower);
 			}
@@ -156,6 +162,8 @@ public class InteractiveIdentificationService {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
+			DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
+
 			int quarter = descriptors.size() / 4;
 			List<Descriptor> descriptorList1 = descriptors.subList(0, quarter);
 			List<Descriptor> descriptorList2 = descriptors.subList(quarter, quarter * 2);
@@ -171,19 +179,19 @@ public class InteractiveIdentificationService {
 			HashMap<Descriptor, Float> tempMap4 = new HashMap<Descriptor, Float>();
 
 			DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
-					scoreMethod, considerChildScores, dependencyTree);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix);
 			Thread t1 = new Thread(r1);
 
 			DescriptorScoreMapRunnable r2 = new DescriptorScoreMapRunnable(descriptorList2, items,
-					scoreMethod, considerChildScores, dependencyTree);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix);
 			Thread t2 = new Thread(r2);
 
 			DescriptorScoreMapRunnable r3 = new DescriptorScoreMapRunnable(descriptorList3, items,
-					scoreMethod, considerChildScores, dependencyTree);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix);
 			Thread t3 = new Thread(r3);
 
 			DescriptorScoreMapRunnable r4 = new DescriptorScoreMapRunnable(descriptorList4, items,
-					scoreMethod, considerChildScores, dependencyTree);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix);
 			Thread t4 = new Thread(r4);
 			t1.start();
 			t2.start();
@@ -227,6 +235,9 @@ public class InteractiveIdentificationService {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
+
+			DescriptionElementState[][] descriptionMatrix = initializeDescriptionMatrix(items, descriptors);
+
 			int slicer = descriptors.size() / nThreads;
 
 			List<List<Descriptor>> subLists = new ArrayList<List<Descriptor>>();
@@ -244,7 +255,7 @@ public class InteractiveIdentificationService {
 
 			for (int j = 0; j < nThreads; j++) {
 				runnables[j] = new DescriptorScoreMapRunnable(subLists.get(j), items, scoreMethod,
-						considerChildScores, dependencyTree);
+						considerChildScores, dependencyTree, descriptionMatrix);
 				threads[j] = new Thread(runnables[j]);
 			}
 
@@ -278,6 +289,13 @@ public class InteractiveIdentificationService {
 
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree) {
+		return getDiscriminantPower(descriptor, items, value, scoreMethod, considerChildScores,
+				dependencyTree, null);
+	}
+
+	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
+			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
+			DescriptionElementState[][] descriptionMatrix) {
 		float out = 0;
 		int cpt = 0;
 
@@ -288,7 +306,7 @@ public class InteractiveIdentificationService {
 					Item item2 = items.get(i2);
 					float tmp = -1;
 					tmp = compareWithQuantitativeDescriptor((QuantitativeDescriptor) descriptor, item1,
-							item2, scoreMethod, dependencyTree);
+							item2, scoreMethod, dependencyTree, descriptionMatrix);
 					if (tmp >= 0) {
 						out += tmp;
 						cpt++;
@@ -306,7 +324,7 @@ public class InteractiveIdentificationService {
 						Item item2 = items.get(i2);
 						float tmp = -1;
 						tmp = compareWithCategoricalDescriptor((CategoricalDescriptor) descriptor, item1,
-								item2, scoreMethod, dependencyTree);
+								item2, scoreMethod, dependencyTree, descriptionMatrix);
 						if (tmp >= 0) {
 							out += tmp;
 							cpt++;
@@ -320,13 +338,16 @@ public class InteractiveIdentificationService {
 			out = out / cpt;
 
 		// recursive DP calculation of child descriptors
-		if (considerChildScores && dependencyTree.getNodeContainingDescriptor(descriptor.getId()) != null) {
-			for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId())
-					.getChildNodes()) {
+		if (considerChildScores
+				&& dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false) != null) {
+			for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId(),
+					false).getChildNodes()) {
 				Descriptor childDescriptor = childNode.getDescriptor(); // WILL NOT WORK WITH HIBERNATE (lazy
 																		// instanciation exception)
-				out = Math.max(value,
-						getDiscriminantPower(childDescriptor, items, out, scoreMethod, true, dependencyTree));
+				out = Math.max(
+						value,
+						getDiscriminantPower(childDescriptor, items, out, scoreMethod, true, dependencyTree,
+								descriptionMatrix));
 			}
 		}
 		return Math.max(out, value);
@@ -335,6 +356,12 @@ public class InteractiveIdentificationService {
 
 	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree) {
+		return compareWithCategoricalDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree, null);
+	}
+
+	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
+			Item item2, int scoreMethod, DescriptorTree dependencyTree,
+			DescriptionElementState[][] descriptionMatrix) {
 		float out = 0;
 		boolean isAlwaysDescribed = true;
 
@@ -343,13 +370,19 @@ public class InteractiveIdentificationService {
 		float commonPresent = 0; // nb of common points which are present
 		float other = 0;
 
-		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
 		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
 			return -1;
 
-		DescriptionElementState des1 = item1.getDescriptionElement(descriptor.getId());
-		DescriptionElementState des2 = item2.getDescriptionElement(descriptor.getId());
-
+		DescriptionElementState des1 = null;
+		DescriptionElementState des2 = null;
+		if (descriptionMatrix == null) {
+			des1 = item1.getDescriptionElement(descriptor.getId());
+			des2 = item2.getDescriptionElement(descriptor.getId());
+		} else {
+			des1 = descriptionMatrix[(int) item1.getId()][(int) descriptor.getId()];
+			des2 = descriptionMatrix[(int) item2.getId()][(int) descriptor.getId()];
+		}
 		List<State> statesList1 = des1.getStates();
 		List<State> statesList2 = des2.getStates();
 
@@ -411,18 +444,33 @@ public class InteractiveIdentificationService {
 
 	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree) {
+		return compareWithQuantitativeDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree, null);
+	}
+
+	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
+			Item item2, int scoreMethod, DescriptorTree dependencyTree,
+			DescriptionElementState[][] descriptionMatrix) {
 		float out = 0;
 		float commonPercentage = 0; // percentage of common values which are
 		// shared
 
-		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId());
+		DescriptorNode node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
 		if ((isInapplicable(node, item1) || isInapplicable(node, item2)))
 			return -1;
 
-		QuantitativeMeasure quantitativeMeasure1 = item1.getDescription()
-				.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
-		QuantitativeMeasure quantitativeMeasure2 = item2.getDescription()
-				.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
+		DescriptionElementState des1 = null;
+		DescriptionElementState des2 = null;
+
+		if (descriptionMatrix == null) {
+			des1 = item1.getDescription().getDescriptionElement(descriptor.getId());
+			des2 = item2.getDescription().getDescriptionElement(descriptor.getId());
+		} else {
+			des1 = descriptionMatrix[(int) item1.getId()][(int) descriptor.getId()];
+			des2 = descriptionMatrix[(int) item2.getId()][(int) descriptor.getId()];
+		}
+		QuantitativeMeasure quantitativeMeasure1 = des1.getQuantitativeMeasure();
+		QuantitativeMeasure quantitativeMeasure2 = des2.getQuantitativeMeasure();
+
 		if (quantitativeMeasure1 == null || quantitativeMeasure2 == null) {
 			return 0;
 		} else {
@@ -653,6 +701,26 @@ public class InteractiveIdentificationService {
 			return false;
 		}
 
+	}
+
+	/**
+	 * @param items
+	 * @param descriptors
+	 * @return
+	 */
+	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
+			List<Descriptor> descriptors) {
+		int nItems = items.size();
+		int nDescriptors = descriptors.size();
+		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
+		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
+			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
+				descriptionMatrix[itemIndex][descriptorIndex] = items.get(itemIndex).getDescriptionElement(
+						descriptors.get(descriptorIndex).getId());
+			}
+		}
+
+		return descriptionMatrix;
 	}
 
 }
