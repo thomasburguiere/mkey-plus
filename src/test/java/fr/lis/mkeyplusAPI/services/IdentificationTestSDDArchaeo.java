@@ -314,7 +314,8 @@ public class IdentificationTestSDDArchaeo {
 
 	@Test
 	public void testScore() throws Exception {
-		InteractiveIdentificationService.getDescriptorsScoreMap(descriptorsInSDD,
+		int test = 2;
+		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD,
 				itemsInSDD, dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true);
 		logger.info("done");
 	}
