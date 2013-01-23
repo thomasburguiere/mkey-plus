@@ -63,7 +63,8 @@ public class InteractiveIdentificationService {
 	 * @throws Exception
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
-			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores) {
+			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+			DescriptionElementState[][] descriptionMatrix) {
 		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
