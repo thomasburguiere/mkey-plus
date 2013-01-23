@@ -33,6 +33,7 @@ public class IdentificationTestSDDCichorieae {
 	private static List<DescriptorTree> descriptorTreesInSDD;
 	private static String sddUrlString = "http://localhost:8080/miscFiles/Cichorieae-fullSDD.xml";
 	private static DescriptionElementState[][] descriptionMatrixInSDD;
+	private static DescriptorNode[] descriptorNodeMapInSDD;
 
 	/**
 	 * initial method which parses the original SDD file
@@ -138,10 +139,14 @@ public class IdentificationTestSDDCichorieae {
 		int nItems = itemsInSDD.size();
 		int nDescriptors = descriptorsInSDD.size();
 		descriptionMatrixInSDD = new DescriptionElementState[nItems][nDescriptors];
+		descriptorNodeMapInSDD = new DescriptorNode[nDescriptors];
 		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
 			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
 				descriptionMatrixInSDD[itemIndex][descriptorIndex] = itemsInSDD.get(itemIndex)
 						.getDescriptionElement(descriptorsInSDD.get(descriptorIndex).getId());
+				int currentDescriptorIndex = (int) descriptorsInSDD.get(descriptorIndex).getId();
+				descriptorNodeMapInSDD[currentDescriptorIndex] = dependencyTreeInSDD
+						.getNodeContainingDescriptor(descriptorsInSDD.get(descriptorIndex).getId());
 			}
 		}
 
@@ -331,7 +336,7 @@ public class IdentificationTestSDDCichorieae {
 		c.start();
 		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD, descriptorNodeMapInSDD);
 		logger.info("done");
 		c.stop();
 		System.out.println(c.delayString());

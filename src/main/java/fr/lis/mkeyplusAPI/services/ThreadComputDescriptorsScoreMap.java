@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import model.CategoricalDescriptor;
 import model.DescriptionElementState;
 import model.Descriptor;
+import model.DescriptorNode;
 import model.DescriptorTree;
 import model.Item;
 
@@ -18,15 +19,17 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 	private boolean considerChildScores = true;
 	private int scoreMethod = -1;
 	private DescriptionElementState[][] descriptionMatrix;
+	private DescriptorNode[] descriptorNodeMap;
 
 	public ThreadComputDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores, Descriptor descriptor, DescriptionElementState[][] descriptionMatrix) {
+			boolean considerChildScores, Descriptor descriptor, DescriptionElementState[][] descriptionMatrix,DescriptorNode[] descriptorNodeMap) {
 		this.descriptor = descriptor;
 		this.items = items;
 		this.dependencyTree = dependencyTree;
 		this.considerChildScores = considerChildScores;
 		this.scoreMethod = scoreMethod;
 		this.descriptionMatrix = descriptionMatrix;
+		this.descriptorNodeMap = descriptorNodeMap;
 	}
 
 	public Object[] call() {
@@ -38,7 +41,7 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
 		else {
 			discriminantPower = InteractiveIdentificationService.getDiscriminantPower(descriptor, items, 0,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap);
 
 		}
 
