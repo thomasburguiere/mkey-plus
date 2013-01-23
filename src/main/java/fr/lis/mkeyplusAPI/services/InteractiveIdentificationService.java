@@ -80,7 +80,7 @@ public class InteractiveIdentificationService {
 			try {
 				for (Future<Object[]> fute : futures) {
 					Object[] result = fute.get();
-					descriptorsScoresMap.put((Descriptor)result[0],(Float)result[1]);
+					descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
 				}
 				// InteractiveIdentificationService.exec.shutdown();
 
@@ -633,8 +633,8 @@ public class InteractiveIdentificationService {
 			DescriptionElementState description = descriptionMatrix[(int) item.getId()][(int) descriptorNode
 					.getParentNode().getDescriptor().getId()];
 			int numberOfDescriptionStates = description.getStates().size();
-			
-			if ( numberOfDescriptionStates > inapplicableStates.size() ){
+
+			if (numberOfDescriptionStates > inapplicableStates.size()) {
 				return false;
 			}
 			for (int i = 0; i < inapplicableStates.size(); i++) {
@@ -649,35 +649,10 @@ public class InteractiveIdentificationService {
 				}
 				// }
 			}
-			if ( numberOfDescriptionStates == 0 ){
+			if (numberOfDescriptionStates == 0) {
 				return true;
 			}
 			return isInapplicable(descriptorNode.getParentNode(), item, descriptionMatrix);
-		}
-		return false;
-	}
-
-	private static boolean isInapplicable(Descriptor descriptor, Item item) {
-		DescriptionElementState description = item.getDescriptionElement(descriptor.getId());
-		if (descriptor.isCategoricalType()) {
-			if (((ExtCategoricalDescriptor) descriptor).getParentDescriptor() != null) {
-
-				for (State state : ((ExtCategoricalDescriptor) descriptor).getInapplicableStates()) {
-					if (description.containsState(state.getId())) {
-						return true;
-					}
-				}
-				return isInapplicable(((ExtCategoricalDescriptor) descriptor).getParentDescriptor(), item);
-			}
-		} else if (descriptor.isQuantitativeType()) {
-			if (((ExtQuantitativeDescriptor) descriptor).getParentDescriptor() != null) {
-				for (State state : ((ExtQuantitativeDescriptor) descriptor).getInapplicableStates()) {
-					if (description.containsState(state.getId())) {
-						return true;
-					}
-				}
-				return isInapplicable(((ExtQuantitativeDescriptor) descriptor).getParentDescriptor(), item);
-			}
 		}
 		return false;
 	}
