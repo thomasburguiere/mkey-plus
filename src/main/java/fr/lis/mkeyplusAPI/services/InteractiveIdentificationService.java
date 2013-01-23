@@ -773,23 +773,4 @@ public class InteractiveIdentificationService {
 
 	}
 
-	/**
-	 * @param items
-	 * @param descriptors
-	 * @return
-	 */
-	private static DescriptionElementState[][] initializeDescriptionMatrix(List<Item> items,
-			List<Descriptor> descriptors) {
-		int nItems = items.size();
-		int nDescriptors = descriptors.size();
-		DescriptionElementState[][] descriptionMatrix = new DescriptionElementState[nItems][nDescriptors];
-		for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
-			for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
-				descriptionMatrix[itemIndex][descriptorIndex] = items.get(itemIndex).getDescriptionElement(
-						descriptors.get(descriptorIndex).getId());
-			}
-		}
-		return descriptionMatrix;
-	}
-
 }
