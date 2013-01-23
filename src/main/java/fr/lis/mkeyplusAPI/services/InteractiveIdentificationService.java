@@ -86,8 +86,7 @@ public class InteractiveIdentificationService {
 				e.printStackTrace();
 			} catch (ExecutionException ex) {
 				ex.printStackTrace();
-			}
-			finally{
+			} finally {
 				exec.shutdown();
 				exec = null;
 			}
