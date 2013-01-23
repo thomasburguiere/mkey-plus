@@ -590,7 +590,7 @@ public class InteractiveIdentificationService {
 			int numberOfDescriptionStates = description.getStates().size();
 			
 			if ( numberOfDescriptionStates > inapplicableStates.size() ){
-				return true;
+				return false;
 			}
 			for (int i = 0; i < inapplicableStates.size(); i++) {
 				State state = inapplicableStates.get(i);
