@@ -80,6 +80,7 @@ public class InteractiveIdentificationService {
 			try {
 				for (Future<Object[]> fute : futures) {
 					Object[] result = fute.get();
+					descriptorsScoresMap.put((Descriptor)result[0],(Float)result[1]);
 				}
 				// InteractiveIdentificationService.exec.shutdown();
 
@@ -586,6 +587,11 @@ public class InteractiveIdentificationService {
 			List<State> inapplicableStates = descriptorNode.getInapplicableStates();
 			DescriptionElementState description = descriptionMatrix[(int) item.getId()][(int) descriptorNode
 					.getParentNode().getDescriptor().getId()];
+			int numberOfDescriptionStates = description.getStates().size();
+			
+			if ( numberOfDescriptionStates > inapplicableStates.size() ){
+				return true;
+			}
 			for (int i = 0; i < inapplicableStates.size(); i++) {
 				State state = inapplicableStates.get(i);
 				// if (descriptionMatrix == null) {
@@ -594,9 +600,12 @@ public class InteractiveIdentificationService {
 				// return true;
 				// } else {
 				if (description.containsState(state.getId())) {
-					return true;
+					numberOfDescriptionStates--;
 				}
 				// }
+			}
+			if ( numberOfDescriptionStates == 0 ){
+				return true;
 			}
 			return isInapplicable(descriptorNode.getParentNode(), item, descriptionMatrix);
 		}
