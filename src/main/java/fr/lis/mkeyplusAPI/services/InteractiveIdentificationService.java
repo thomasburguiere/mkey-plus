@@ -401,10 +401,15 @@ public class InteractiveIdentificationService {
 			out = out / cpt;
 
 		// recursive DP calculation of child descriptors
-		if (considerChildScores
-				&& dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false) != null) {
-			for (DescriptorNode childNode : dependencyTree.getNodeContainingDescriptor(descriptor.getId(),
-					false).getChildNodes()) {
+
+		DescriptorNode node = null;
+		if (descriptorNodeMap != null)
+			node = descriptorNodeMap[(int) descriptor.getId()];
+		else
+			node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
+
+		if (considerChildScores && node != null) {
+			for (DescriptorNode childNode : node.getChildNodes()) {
 				Descriptor childDescriptor = childNode.getDescriptor(); // WILL NOT WORK WITH HIBERNATE (lazy
 																		// instanciation exception)
 				out = Math.max(
