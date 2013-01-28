@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import utils.Utils;
-import fr.lis.mkeyplusAPI.io.parser.SDDSaxParser;
+import IO.parser.SDDSaxParser;
 
 public class IdentificationTestSDDArchaeo {
 	public Logger logger = Logger.getRootLogger();
