@@ -21,8 +21,6 @@ import model.QuantitativeDescriptor;
 import model.QuantitativeMeasure;
 import model.State;
 import utils.Utils;
-import fr.lis.mkeyplusAPI.model.ExtCategoricalDescriptor;
-import fr.lis.mkeyplusAPI.model.ExtQuantitativeDescriptor;
 
 /**
  * This class contains all the methods necessary to perform an Interactive Identification it is closely based
