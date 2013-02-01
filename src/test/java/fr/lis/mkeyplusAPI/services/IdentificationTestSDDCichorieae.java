@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import model.CategoricalDescriptor;
 import model.Dataset;
-import model.Description;
 import model.DescriptionElementState;
 import model.Descriptor;
 import model.DescriptorNode;
