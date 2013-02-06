@@ -8,7 +8,7 @@ import java.util.Date;
  * Class that defines a chronometer <P>
  *
  * @author <a href="mailto:Olivier.Sigaud@lip6.fr"> Olivier Sigaud</a> and <a
- *         href="mailto:gerpy@free.fr"> Pierre Gérard</a> .
+ *         href="mailto:gerpy@free.fr"> Pierre Gerard</a> .
  * @created 24 janvier 2005 modified by thomas
  */
 
