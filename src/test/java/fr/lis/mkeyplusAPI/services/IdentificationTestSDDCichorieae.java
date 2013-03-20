@@ -279,7 +279,7 @@ public class IdentificationTestSDDCichorieae {
 	public void testScore8Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 8,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 		logger.info("done");
 	}
 
@@ -287,7 +287,7 @@ public class IdentificationTestSDDCichorieae {
 	public void testScore7Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 7,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 		logger.info("done");
 	}
 
@@ -295,14 +295,14 @@ public class IdentificationTestSDDCichorieae {
 	public void testScore6Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 6,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 	}
 
 	@Test
 	public void testScore5Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 5,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 		logger.info("done");
 	}
 
@@ -310,14 +310,14 @@ public class IdentificationTestSDDCichorieae {
 	public void testScore4Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 4,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 	}
 
 	@Test
 	public void testScore3Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 3,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 		logger.info("done");
 	}
 
@@ -325,7 +325,7 @@ public class IdentificationTestSDDCichorieae {
 	public void testScore2Threads() throws Exception {
 		InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true, 2,
-				descriptionMatrixInSDD);
+				descriptionMatrixInSDD,false);
 		logger.info("done");
 	}
 
@@ -335,7 +335,7 @@ public class IdentificationTestSDDCichorieae {
 		c.start();
 		InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
 				dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
-				descriptionMatrixInSDD, descriptorNodeMapInSDD);
+				descriptionMatrixInSDD, descriptorNodeMapInSDD,false);
 		logger.info("done");
 		c.stop();
 		System.out.println(c.delayString());

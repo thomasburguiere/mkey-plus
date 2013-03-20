@@ -20,9 +20,10 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 	private int scoreMethod = -1;
 	private DescriptionElementState[][] descriptionMatrix;
 	private DescriptorNode[] descriptorNodeMap;
+	private boolean withGlobalWeigth;
 
 	public ThreadComputDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores, Descriptor descriptor, DescriptionElementState[][] descriptionMatrix,DescriptorNode[] descriptorNodeMap) {
+			boolean considerChildScores, Descriptor descriptor, DescriptionElementState[][] descriptionMatrix,DescriptorNode[] descriptorNodeMap,boolean withGlobalWeight) {
 		this.descriptor = descriptor;
 		this.items = items;
 		this.dependencyTree = dependencyTree;
@@ -30,6 +31,7 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 		this.scoreMethod = scoreMethod;
 		this.descriptionMatrix = descriptionMatrix;
 		this.descriptorNodeMap = descriptorNodeMap;
+		this.withGlobalWeigth = withGlobalWeight;
 	}
 
 	public Object[] call() {
@@ -41,7 +43,7 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
 		else {
 			discriminantPower = InteractiveIdentificationService.getDiscriminantPower(descriptor, items, 0,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,withGlobalWeigth);
 
 		}
 
