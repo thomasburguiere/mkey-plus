@@ -549,6 +549,16 @@ public class InteractiveIdentificationService {
 				descriptionMatrix, null);
 	}
 
+	/**
+	 * @param descriptor
+	 * @param item1
+	 * @param item2
+	 * @param scoreMethod
+	 * @param dependencyTree
+	 * @param descriptionMatrix
+	 * @param descriptorNodeMap
+	 * @return float
+	 */
 	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
