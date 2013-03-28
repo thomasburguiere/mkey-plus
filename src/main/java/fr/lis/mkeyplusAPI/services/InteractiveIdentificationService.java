@@ -400,8 +400,13 @@ public class InteractiveIdentificationService {
 			// to normalize the number
 			out = out / cpt;
 
-		if ( withGlobalWeigth ){
-			out += descriptor.getGlobalWeight();
+		if ( withGlobalWeigth){
+			if ( out != 0){
+				out += descriptor.getGlobalWeight();
+			}
+			else{
+				out = -1;
+			}
  		}
 
 		// recursive DP calculation of child descriptors
