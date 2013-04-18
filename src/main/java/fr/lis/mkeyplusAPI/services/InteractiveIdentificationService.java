@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,17 +63,20 @@ public class InteractiveIdentificationService {
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
 			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
-			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,boolean withGlobalWeigth) {
+			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+			boolean withGlobalWeigth) {
 		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
+			@SuppressWarnings("unchecked")
 			Future<Object[]>[] futures = new Future[descriptors.size()];
 			int i = 0;
 			for (Descriptor descriptor : descriptors) {
 				futures[i] = exec.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree,
-						scoreMethod, considerChildScores, descriptor, descriptionMatrix, descriptorNodeMap,withGlobalWeigth));
+						scoreMethod, considerChildScores, descriptor, descriptionMatrix, descriptorNodeMap,
+						withGlobalWeigth));
 				i++;
 			}
 			try {
@@ -114,7 +118,8 @@ public class InteractiveIdentificationService {
 	 */
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
 			List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
-			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,boolean withGlobalWeigth) {
+			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+			boolean withGlobalWeigth) {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
@@ -127,7 +132,8 @@ public class InteractiveIdentificationService {
 					discriminantPower = 0;
 				else {
 					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
-							considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,withGlobalWeigth);
+							considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,
+							withGlobalWeigth);
 				}
 
 				tempMap.put(descriptor, discriminantPower);
@@ -166,7 +172,7 @@ public class InteractiveIdentificationService {
 
 		public DescriptorScoreMapRunnable(List<Descriptor> descriptorList, List<Item> items, int scoreMethod,
 				boolean considerChildScores, DescriptorTree dependencyTree,
-				DescriptionElementState[][] descriptionMatrix,boolean withGlobalWeight) {
+				DescriptionElementState[][] descriptionMatrix, boolean withGlobalWeight) {
 			this.descriptorList = descriptorList;
 			this.items = items;
 			this.scoreMethod = scoreMethod;
@@ -186,7 +192,7 @@ public class InteractiveIdentificationService {
 					discriminantPower = 0;
 				else {
 					discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
-							considerChildScores, dependencyTree, descriptionMatrix, null,withGlobalWeight);
+							considerChildScores, dependencyTree, descriptionMatrix, null, withGlobalWeight);
 				}
 				tempMap.put(descriptor, discriminantPower);
 			}
@@ -234,19 +240,19 @@ public class InteractiveIdentificationService {
 			HashMap<Descriptor, Float> tempMap4 = new HashMap<Descriptor, Float>();
 
 			DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix,false);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
 			Thread t1 = new Thread(r1);
 
 			DescriptorScoreMapRunnable r2 = new DescriptorScoreMapRunnable(descriptorList2, items,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix,false);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
 			Thread t2 = new Thread(r2);
 
 			DescriptorScoreMapRunnable r3 = new DescriptorScoreMapRunnable(descriptorList3, items,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix,false);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
 			Thread t3 = new Thread(r3);
 
 			DescriptorScoreMapRunnable r4 = new DescriptorScoreMapRunnable(descriptorList4, items,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix,false);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
 			Thread t4 = new Thread(r4);
 			t1.start();
 			t2.start();
@@ -286,8 +292,8 @@ public class InteractiveIdentificationService {
 
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsingNThreads(
 			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,boolean withGlobalWeigth)
-			throws InterruptedException {
+			boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
+			boolean withGlobalWeigth) throws InterruptedException {
 		LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<Descriptor, Float>();
 
 		if (items.size() > 1) {
@@ -309,7 +315,7 @@ public class InteractiveIdentificationService {
 
 			for (int j = 0; j < nThreads; j++) {
 				runnables[j] = new DescriptorScoreMapRunnable(subLists.get(j), items, scoreMethod,
-						considerChildScores, dependencyTree, descriptionMatrix,withGlobalWeigth);
+						considerChildScores, dependencyTree, descriptionMatrix, withGlobalWeigth);
 				threads[j] = new Thread(runnables[j]);
 			}
 
@@ -345,7 +351,7 @@ public class InteractiveIdentificationService {
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree) {
 		return getDiscriminantPower(descriptor, items, value, scoreMethod, considerChildScores,
-				dependencyTree, null, null,false);
+				dependencyTree, null, null, false);
 	}
 
 	@Deprecated
@@ -353,12 +359,13 @@ public class InteractiveIdentificationService {
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix) {
 		return getDiscriminantPower(descriptor, items, value, scoreMethod, considerChildScores,
-				dependencyTree, descriptionMatrix, null,false);
+				dependencyTree, descriptionMatrix, null, false);
 	}
 
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
-			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap, boolean withGlobalWeigth) {
+			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+			boolean withGlobalWeigth) {
 		float out = 0;
 		int cpt = 0;
 
@@ -400,14 +407,13 @@ public class InteractiveIdentificationService {
 			// to normalize the number
 			out = out / cpt;
 
-		if ( withGlobalWeigth){
-			if ( out != 0){
+		if (withGlobalWeigth) {
+			if (out != 0) {
 				out += descriptor.getGlobalWeight();
-			}
-			else{
+			} else {
 				out = -1;
 			}
- 		}
+		}
 
 		// recursive DP calculation of child descriptors
 
@@ -424,7 +430,7 @@ public class InteractiveIdentificationService {
 				out = Math.max(
 						value,
 						getDiscriminantPower(childDescriptor, items, out, scoreMethod, true, dependencyTree,
-								descriptionMatrix, descriptorNodeMap,withGlobalWeigth));
+								descriptionMatrix, descriptorNodeMap, withGlobalWeigth));
 			}
 		}
 		return Math.max(out, value);
@@ -824,6 +830,108 @@ public class InteractiveIdentificationService {
 			return false;
 		}
 
+	}
+
+	/**
+	 * Naive integration of getSimilarityMap
+	 * 
+	 * @param description
+	 * @param discardedItem
+	 * @return LinkedHashMap, association between an item and the similarity score
+	 */
+	public static LinkedHashMap<Item, Float> getSimilarityMap(Description description,
+			List<Item> discardedItem) {
+		LinkedHashMap<Item, Float> descriptorsScoresMap = new LinkedHashMap<Item, Float>();
+		// for each discardedItem
+		for (Item item : discardedItem) {
+			descriptorsScoresMap.put(item, computeSimilarity(description, item));
+		}
+		return descriptorsScoresMap;
+	}
+
+	/**
+	 * Multi-thread integration of getSimilarityMap
+	 * 
+	 * @param description
+	 * @param discardedItem
+	 * @return LinkedHashMap, association between an item and the similarity score
+	 */
+	public static LinkedHashMap<Item, Float> getSimilarityMapFuture(Description description,
+			List<Item> discardedItem) {
+		LinkedHashMap<Item, Float> itemSimilarityMap = new LinkedHashMap<Item, Float>();
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+		@SuppressWarnings("unchecked")
+		Future<Object[]>[] futures = new Future[discardedItem.size()];
+		int i = 0;
+
+		// for each discardedItem
+		for (Item item : discardedItem) {
+			futures[i] = exec.submit(new ThreadComputeSimilarity(description, item));
+			i++;
+		}
+		try {
+			for (Future<Object[]> fute : futures) {
+				Object[] result = fute.get();
+				itemSimilarityMap.put((Item) result[0], (Float) result[1]);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException ex) {
+			ex.printStackTrace();
+		} finally {
+			exec.shutdown();
+			exec = null;
+		}
+
+		return itemSimilarityMap;
+	}
+
+	/**
+	 * Compute a float between 0 and 1 that represents the similarity between this discardedItem and this
+	 * description. 1 is for complete matching, and 0 for no match The way this function compute the
+	 * similarity take for bases that the description is the reference, not the hypothetical last remaining
+	 * item
+	 * 
+	 * @param description
+	 * @param discardedItem
+	 * @return float, between 0 (min) and 1 (max) the similarity between this description and this
+	 *         discardedItem
+	 */
+	public static float computeSimilarity(Description description, Item discardedItem) {
+		Map<Descriptor, DescriptionElementState> descriptionElements = description.getDescriptionElements();
+		Map<Descriptor, DescriptionElementState> ItemdescriptionElements = discardedItem.getDescription()
+				.getDescriptionElements();
+
+		float commonValues = 0;
+		float result = 0;
+
+		// For each descriptor
+		for (Descriptor descriptor : descriptionElements.keySet()) {
+			DescriptionElementState descriptionElement = descriptionElements.get(descriptor);
+			DescriptionElementState ItemdescriptionElement = ItemdescriptionElements.get(descriptor);
+			// CategoricalType
+			if (descriptor.isCategoricalType()) {
+				commonValues = 0;
+				for (State selectedStateReferenceDescription : descriptionElement.getStates()) {
+					for (State stateInTheDiscardedItem : ItemdescriptionElement.getStates()) {
+						if (selectedStateReferenceDescription.hasSameNameAsState(stateInTheDiscardedItem)) {
+							commonValues++;
+						}
+					}
+				}
+
+				result += commonValues
+						/ ((float) Math.max(descriptionElement.getStates().size(), ItemdescriptionElement
+								.getStates().size()));
+			}
+			// TODO add quantitative and calculated Type
+
+		}
+
+		result = result / ((float) descriptionElements.keySet().size());
+
+		return result;
 	}
 
 }
