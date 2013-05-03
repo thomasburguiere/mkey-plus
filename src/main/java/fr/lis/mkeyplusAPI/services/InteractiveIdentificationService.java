@@ -637,6 +637,18 @@ public class InteractiveIdentificationService {
 	}
 
 	/**
+	 * 
+	 * @param descriptorNode
+	 * @param item
+	 * @param descriptionMatrix
+	 * @return
+	 */
+	public static boolean getIsInaplicable(DescriptorNode descriptorNode, Item item,
+			DescriptionElementState[][] descriptionMatrix){
+		return isInapplicable(descriptorNode,item,descriptionMatrix);
+	}
+	
+	/**
 	 * @param min1
 	 * @param max1
 	 * @param min2
