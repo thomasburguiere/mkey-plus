@@ -347,7 +347,6 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
-
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
@@ -422,7 +421,6 @@ public class InteractiveIdentificationService {
 		return Math.max(out, value);
 
 	}
-
 
 	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
@@ -512,7 +510,6 @@ public class InteractiveIdentificationService {
 		}
 		return out;
 	}
-
 
 	/**
 	 * @param descriptor
@@ -604,7 +601,6 @@ public class InteractiveIdentificationService {
 
 	}
 
-
 	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item,
 			DescriptionElementState[][] descriptionMatrix) {
 		if (descriptorNode != null && descriptorNode.getParentNode() != null) {
@@ -637,17 +633,22 @@ public class InteractiveIdentificationService {
 	}
 
 	/**
+	 * Return True if this descriptor Node has is parent already in the descriptors list, or if this
+	 * descriptor node dont have parents.
 	 * 
 	 * @param descriptorNode
-	 * @param item
-	 * @param descriptionMatrix
+	 * @param description
+	 * @param descriptors
 	 * @return
 	 */
-	public static boolean getIsInaplicable(DescriptorNode descriptorNode, Item item,
-			DescriptionElementState[][] descriptionMatrix){
-		return isInapplicable(descriptorNode,item,descriptionMatrix);
+	public static boolean getIsInaplicable(DescriptorNode descriptorNode, List<Descriptor> descriptors) {
+		DescriptorNode descriptorNodeParent = descriptorNode.getParentNode();
+		if (descriptorNodeParent == null) {
+			return true;
+		}
+		return descriptors.contains(descriptorNodeParent.getDescriptor());
 	}
-	
+
 	/**
 	 * @param min1
 	 * @param max1
