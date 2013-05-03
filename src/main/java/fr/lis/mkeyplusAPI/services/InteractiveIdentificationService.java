@@ -644,9 +644,9 @@ public class InteractiveIdentificationService {
 	public static boolean getIsInaplicable(DescriptorNode descriptorNode, List<Descriptor> descriptors) {
 		DescriptorNode descriptorNodeParent = descriptorNode.getParentNode();
 		if (descriptorNodeParent == null) {
-			return true;
+			return false;
 		}
-		return descriptors.contains(descriptorNodeParent.getDescriptor());
+		return !descriptors.contains(descriptorNodeParent.getDescriptor());
 	}
 
 	/**
