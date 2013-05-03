@@ -347,20 +347,6 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
-	@Deprecated
-	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
-			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree) {
-		return getDiscriminantPower(descriptor, items, value, scoreMethod, considerChildScores,
-				dependencyTree, null, null, false);
-	}
-
-	@Deprecated
-	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
-			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
-			DescriptionElementState[][] descriptionMatrix) {
-		return getDiscriminantPower(descriptor, items, value, scoreMethod, considerChildScores,
-				dependencyTree, descriptionMatrix, null, false);
-	}
 
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
@@ -437,22 +423,6 @@ public class InteractiveIdentificationService {
 
 	}
 
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
-			Item item2, int scoreMethod, DescriptorTree dependencyTree) {
-		return compareWithCategoricalDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree, null,
-				null);
-	}
-
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
-			Item item2, int scoreMethod, DescriptorTree dependencyTree,
-			DescriptionElementState[][] descriptionMatrix) {
-		return compareWithCategoricalDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree,
-				descriptionMatrix, null);
-	}
 
 	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
@@ -543,22 +513,6 @@ public class InteractiveIdentificationService {
 		return out;
 	}
 
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
-			Item item2, int scoreMethod, DescriptorTree dependencyTree) {
-		return compareWithQuantitativeDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree, null,
-				null);
-	}
-
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
-			Item item2, int scoreMethod, DescriptorTree dependencyTree,
-			DescriptionElementState[][] descriptionMatrix) {
-		return compareWithQuantitativeDescriptor(descriptor, item1, item2, scoreMethod, dependencyTree,
-				descriptionMatrix, null);
-	}
 
 	/**
 	 * @param descriptor
@@ -650,11 +604,6 @@ public class InteractiveIdentificationService {
 
 	}
 
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item) {
-		return isInapplicable(descriptorNode, item, null);
-	}
 
 	private static boolean isInapplicable(DescriptorNode descriptorNode, Item item,
 			DescriptionElementState[][] descriptionMatrix) {
