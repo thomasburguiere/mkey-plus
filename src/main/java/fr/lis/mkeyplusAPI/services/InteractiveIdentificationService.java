@@ -818,9 +818,9 @@ public class InteractiveIdentificationService {
 	 * @param discardedItem
 	 * @return LinkedHashMap, association between an item and the similarity score
 	 */
-	public static LinkedHashMap<Item, Float> getSimilarityMapFuture(Description description,
+	public static LinkedHashMap<Long, Float> getSimilarityMapFuture(Description description,
 			List<Item> discardedItem) {
-		LinkedHashMap<Item, Float> itemSimilarityMap = new LinkedHashMap<Item, Float>();
+		LinkedHashMap<Long, Float> itemSimilarityMap = new LinkedHashMap<Long, Float>();
 		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 		@SuppressWarnings("unchecked")
@@ -835,7 +835,7 @@ public class InteractiveIdentificationService {
 		try {
 			for (Future<Object[]> fute : futures) {
 				Object[] result = fute.get();
-				itemSimilarityMap.put((Item) result[0], (Float) result[1]);
+				itemSimilarityMap.put((Long) result[0], (Float) result[1]);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
