@@ -609,25 +609,21 @@ public class InteractiveIdentificationService {
 					.getParentNode().getDescriptor().getId()];
 			int numberOfDescriptionStates = description.getStates().size();
 
-			if (numberOfDescriptionStates > inapplicableStates.size()) {
-				return false;
-			}
+
 			for (int i = 0; i < inapplicableStates.size(); i++) {
 				State state = inapplicableStates.get(i);
-				// if (descriptionMatrix == null) {
-				// if (item.getDescriptionElement(descriptorNode.getParentNode().getDescriptor().getId())
-				// .containsState(state.getId()))
-				// return true;
-				// } else {
 				if (description.containsState(state.getId())) {
 					numberOfDescriptionStates--;
 				}
-				// }
+
 			}
+			
 			if (numberOfDescriptionStates == 0) {
 				return true;
 			}
+			
 			return isInapplicable(descriptorNode.getParentNode(), item, descriptionMatrix);
+
 		}
 		return false;
 	}
