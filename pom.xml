@@ -6,73 +6,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<hibernate.version>4.0.1.Final</hibernate.version>
-		<slf4j.version>1.6.4</slf4j.version>
+		<slf4j.version>1.7.5</slf4j.version>
 	</properties>
 
 	<dependencies>
-
-
-
-		<!-- Hibernate dependencies -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.5.4-Final</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.3</version>
-		</dependency>
-
-		<!-- MySQL database driver -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Xerces -->
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>2.9.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Jdom -->
-		<!-- <dependency> -->
-		<!-- <groupId>jdom</groupId> -->
-		<!-- <artifactId>jdom</artifactId> -->
-		<!-- <version>1.1</version> -->
-		<!-- </dependency> -->
-
-		<!-- Quartz -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.1.2</version>
-		</dependency>
-
-
 
 		<!-- Logging -->
 		<dependency>
@@ -109,12 +46,6 @@
 			<version>4.8.2</version>
 		</dependency>
 
-		<!-- Sigar -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.fusesource</groupId> -->
-		<!-- <artifactId>sigar</artifactId> -->
-		<!-- <version>1.6.4</version> -->
-		<!-- </dependency> -->
 
 	</dependencies>
 
