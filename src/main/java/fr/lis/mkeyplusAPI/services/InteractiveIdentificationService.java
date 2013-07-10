@@ -609,7 +609,6 @@ public class InteractiveIdentificationService {
 					.getParentNode().getDescriptor().getId()];
 			int numberOfDescriptionStates = description.getStates().size();
 
-
 			for (int i = 0; i < inapplicableStates.size(); i++) {
 				State state = inapplicableStates.get(i);
 				if (description.containsState(state.getId())) {
@@ -617,11 +616,11 @@ public class InteractiveIdentificationService {
 				}
 
 			}
-			
+
 			if (numberOfDescriptionStates == 0) {
 				return true;
 			}
-			
+
 			return isInapplicable(descriptorNode.getParentNode(), item, descriptionMatrix);
 
 		}
@@ -701,26 +700,28 @@ public class InteractiveIdentificationService {
 		List<Item> itemsToRemove = new ArrayList<Item>();
 		for (Item item : remainingItems) {
 			for (Descriptor descriptor : description.getDescriptionElements().keySet()) {
-				if (descriptor.isCategoricalType()) {
-					List<State> checkedStatesInSubmittedDescription = description.getDescriptionElement(
-							descriptor.getId()).getStates();
-					List<State> checkedStatesInKnowledgeBaseDescription = item.getDescription()
-							.getDescriptionElement(descriptor.getId()).getStates();
+				if (!item.getDescription().getDescriptionElement(descriptor.getId()).isUnknown()) {
 
-					if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
-							checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR))
-						itemsToRemove.add(item);
+					if (descriptor.isCategoricalType()) {
+						List<State> checkedStatesInSubmittedDescription = description.getDescriptionElement(
+								descriptor.getId()).getStates();
+						List<State> checkedStatesInKnowledgeBaseDescription = item.getDescription()
+								.getDescriptionElement(descriptor.getId()).getStates();
 
-				} else if (descriptor.isQuantitativeType()) {
-					QuantitativeMeasure submittedMeasure = description.getDescriptionElement(
-							descriptor.getId()).getQuantitativeMeasure();
-					QuantitativeMeasure knowledgeBaseMeasure = item.getDescription()
-							.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
+						if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
+								checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR))
+							itemsToRemove.add(item);
 
-					if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
-							COMPARISON_OPERATOR_CONTAINS))
-						itemsToRemove.add(item);
+					} else if (descriptor.isQuantitativeType()) {
+						QuantitativeMeasure submittedMeasure = description.getDescriptionElement(
+								descriptor.getId()).getQuantitativeMeasure();
+						QuantitativeMeasure knowledgeBaseMeasure = item.getDescription()
+								.getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
 
+						if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
+								COMPARISON_OPERATOR_CONTAINS))
+							itemsToRemove.add(item);
+					}
 				}
 			}
 		}
