@@ -777,7 +777,12 @@ public class InteractiveIdentificationService {
 			QuantitativeMeasure referenceMeasure, int comparisonOperator) {
 		switch (comparisonOperator) {
 		case COMPARISON_OPERATOR_CONTAINS:
-			return referenceMeasure.contains(submittedMeasure);
+
+			if ((referenceMeasure.isNotFilled() || submittedMeasure.isNotFilled())
+					&& referenceMeasure.getMean() != null && submittedMeasure.getMean() != null)
+				return referenceMeasure.getMean().equals(submittedMeasure.getMean());
+			else
+				return referenceMeasure.contains(submittedMeasure);
 
 		case COMPARISON_OPERATOR_GREATER_THAN:
 			return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, true);
