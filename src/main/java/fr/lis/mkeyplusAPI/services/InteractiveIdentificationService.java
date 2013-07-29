@@ -854,8 +854,7 @@ public class InteractiveIdentificationService {
 	/**
 	 * Compute a float between 0 and 1 that represents the similarity between this discardedItem and this
 	 * description. 1 is for complete matching, and 0 for no match The way this function compute the
-	 * similarity take for bases that the description is the reference, not the hypothetical last remaining
-	 * item
+	 * similarity take for bases that the description is the reference.
 	 * 
 	 * @param description
 	 * @param discardedItem
@@ -870,26 +869,42 @@ public class InteractiveIdentificationService {
 		float commonValues = 0;
 		float result = 0;
 
-		// For each descriptor
+		// For each descriptor in this reference description
 		for (Descriptor descriptor : descriptionElements.keySet()) {
+			//Get the discardedItem and the reference description DescriptionElementState for this descriptor 
 			DescriptionElementState descriptionElement = descriptionElements.get(descriptor);
 			DescriptionElementState ItemdescriptionElement = ItemdescriptionElements.get(descriptor);
 			// CategoricalType
 			if (descriptor.isCategoricalType()) {
 				commonValues = 0;
+				//For every State in the reference description
 				for (State selectedStateReferenceDescription : descriptionElement.getStates()) {
+					//For every State in  the discardedItem
 					for (State stateInTheDiscardedItem : ItemdescriptionElement.getStates()) {
+						//If the two States have the same name, assume there are equals commomValues + 1
 						if (selectedStateReferenceDescription.hasSameNameAsState(stateInTheDiscardedItem)) {
 							commonValues++;
 						}
 					}
 				}
-
+				// if commonValues == max ( description.nS , discardedItem.nS ) => return 1
+				// else if commonValues = 0 => return 0,
+				// else return ]0,1[
+				//Result = commonValues / maximum(description.numberOfState or discardedItem.numberOfState)
 				result += commonValues
 						/ ((float) Math.max(descriptionElement.getStates().size(), ItemdescriptionElement
 								.getStates().size()));
 			}
-			// TODO add quantitative and calculated Type
+			// QuantitativeType
+			else if (descriptor.isQuantitativeType()) {
+				QuantitativeMeasure descriptionQm = descriptionElement.getQuantitativeMeasure();
+				QuantitativeMeasure discardedItemQm = ItemdescriptionElement.getQuantitativeMeasure();
+				
+				//If the ref description quantitaive measure contains the discardedItem quantative measure, return 1; ( no diff )
+				result += descriptionQm.containsPercent(discardedItemQm);
+				
+			}
+			// TODO add calculated Type
 
 		}
 
