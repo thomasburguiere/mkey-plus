@@ -49,7 +49,8 @@ public class InteractiveIdentificationService {
 
 	/**
 	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
-	 * power. This map is sorted by the discriminant power of the descriptors, in descending order
+	 * power. This map is sorted by the discriminant power of the descriptors, in descending order.
+	 * Multi-Thread algorithm
 	 * 
 	 * @param descriptors
 	 * @param items
@@ -104,7 +105,8 @@ public class InteractiveIdentificationService {
 
 	/**
 	 * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
-	 * power. This map is sorted by the discriminant power of the descriptors, in descending order
+	 * power. This map is sorted by the discriminant power of the descriptors, in descending order Mono-Thread
+	 * algorithm
 	 * 
 	 * @param descriptors
 	 * @param items
@@ -160,6 +162,7 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
+	@Deprecated
 	private static class DescriptorScoreMapRunnable implements Runnable {
 		private List<Descriptor> descriptorList;
 		private List<Item> items;
@@ -209,6 +212,7 @@ public class InteractiveIdentificationService {
 	 * power. This map is sorted by the discriminant power of the descriptors, in descending order. The map is
 	 * generated using 4 separate threads, each working on sublist of descriptors
 	 * 
+	 * @deprecated
 	 * @param descriptors
 	 * @param items
 	 * @param dependencyTree
@@ -290,6 +294,7 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
+	@Deprecated
 	public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsingNThreads(
 			List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
 			boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
@@ -347,6 +352,25 @@ public class InteractiveIdentificationService {
 		return descriptorsScoresMap;
 	}
 
+	/**
+	 * Basic function used to compute discriminant Power. This function is called recursively on the child
+	 * descriptor.
+	 * 
+	 * @param descriptor
+	 *            {@link Descriptor}, the {@link Descriptor} to evaluate.
+	 * @param items
+	 *            {@link List}, the ArrayList of {@link Item} used to evaluate this descriptor.
+	 * @param value
+	 *            {@link float}, the current score in the recursive call
+	 * @param scoreMethod
+	 *            {@link int}, the score methode to be use
+	 * @param considerChildScores
+	 * @param dependencyTree
+	 * @param descriptionMatrix
+	 * @param descriptorNodeMap
+	 * @param withGlobalWeigth
+	 * @return {@link float} the discriminant power of this descriptor
+	 */
 	public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
 			int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
@@ -422,11 +446,24 @@ public class InteractiveIdentificationService {
 
 	}
 
+	/**
+	 * Compare two item based on a categorical descriptor, return a float between 0 (no match) and 1 (same
+	 * value)
+	 * 
+	 * @param descriptor
+	 * @param item1
+	 * @param item2
+	 * @param scoreMethod
+	 * @param dependencyTree
+	 * @param descriptionMatrix
+	 * @param descriptorNodeMap
+	 * @return
+	 */
 	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
 		float out = 0;
-		boolean isAlwaysDescribed = true;
+		// boolean isAlwaysDescribed = true;
 
 		// int all = v.getNbModes();
 		float commonAbsent = 0; // nb of common points which are absent
@@ -457,10 +494,10 @@ public class InteractiveIdentificationService {
 
 		// if at least one description is empty for the current
 		// character
-		if ((statesList1 != null && statesList1.size() == 0)
-				|| (statesList2 != null && statesList2.size() == 0)) {
-			isAlwaysDescribed = false;
-		}
+		// if ((statesList1 != null && statesList1.size() == 0)
+		// || (statesList2 != null && statesList2.size() == 0)) {
+		// isAlwaysDescribed = false;
+		// }
 
 		if (des1.isUnknown())
 			statesList1 = everyStates;
@@ -512,6 +549,9 @@ public class InteractiveIdentificationService {
 	}
 
 	/**
+	 * Compare two item based on a quantitative descriptor, return a float between 0 (no match) and 1 (same
+	 * value)
+	 * 
 	 * @param descriptor
 	 * @param item1
 	 * @param item2
@@ -871,17 +911,17 @@ public class InteractiveIdentificationService {
 
 		// For each descriptor in this reference description
 		for (Descriptor descriptor : descriptionElements.keySet()) {
-			//Get the discardedItem and the reference description DescriptionElementState for this descriptor 
+			// Get the discardedItem and the reference description DescriptionElementState for this descriptor
 			DescriptionElementState descriptionElement = descriptionElements.get(descriptor);
 			DescriptionElementState ItemdescriptionElement = ItemdescriptionElements.get(descriptor);
 			// CategoricalType
 			if (descriptor.isCategoricalType()) {
 				commonValues = 0;
-				//For every State in the reference description
+				// For every State in the reference description
 				for (State selectedStateReferenceDescription : descriptionElement.getStates()) {
-					//For every State in  the discardedItem
+					// For every State in the discardedItem
 					for (State stateInTheDiscardedItem : ItemdescriptionElement.getStates()) {
-						//If the two States have the same name, assume there are equals commomValues + 1
+						// If the two States have the same name, assume there are equals commomValues + 1
 						if (selectedStateReferenceDescription.hasSameNameAsState(stateInTheDiscardedItem)) {
 							commonValues++;
 						}
@@ -890,7 +930,7 @@ public class InteractiveIdentificationService {
 				// if commonValues == max ( description.nS , discardedItem.nS ) => return 1
 				// else if commonValues = 0 => return 0,
 				// else return ]0,1[
-				//Result = commonValues / maximum(description.numberOfState or discardedItem.numberOfState)
+				// Result = commonValues / maximum(description.numberOfState or discardedItem.numberOfState)
 				result += commonValues
 						/ ((float) Math.max(descriptionElement.getStates().size(), ItemdescriptionElement
 								.getStates().size()));
@@ -899,12 +939,14 @@ public class InteractiveIdentificationService {
 			else if (descriptor.isQuantitativeType()) {
 				QuantitativeMeasure descriptionQm = descriptionElement.getQuantitativeMeasure();
 				QuantitativeMeasure discardedItemQm = ItemdescriptionElement.getQuantitativeMeasure();
-				
-				//If the ref description quantitaive measure contains the discardedItem quantative measure, return 1; ( no diff )
+
+				// If the ref description quantitaive measure contains the discardedItem quantative measure,
+				// return 1; ( no diff )
 				result += descriptionQm.containsPercent(discardedItemQm);
-				
+
+			} else if (descriptor.isCalculatedType()) {
+				// TODO add calculated Type
 			}
-			// TODO add calculated Type
 
 		}
 
