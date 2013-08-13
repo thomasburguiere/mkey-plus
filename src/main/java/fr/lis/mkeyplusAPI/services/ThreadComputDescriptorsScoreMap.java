@@ -10,6 +10,12 @@ import model.DescriptorNode;
 import model.DescriptorTree;
 import model.Item;
 
+/**
+ * Basic Thread, fire a discriminant power calculation, return an array[{@link Descriptor},(float)DP]
+ * 
+ * @author bergamaschi
+ * 
+ */
 public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
 	private Descriptor descriptor = null;
@@ -23,7 +29,9 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 	private boolean withGlobalWeigth;
 
 	public ThreadComputDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-			boolean considerChildScores, Descriptor descriptor, DescriptionElementState[][] descriptionMatrix,DescriptorNode[] descriptorNodeMap,boolean withGlobalWeight) {
+			boolean considerChildScores, Descriptor descriptor,
+			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+			boolean withGlobalWeight) {
 		this.descriptor = descriptor;
 		this.items = items;
 		this.dependencyTree = dependencyTree;
@@ -43,7 +51,8 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
 		else {
 			discriminantPower = InteractiveIdentificationService.getDiscriminantPower(descriptor, items, 0,
-					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,withGlobalWeigth);
+					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,
+					withGlobalWeigth);
 
 		}
 

@@ -5,6 +5,12 @@ import java.util.concurrent.Callable;
 import model.Description;
 import model.Item;
 
+/**
+ * Basic Thread fire a similarity calculation, return an array [(long)item.id,(float)similarity]
+ * 
+ * @author bergamaschi
+ * 
+ */
 public class ThreadComputeSimilarity implements Callable<Object[]> {
 
 	private Description description = null;
