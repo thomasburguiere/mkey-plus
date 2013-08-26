@@ -5,22 +5,23 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import model.CategoricalDescriptor;
-import model.Dataset;
-import model.DescriptionElementState;
-import model.Descriptor;
-import model.DescriptorNode;
-import model.DescriptorTree;
-import model.Item;
-import model.QuantitativeMeasure;
-import model.State;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import utils.Utils;
-import IO.parser.SDDSaxParser;
+import fr.lis.xper3API.IO.parser.SDDSaxParser;
+import fr.lis.xper3API.model.CategoricalDescriptor;
+import fr.lis.xper3API.model.Dataset;
+import fr.lis.xper3API.model.DescriptionElementState;
+import fr.lis.xper3API.model.Descriptor;
+import fr.lis.xper3API.model.DescriptorNode;
+import fr.lis.xper3API.model.DescriptorTree;
+import fr.lis.xper3API.model.Item;
+import fr.lis.xper3API.model.QuantitativeMeasure;
+import fr.lis.xper3API.model.State;
+import fr.lis.xper3API.utils.Utils;
+
 
 public class IdentificationTestSDDArchaeo {
 	public Logger logger = Logger.getRootLogger();
@@ -56,7 +57,7 @@ public class IdentificationTestSDDArchaeo {
 		urlConnection.getInputStream();
 
 		// parsing the sdd to retrieve thevi dataset
-		datasetInSDD = new IO.parser.SDDSaxParser(sddFileUrl).getDataset();
+		datasetInSDD = new fr.lis.xper3API.IO.parser.SDDSaxParser(sddFileUrl).getDataset();
 
 		itemsInSDD = datasetInSDD.getItems();
 		descriptorsInSDD = datasetInSDD.getDescriptors();

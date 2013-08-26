@@ -11,17 +11,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import model.CategoricalDescriptor;
-import model.Description;
-import model.DescriptionElementState;
-import model.Descriptor;
-import model.DescriptorNode;
-import model.DescriptorTree;
-import model.Item;
-import model.QuantitativeDescriptor;
-import model.QuantitativeMeasure;
-import model.State;
-import utils.Utils;
+import fr.lis.xper3API.model.CategoricalDescriptor;
+import fr.lis.xper3API.model.Description;
+import fr.lis.xper3API.model.DescriptionElementState;
+import fr.lis.xper3API.model.Descriptor;
+import fr.lis.xper3API.model.DescriptorNode;
+import fr.lis.xper3API.model.DescriptorTree;
+import fr.lis.xper3API.model.Item;
+import fr.lis.xper3API.model.QuantitativeDescriptor;
+import fr.lis.xper3API.model.QuantitativeMeasure;
+import fr.lis.xper3API.model.State;
+import fr.lis.xper3API.utils.Utils;
+
 
 /**
  * This class contains all the methods necessary to perform an Interactive Identification it is closely based

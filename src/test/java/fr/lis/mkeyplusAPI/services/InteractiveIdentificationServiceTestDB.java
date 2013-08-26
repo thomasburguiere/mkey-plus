@@ -3,22 +3,23 @@ package fr.lis.mkeyplusAPI.services;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import model.CategoricalDescriptor;
-import model.Description;
-import model.DescriptionElementState;
-import model.Descriptor;
-import model.DescriptorTree;
-import model.Item;
-import model.State;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import services.DescriptorManagementService;
-import services.DescriptorTreeManagementService;
-import services.ItemManagementService;
-import utils.Utils;
+import fr.lis.xper3API.model.CategoricalDescriptor;
+import fr.lis.xper3API.model.Description;
+import fr.lis.xper3API.model.DescriptionElementState;
+import fr.lis.xper3API.model.Descriptor;
+import fr.lis.xper3API.model.DescriptorTree;
+import fr.lis.xper3API.model.Item;
+import fr.lis.xper3API.model.State;
+import fr.lis.xper3API.services.DescriptorManagementService;
+import fr.lis.xper3API.services.DescriptorTreeManagementService;
+import fr.lis.xper3API.services.ItemManagementService;
+import fr.lis.xper3API.utils.Utils;
+
 
 public class InteractiveIdentificationServiceTestDB {
 	public Logger logger = Logger.getRootLogger();

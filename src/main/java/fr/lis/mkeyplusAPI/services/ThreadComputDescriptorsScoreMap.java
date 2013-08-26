@@ -3,12 +3,13 @@ package fr.lis.mkeyplusAPI.services;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import model.CategoricalDescriptor;
-import model.DescriptionElementState;
-import model.Descriptor;
-import model.DescriptorNode;
-import model.DescriptorTree;
-import model.Item;
+import fr.lis.xper3API.model.CategoricalDescriptor;
+import fr.lis.xper3API.model.DescriptionElementState;
+import fr.lis.xper3API.model.Descriptor;
+import fr.lis.xper3API.model.DescriptorNode;
+import fr.lis.xper3API.model.DescriptorTree;
+import fr.lis.xper3API.model.Item;
+
 
 /**
  * Basic Thread, fire a discriminant power calculation, return an array[{@link Descriptor},(float)DP]

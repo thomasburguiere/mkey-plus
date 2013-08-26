@@ -2,8 +2,9 @@ package fr.lis.mkeyplusAPI.services;
 
 import java.util.concurrent.Callable;
 
-import model.Description;
-import model.Item;
+import fr.lis.xper3API.model.Description;
+import fr.lis.xper3API.model.Item;
+
 
 /**
  * Basic Thread fire a similarity calculation, return an array [(long)item.id,(float)similarity]
