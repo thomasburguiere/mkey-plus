@@ -594,16 +594,16 @@ public class InteractiveIdentificationService {
 		if (quantitativeMeasure1 == null || quantitativeMeasure2 == null) {
 			return 0;
 		} else {
-			if (quantitativeMeasure1.getCalculateMinimum() == null
-					|| quantitativeMeasure1.getCalculateMaximum() == null
-					|| quantitativeMeasure2.getCalculateMinimum() == null
-					|| quantitativeMeasure2.getCalculateMaximum() == null) {
+			if (quantitativeMeasure1.getCalculatedMinimum() == null
+					|| quantitativeMeasure1.getCalculatedMaximum() == null
+					|| quantitativeMeasure2.getCalculatedMinimum() == null
+					|| quantitativeMeasure2.getCalculatedMaximum() == null) {
 				return 0;
 			} else {
-				commonPercentage = calculateCommonPercentage(quantitativeMeasure1.getCalculateMinimum()
-						.doubleValue(), quantitativeMeasure1.getCalculateMaximum().doubleValue(),
-						quantitativeMeasure2.getCalculateMinimum().doubleValue(), quantitativeMeasure2
-								.getCalculateMaximum().doubleValue());
+				commonPercentage = calculateCommonPercentage(quantitativeMeasure1.getCalculatedMinimum()
+						.doubleValue(), quantitativeMeasure1.getCalculatedMaximum().doubleValue(),
+						quantitativeMeasure2.getCalculatedMinimum().doubleValue(), quantitativeMeasure2
+								.getCalculatedMaximum().doubleValue());
 			}
 
 		}
