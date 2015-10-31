@@ -98,7 +98,7 @@ public class InteractiveIdentificationService {
 			}
 		} else {
 			for (Descriptor descriptor : descriptors)
-				descriptorsScoresMap.put(descriptor, new Float(-1));
+				descriptorsScoresMap.put(descriptor, (float) -1);
 		}
 
 		return descriptorsScoresMap;
@@ -127,7 +127,7 @@ public class InteractiveIdentificationService {
 
 		if (items.size() > 1) {
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
-			float discriminantPower = -1;
+			float discriminantPower;
 
 			for (Descriptor descriptor : descriptors) {
 				if (descriptor.isCategoricalType()
@@ -157,7 +157,7 @@ public class InteractiveIdentificationService {
 			}
 		} else {
 			for (Descriptor descriptor : descriptors)
-				descriptorsScoresMap.put(descriptor, new Float(-1));
+				descriptorsScoresMap.put(descriptor, (float) -1);
 		}
 
 		return descriptorsScoresMap;
@@ -189,7 +189,7 @@ public class InteractiveIdentificationService {
 
 		@Override
 		public void run() {
-			float discriminantPower = -1;
+			float discriminantPower;
 			for (Descriptor descriptor : descriptorList) {
 				if (descriptor.isCategoricalType()
 						&& ((CategoricalDescriptor) descriptor).getStates().size() <= 0)
@@ -239,10 +239,10 @@ public class InteractiveIdentificationService {
 
 			HashMap<Descriptor, Float> tempMap = new HashMap<Descriptor, Float>();
 
-			HashMap<Descriptor, Float> tempMap1 = new HashMap<Descriptor, Float>();
-			HashMap<Descriptor, Float> tempMap2 = new HashMap<Descriptor, Float>();
-			HashMap<Descriptor, Float> tempMap3 = new HashMap<Descriptor, Float>();
-			HashMap<Descriptor, Float> tempMap4 = new HashMap<Descriptor, Float>();
+			HashMap<Descriptor, Float> tempMap1;
+			HashMap<Descriptor, Float> tempMap2;
+			HashMap<Descriptor, Float> tempMap3;
+			HashMap<Descriptor, Float> tempMap4;
 
 			DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
 					scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
@@ -308,7 +308,7 @@ public class InteractiveIdentificationService {
 
 			List<List<Descriptor>> subLists = new ArrayList<List<Descriptor>>();
 
-			int i = 0;
+			int i;
 			for (i = 0; i < nThreads - 1; i++) {
 				subLists.add(descriptors.subList(slicer * i, slicer * (i + 1)));
 			}
@@ -384,7 +384,7 @@ public class InteractiveIdentificationService {
 				Item item1 = items.get(i1);
 				for (int i2 = i1 + 1; i2 < items.size(); i2++) {
 					Item item2 = items.get(i2);
-					float tmp = -1;
+					float tmp;
 					tmp = compareWithQuantitativeDescriptor((QuantitativeDescriptor) descriptor, item1,
 							item2, scoreMethod, dependencyTree, descriptionMatrix, descriptorNodeMap);
 					if (tmp >= 0) {
@@ -402,7 +402,7 @@ public class InteractiveIdentificationService {
 					Item item1 = items.get(i1);
 					for (int i2 = i1 + 1; i2 < items.size(); i2++) {
 						Item item2 = items.get(i2);
-						float tmp = -1;
+						float tmp;
 						tmp = compareWithCategoricalDescriptor((CategoricalDescriptor) descriptor, item1,
 								item2, scoreMethod, dependencyTree, descriptionMatrix, descriptorNodeMap);
 						if (tmp >= 0) {
@@ -427,7 +427,7 @@ public class InteractiveIdentificationService {
 
 		// recursive DP calculation of child descriptors
 
-		DescriptorNode node = null;
+		DescriptorNode node;
 		if (descriptorNodeMap != null)
 			node = descriptorNodeMap[(int) descriptor.getId()];
 		else
@@ -463,7 +463,7 @@ public class InteractiveIdentificationService {
 	private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
-		float out = 0;
+		float out;
 		// boolean isAlwaysDescribed = true;
 
 		// int all = v.getNbModes();
@@ -480,8 +480,8 @@ public class InteractiveIdentificationService {
 		if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
 			return -1;
 
-		DescriptionElementState des1 = null;
-		DescriptionElementState des2 = null;
+		DescriptionElementState des1;
+		DescriptionElementState des2;
 		if (descriptionMatrix == null) {
 			des1 = item1.getDescriptionElement(descriptor.getId());
 			des2 = item2.getDescriptionElement(descriptor.getId());
@@ -528,7 +528,7 @@ public class InteractiveIdentificationService {
 			out = Utils.roundFloat(out, 3);
 		}
 		// // Jaccard Method
-		else if (scoreMethod == SCORE_SOKAL_MICHENER) {
+		else if (scoreMethod == SCORE_JACCARD) {
 			try {
 				// // case where description are empty
 				out = 1 - (commonPresent / (commonPresent + other));
@@ -565,11 +565,11 @@ public class InteractiveIdentificationService {
 	private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
 			Item item2, int scoreMethod, DescriptorTree dependencyTree,
 			DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
-		float out = 0;
-		float commonPercentage = 0; // percentage of common values which are
+		float out;
+		float commonPercentage; // percentage of common values which are
 		// shared
 
-		DescriptorNode node = null;
+		DescriptorNode node;
 		if (descriptorNodeMap == null)
 			node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
 		else
@@ -578,8 +578,8 @@ public class InteractiveIdentificationService {
 		if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
 			return -1;
 
-		DescriptionElementState des1 = null;
-		DescriptionElementState des2 = null;
+		DescriptionElementState des1;
+		DescriptionElementState des2;
 
 		if (descriptionMatrix == null) {
 			des1 = item1.getDescription().getDescriptionElement(descriptor.getId());
@@ -600,10 +600,9 @@ public class InteractiveIdentificationService {
 					|| quantitativeMeasure2.getCalculatedMaximum() == null) {
 				return 0;
 			} else {
-				commonPercentage = calculateCommonPercentage(quantitativeMeasure1.getCalculatedMinimum()
-						.doubleValue(), quantitativeMeasure1.getCalculatedMaximum().doubleValue(),
-						quantitativeMeasure2.getCalculatedMinimum().doubleValue(), quantitativeMeasure2
-								.getCalculatedMaximum().doubleValue());
+				commonPercentage = calculateCommonPercentage(quantitativeMeasure1.getCalculatedMinimum(), quantitativeMeasure1.getCalculatedMaximum(),
+						quantitativeMeasure2.getCalculatedMinimum(),
+						quantitativeMeasure2.getCalculatedMaximum());
 			}
 
 		}
@@ -650,8 +649,7 @@ public class InteractiveIdentificationService {
 					.getParentNode().getDescriptor().getId()];
 			int numberOfDescriptionStates = description.getStates().size();
 
-			for (int i = 0; i < inapplicableStates.size(); i++) {
-				State state = inapplicableStates.get(i);
+			for (State state : inapplicableStates) {
 				if (description.containsState(state.getId())) {
 					numberOfDescriptionStates--;
 				}
@@ -693,11 +691,11 @@ public class InteractiveIdentificationService {
 	 * @return the common percentage
 	 */
 	private static float calculateCommonPercentage(double min1, double max1, double min2, double max2) {
-		double minLowerTmp = 0;
-		double maxUpperTmp = 0;
-		double minUpperTmp = 0;
-		double maxLowerTmp = 0;
-		float res = 0;
+		double minLowerTmp;
+		double maxUpperTmp;
+		double minUpperTmp;
+		double maxLowerTmp;
+		float res;
 
 		if (min1 <= min2) {
 			minLowerTmp = min1;
@@ -793,13 +791,9 @@ public class InteractiveIdentificationService {
 
 		switch (logicalOperator) {
 		case LOGICAL_OPERATOR_AND:
-			if (checkedStatesInReferenceDescription.size() == commonValues)
-				return true;
-			return false;
+			return checkedStatesInReferenceDescription.size() == commonValues;
 		case LOGICAL_OPERATOR_OR:
-			if (commonValues >= 1)
-				return true;
-			return false;
+			return commonValues >= 1;
 
 		default:
 			return false;
@@ -907,7 +901,7 @@ public class InteractiveIdentificationService {
 		Map<Descriptor, DescriptionElementState> ItemdescriptionElements = discardedItem.getDescription()
 				.getDescriptionElements();
 
-		float commonValues = 0;
+		float commonValues;
 		float result = 0;
 
 		// For each descriptor in this reference description
