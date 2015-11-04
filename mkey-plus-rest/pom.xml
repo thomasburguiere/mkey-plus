@@ -8,12 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>mkey-plus-rest</artifactId>
     <packaging>war</packaging>
 
+    <artifactId>mkey-plus-rest</artifactId>
     <properties>
-        <!--<slf4j.version>1.7.5</slf4j.version>-->
         <jackson.version>1.9.12</jackson.version>
         <jersey.version>1.17.1</jersey.version>
         <javassist.version>3.18.0-GA</javassist.version>
@@ -25,13 +23,15 @@
         <dependency>
             <groupId>xper3API</groupId>
             <artifactId>xper3API</artifactId>
+            <scope>system</scope>
             <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/xper3API-1.0.jar</systemPath>
         </dependency>
 
         <dependency>
-            <groupId>mkey-plus-API</groupId>
-            <artifactId>mkey-plus-API</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>mkey-plus</groupId>
+            <artifactId>mkey-plus-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

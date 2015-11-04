@@ -3,15 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>mkey-plus</groupId>
     <artifactId>mkey-plus-parent</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>mkey-plus-api</module>
         <module>mkey-plus-rest</module>
     </modules>
-    <packaging>pom</packaging>
 
     <name>mkey-plus</name>
-    <!--<description></description>-->
     <properties>
         <slf4j.version>1.7.5</slf4j.version>
         <version.junit>4.8.2</version.junit>
@@ -21,6 +20,7 @@
     <dependencyManagement>
 
         <dependencies>
+
             <!-- Logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -85,6 +85,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Disable tests for installation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
