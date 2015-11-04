@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/testHibernateXper3</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">false</property>
+      
+        <property name="hibernate.c3p0.timeout">7200</property>
+        <property name="hibernate.c3p0.max_statements">10</property>
+        
+        <!--
+			validate: validate the schema, makes no changes to the database.
+    		update: update the schema.
+    		create: creates the schema, destroying previous data.
+    		create-drop: drop the schema at the end of the session.
+		-->
+		<property name="hbm2ddl.auto">update</property>
+		<mapping class="model.Dataset" />
+        <mapping class="model.Item" />
+       	<mapping class="model.Descriptor" />
+       	<mapping class="model.CategoricalDescriptor" />
+       	<mapping class="model.QuantitativeDescriptor" />
+        <mapping class="model.State" />
+        <mapping class="model.QuantitativeMeasure" />
+        <mapping class="model.Description" />
+        <mapping class="model.DescriptionElementState" />
+        <mapping class="model.Resource" />
+        <mapping class="model.ItemTree" />
+        <mapping class="model.ItemNode" />
+        <mapping class="model.DescriptorTree" />
+        <mapping class="model.DescriptorNode" />
+        <mapping class="model.CalculatedDescriptor" />
+        <mapping class="model.CalculatedState" />
+        <mapping class="model.CalculatedStateElement" />
+        <mapping class="model.CategoricalCalculatedStateElement" />
+        <mapping class="model.QuantitativeAndQuantitativeCalculatedStateElement" />
+        <mapping class="model.QuantitativeAndValueCalculatedStateElement" />
+	</session-factory>
+</hibernate-configuration>

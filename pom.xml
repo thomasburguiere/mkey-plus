@@ -1,65 +1,63 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>mkey-plus-API</groupId>
-    <artifactId>mkey-plus-API</artifactId>
+    <groupId>mkey-plus</groupId>
+    <artifactId>mkey-plus-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar
-    </packaging>
+    <modules>
+        <module>mkey-plus-api</module>
+        <module>mkey-plus-rest</module>
+    </modules>
+    <packaging>pom</packaging>
 
-    <name>mkey-plus-API</name>
-    <description>mkey-plus-API</description>
+    <name>mkey-plus</name>
+    <!--<description></description>-->
     <properties>
         <slf4j.version>1.7.5</slf4j.version>
         <version.junit>4.8.2</version.junit>
         <version.log4j>1.2.16</version.log4j>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>xper3API</groupId>
-            <artifactId>xper3API</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/xper3API-1.0.jar</systemPath>
-        </dependency>
+    <dependencyManagement>
 
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${version.log4j}</version>
-            <scope>runtime</scope>
-        </dependency>
+        <dependencies>
+            <!-- Logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${version.log4j}</version>
+                <scope>runtime</scope>
+            </dependency>
 
 
-        <!-- Test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>${version.junit}</version>
-        </dependency>
+            <!-- Test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <scope>test</scope>
+                <version>${version.junit}</version>
+            </dependency>
 
 
-    </dependencies>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
