@@ -37,43 +37,32 @@ public class SessionSddManager {
 	/**
 	 * the actual {@link SessionFactory} pool
 	 */
-	private static ConcurrentHashMap<String, Dataset> sessionDatasetPool;
-	private static ConcurrentHashMap<String, JsonResource[]> sessionResourcePool;
-	private static ConcurrentHashMap<String, ArrayList<JsonDescriptor>> sessionDescriptorPool;
-	private static ConcurrentHashMap<String, ArrayList<JsonItem>> sessionItemPool;
-	private static ConcurrentHashMap<String, JsonState[]> sessionStatePool;
-	private static ConcurrentHashMap<String, ArrayList<Long>> sessionRootDescriptorIdPool;
-	private static ConcurrentHashMap<String, HashMap<Long, long[]>> sessionDependencyTablePool;
-	private static ConcurrentHashMap<String, HashMap<Long, Long>> sessionInvertedDependencyTablePool;
-	private static ConcurrentHashMap<String, DescriptionElementState[][]> sessionDescriptionMatrixPool;
-	private static ConcurrentHashMap<String, DescriptorNode[]> sessionDescriptorNodePool;
-	// private static Map<String, Boolean[][]> sessionInaplicablePool;
-	private static ConcurrentHashMap<String, Date> sessionDatasetLastUsed;
-	private static SessionSddManager instance;
+    private static final ConcurrentHashMap<String, Dataset> sessionDatasetPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, JsonResource[]> sessionResourcePool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ArrayList<JsonDescriptor>> sessionDescriptorPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ArrayList<JsonItem>> sessionItemPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, JsonState[]> sessionStatePool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ArrayList<Long>> sessionRootDescriptorIdPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, HashMap<Long, long[]>> sessionDependencyTablePool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, HashMap<Long, Long>> sessionInvertedDependencyTablePool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, DescriptionElementState[][]> sessionDescriptionMatrixPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, DescriptorNode[]> sessionDescriptorNodePool = new ConcurrentHashMap<>();
+    // private static Map<String, Boolean[][]> sessionInaplicablePool;
+    private static ConcurrentHashMap<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
+    private static long lastFlushDataset = 0;
 
-	private static long lastFlushDataset = 0;
+    private static SessionSddManager instance;
 
 	/**
 	 * Associates a {@link SessionFactory} with the date of its last use
 	 */
 	private SessionSddManager() throws Exception {
-		SessionSddManager.sessionDatasetPool = new ConcurrentHashMap<String, Dataset>();
-		SessionSddManager.sessionDatasetLastUsed = new ConcurrentHashMap<String, Date>();
-		SessionSddManager.sessionResourcePool = new ConcurrentHashMap<String, JsonResource[]>();
-		SessionSddManager.sessionDescriptorPool = new ConcurrentHashMap<String, ArrayList<JsonDescriptor>>();
-		SessionSddManager.sessionItemPool = new ConcurrentHashMap<String, ArrayList<JsonItem>>();
-		SessionSddManager.sessionStatePool = new ConcurrentHashMap<String, JsonState[]>();
-		SessionSddManager.sessionDependencyTablePool = new ConcurrentHashMap<String, HashMap<Long, long[]>>();
-		SessionSddManager.sessionRootDescriptorIdPool = new ConcurrentHashMap<String, ArrayList<Long>>();
-		SessionSddManager.sessionInvertedDependencyTablePool = new ConcurrentHashMap<String, HashMap<Long, Long>>();
-		SessionSddManager.sessionDescriptionMatrixPool = new ConcurrentHashMap<String, DescriptionElementState[][]>();
-		SessionSddManager.sessionDescriptorNodePool = new ConcurrentHashMap<String, DescriptorNode[]>();
 		// SessionSddManager.sessionInaplicablePool = new HashMap<String, Boolean[][]>();
 	}
 
 	/**
 	 * returns the unique instance of SessionFactoryManagementService
-	 * 
+	 *
 	 * @return SessionFactoryManager
 	 */
 	public static SessionSddManager getInstance() throws Exception {
@@ -87,7 +76,7 @@ public class SessionSddManager {
 	/**
 	 * This method returns the {@link SessionFactory} associated with a database name. If the sessionFactory
 	 * doesn't exists in the sessionFactoryPool, it is created with the createSessionFactory method
-	 * 
+	 *
 	 * @param sddURLString
 	 * @param login
 	 * @param password
@@ -95,16 +84,16 @@ public class SessionSddManager {
 	 */
 	public Dataset getDataset(String sddURLString) throws Exception {
 		Dataset dataset = SessionSddManager.sessionDatasetPool.get(sddURLString);
-		
-		
+
+
 		if (dataset == null) {
 			while ( SessionSddManager.lockInitialization ){
 				Thread.sleep(10);
 			}
-			
+
 			// Delete Old dataset
 			deleteOldDataset();
-			
+
 			//Lock initialization
 			SessionSddManager.lockInitialization = true;
 			try{
@@ -120,7 +109,7 @@ public class SessionSddManager {
 				//unlock initialization
 				SessionSddManager.lockInitialization = false;
 			}
-			
+
 		}else{
 			updateDatasetLastUsed(sddURLString);
 		}
@@ -129,48 +118,39 @@ public class SessionSddManager {
 	}
 
 	public JsonResource[] JsonResource(String sddURLString) {
-		JsonResource[] output = SessionSddManager.sessionResourcePool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionResourcePool.get(sddURLString);
 	}
 
 	public ArrayList<JsonDescriptor> getJsonDescriptor(String sddURLString) {
-		ArrayList<JsonDescriptor> output = SessionSddManager.sessionDescriptorPool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionDescriptorPool.get(sddURLString);
 	}
 
 	public ArrayList<JsonItem> getJsonItem(String sddURLString) {
-		ArrayList<JsonItem> output = SessionSddManager.sessionItemPool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionItemPool.get(sddURLString);
 	}
 
 	public JsonState[] getJsonState(String sddURLString) {
-		JsonState[] output = SessionSddManager.sessionStatePool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionStatePool.get(sddURLString);
 	}
 
 	public ArrayList<Long> getRootDescriptorId(String sddURLString) {
-		ArrayList<Long> output = SessionSddManager.sessionRootDescriptorIdPool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionRootDescriptorIdPool.get(sddURLString);
 	}
 
 	public HashMap<Long, long[]> getDependancyTable(String sddURLString) {
-		HashMap<Long, long[]> output = SessionSddManager.sessionDependencyTablePool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionDependencyTablePool.get(sddURLString);
 	}
 
 	public HashMap<Long, Long> getInvertedDependancyTable(String sddURLString) {
-		HashMap<Long, Long> output = SessionSddManager.sessionInvertedDependencyTablePool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionInvertedDependencyTablePool.get(sddURLString);
 	}
 
 	public DescriptionElementState[][] getDescriptionMatrix(String sddURLString) {
-		DescriptionElementState[][] output = SessionSddManager.sessionDescriptionMatrixPool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionDescriptionMatrixPool.get(sddURLString);
 	}
 
 	public DescriptorNode[] getDescriptorNode(String sddURLString) {
-		DescriptorNode[] output = SessionSddManager.sessionDescriptorNodePool.get(sddURLString);
-		return output;
+        return SessionSddManager.sessionDescriptorNodePool.get(sddURLString);
 	}
 
 	public String getDatasetName(String sddURLString) throws Exception{
@@ -205,7 +185,7 @@ public class SessionSddManager {
 
 	/**
 	 * creates a new {@link SessionFactory}
-	 * 
+	 *
 	 * @param sddURLString
 	 * @return {@link SessionFactory}
 	 */
@@ -243,7 +223,7 @@ public class SessionSddManager {
 
 	/**
 	 * Updates the last used date of a given sessionFactory to the current date
-	 * 
+	 *
 	 * @param dbName
 	 *            the name of the database associated with the {@link SessionFactory}
 	 * @return true if the the last used date was successfully updated
@@ -254,7 +234,7 @@ public class SessionSddManager {
 
 	/**
 	 * Updates the last used date of a given sessionFactory, with an arbitrary date
-	 * 
+	 *
 	 * @param dbName
 	 *            the name of the database associated with the {@link SessionFactory}
 	 * @param newDate
@@ -304,7 +284,7 @@ public class SessionSddManager {
 	/**
 	 * This method launch the job to flush the pool of sessionFactory each day and to flush the pool of
 	 * process progression each hour
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private static void launchJobs() throws Exception {
@@ -353,11 +333,11 @@ public class SessionSddManager {
 
 	private void initializeDatasetContent(Dataset dataset, String keyUrl) {
 
-		ArrayList<JsonResource> tmpArrayResource = new ArrayList<JsonResource>();
-		ArrayList<JsonState> tmpArrayState = new ArrayList<JsonState>();
-		ArrayList<JsonDescriptor> arrayDescriptor = new ArrayList<JsonDescriptor>(dataset.getDescriptors()
+		ArrayList<JsonResource> tmpArrayResource = new ArrayList<>();
+		ArrayList<JsonState> tmpArrayState = new ArrayList<>();
+		ArrayList<JsonDescriptor> arrayDescriptor = new ArrayList<>(dataset.getDescriptors()
 				.size());
-		ArrayList<JsonItem> arrayItem = new ArrayList<JsonItem>(dataset.getItems().size());
+		ArrayList<JsonItem> arrayItem = new ArrayList<>(dataset.getItems().size());
 
 		DescriptorTree dependencyTree = new DescriptorTree();
 		if (dataset.getDescriptorTrees().size() > 0) {
@@ -462,20 +442,16 @@ public class SessionSddManager {
 		}
 
 		// Lock the ressources
-		final JsonResource[] FINALarrayResource = arrayResource;
-		final ArrayList<JsonDescriptor> FINALarrayDescriptor = arrayDescriptor;
-		final ArrayList<JsonItem> FINALarrayItem = arrayItem;
-		final JsonState[] FINALarrayState = arrayState;
 
-		sessionResourcePool.put(keyUrl, FINALarrayResource);
-		sessionDescriptorPool.put(keyUrl, FINALarrayDescriptor);
-		sessionItemPool.put(keyUrl, FINALarrayItem);
-		sessionStatePool.put(keyUrl, FINALarrayState);
+        sessionResourcePool.put(keyUrl, arrayResource);
+		sessionDescriptorPool.put(keyUrl, arrayDescriptor);
+		sessionItemPool.put(keyUrl, arrayItem);
+		sessionStatePool.put(keyUrl, arrayState);
 
-		HashMap<Long, Long> invertedDependencyTable = new HashMap<Long, Long>();
-		HashMap<Long, long[]> dependencyTable = new HashMap<Long, long[]>();
-		ArrayList<Long> childDescriptorId = new ArrayList<Long>();
-		ArrayList<Long> rootDescriptorId = new ArrayList<Long>();
+		HashMap<Long, Long> invertedDependencyTable = new HashMap<>();
+		HashMap<Long, long[]> dependencyTable = new HashMap<>();
+		ArrayList<Long> childDescriptorId = new ArrayList<>();
+		ArrayList<Long> rootDescriptorId = new ArrayList<>();
 
 		// Constructe DependencyTable
 		for (DescriptorNode node : dependencyTree.getNodes()) {
@@ -496,27 +472,23 @@ public class SessionSddManager {
 		}
 
 		// Lock Ressources
-		final HashMap<Long, Long> FINALinvertedDependencyTable = invertedDependencyTable;
-		final HashMap<Long, long[]> FINALdependencyTable = dependencyTable;
-		final ArrayList<Long> FINALrootDescriptorId = rootDescriptorId;
 
-		sessionInvertedDependencyTablePool.put(keyUrl, FINALinvertedDependencyTable);
-		sessionDependencyTablePool.put(keyUrl, FINALdependencyTable);
-		sessionRootDescriptorIdPool.put(keyUrl, FINALrootDescriptorId);
+        sessionInvertedDependencyTablePool.put(keyUrl, invertedDependencyTable);
+		sessionDependencyTablePool.put(keyUrl, dependencyTable);
+		sessionRootDescriptorIdPool.put(keyUrl, rootDescriptorId);
 
 		initializeDescriptionMatrix(dataset, keyUrl);
 		initializeDescriptorNodeMap(dataset, keyUrl);
 		// Lock DataSet
-		final Dataset FINALdataset = dataset;
 
-		sessionDatasetPool.put(keyUrl, FINALdataset);
+        sessionDatasetPool.put(keyUrl, dataset);
 		sessionDatasetLastUsed.put(keyUrl, new Date());
 	}
 
 	/**
 	 * Recursivly create dependencyTable InvetedDependancyTable and childDescriptorId from a Node ( every node
 	 * are scanned thus add the if (1) to not be redondante.
-	 * 
+	 *
 	 * @param descriptorNode
 	 * @param invertedDependencyTable
 	 * @param dependencyTable
@@ -527,7 +499,7 @@ public class SessionSddManager {
 			HashMap<Long, long[]> dependencyTable, ArrayList<Long> childDescriptorId) {
 		int size = descriptorNode.getChildNodes().size();
 		long nodeID = descriptorNode.getDescriptor().getId();
-		
+
 		if (!invertedDependencyTable.containsKey(nodeID)) {
 			if (descriptorNode.getParentNode() != null) {
 				invertedDependencyTable.put(nodeID, descriptorNode.getParentNode().getDescriptor()
@@ -559,7 +531,7 @@ public class SessionSddManager {
 				dependencyTable.put(nodeID, childIDs);
 			}
 			else {
-				
+
 				return nodeID;
 			}
 		}
@@ -597,8 +569,7 @@ public class SessionSddManager {
 		}
 
 		// Lock the ressource
-		final DescriptionElementState[][] FINALdescriptionMatrix = descriptionMatrix;
-		sessionDescriptionMatrixPool.put(keyUrl, FINALdescriptionMatrix);
+        sessionDescriptionMatrixPool.put(keyUrl, descriptionMatrix);
 	}
 
 	private void initializeDescriptorNodeMap(Dataset dataset, String keyUrl) {
@@ -614,18 +585,17 @@ public class SessionSddManager {
 					.getNodeContainingDescriptor(descriptors.get(descriptorIndex).getId());
 		}
 		// Lock resources
-		final DescriptorNode[] FINALdescriptorNodeMap = descriptorNodeMap;
-		sessionDescriptorNodePool.put(keyUrl, FINALdescriptorNodeMap);
+        sessionDescriptorNodePool.put(keyUrl, descriptorNodeMap);
 	}
 
 	private void deleteOldDataset() {
 		while ( !checkHeapSize() ){
 			flushDataset(getOldestDataset());
 		}
-		
+
 		long currentTime = System.currentTimeMillis();
 		if ((currentTime - SessionSddManager.lastFlushDataset) > 60000) {
-		//1800000 == 30min	
+		//1800000 == 30min
 		//300000 == 5 min
 		//86400000 == 24h
 		//60000 == 1min
@@ -646,8 +616,8 @@ public class SessionSddManager {
 
 		}
 	}
-	
-	
+
+
 	private String getOldestDataset(){
 		String sddUrl = "";
 		long time = 0;
@@ -669,7 +639,7 @@ public class SessionSddManager {
 		MemoryUsage mu = SessionSddManager.memoryMxBean.getHeapMemoryUsage();
 //		double m = 1000000;
 		//If Heap Size - 10 * 1M is inferior to current Used HeapSize
-		return (mu.getMax()*0.8) >  mu.getUsed() ;	
+		return (mu.getMax()*0.8) >  mu.getUsed() ;
 	}
-	
+
 }

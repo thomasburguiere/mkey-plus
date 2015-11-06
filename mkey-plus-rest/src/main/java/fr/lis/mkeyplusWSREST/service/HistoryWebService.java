@@ -75,7 +75,7 @@ public class HistoryWebService {
 
 		// Image Downloading -------------------------
 		URL url;
-		if (!urlImageUser.equals("none")) {
+		if (!"none".equals(urlImageUser)) {
 			try {
 				url = new URL(urlImageUser);
 

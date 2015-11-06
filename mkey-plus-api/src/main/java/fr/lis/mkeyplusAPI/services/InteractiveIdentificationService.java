@@ -945,7 +945,7 @@ public class InteractiveIdentificationService {
 				// return 1; ( no diff )
 				result += descriptionQm.containsPercent(discardedItemQm);
 
-			} else if (descriptor.isCalculatedType()) {
+			} else {
 				// TODO add calculated Type
 			}
 

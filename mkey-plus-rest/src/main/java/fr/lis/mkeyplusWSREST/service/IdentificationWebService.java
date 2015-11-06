@@ -645,7 +645,7 @@ public class IdentificationWebService {
 							remainingItem, descriptor, inapplicableStats);
 
 					descriptionElementState.setQuantitativeMeasure(qm);
-				} else if (descriptor.isCalculatedType()) {
+				} else {
 					// TODO calculated Type not supported in Mkey
 				}
 				description.addDescriptionElement(descriptor, descriptionElementState);
