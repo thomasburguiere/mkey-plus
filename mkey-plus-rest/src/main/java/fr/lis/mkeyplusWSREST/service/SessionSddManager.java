@@ -30,7 +30,8 @@ import fr.lis.mkeyplusWSREST.model.JsonState;
 /**
  * @author thomas burguiere This Singleton class manages a pool of SessionFactory
  */
-public class SessionSddManager {
+public enum SessionSddManager {
+	INSTANCE;
 
 	private static final MemoryMXBean memoryMxBean = ManagementFactory.getMemoryMXBean();
 	private static boolean lockInitialization = false;
@@ -51,27 +52,27 @@ public class SessionSddManager {
     private static ConcurrentHashMap<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
     private static long lastFlushDataset = 0;
 
-    private static SessionSddManager instance;
+//    private static SessionSddManager instance;
 
 	/**
 	 * Associates a {@link SessionFactory} with the date of its last use
 	 */
-	private SessionSddManager() throws Exception {
+//	private SessionSddManager() throws Exception {
 		// SessionSddManager.sessionInaplicablePool = new HashMap<String, Boolean[][]>();
-	}
+//	}
 
 	/**
 	 * returns the unique instance of SessionFactoryManagementService
 	 *
 	 * @return SessionFactoryManager
 	 */
-	public static SessionSddManager getInstance() throws Exception {
-		if (instance == null) {
-			instance = new SessionSddManager();
-			launchJobs();
-		}
-		return instance;
-	}
+//	public static SessionSddManager getInstance() throws Exception {
+//		if (instance == null) {
+//			instance = new SessionSddManager();
+//			launchJobs();
+//		}
+//		return INSTANCE;
+//	}
 
 	/**
 	 * This method returns the {@link SessionFactory} associated with a database name. If the sessionFactory
@@ -154,9 +155,9 @@ public class SessionSddManager {
 	}
 
 	public String getDatasetName(String sddURLString) throws Exception{
-		Dataset dataset = null;
+		Dataset dataset;
 		//The dataset may have been deleted so check value before getting it
-		if ( !SessionSddManager.sessionDatasetPool.contains(sddURLString) ){
+		if ( !SessionSddManager.sessionDatasetPool.keySet().contains(sddURLString) ){
 			dataset = getDataset(sddURLString);
 		}else{
 			dataset = SessionSddManager.sessionDatasetPool.get(sddURLString);
@@ -191,8 +192,8 @@ public class SessionSddManager {
 	 */
 	private Dataset createDataset(String sddURLString) throws Exception {
 
-		URLConnection urlConnection = null;
-		Dataset dataset = null;
+		URLConnection urlConnection;
+		Dataset dataset;
 		// testing the sdd URL validity
 
 		URL sddFileUrl = new URL(sddURLString);
@@ -217,7 +218,6 @@ public class SessionSddManager {
 //			if (sessionDatasetLastUsed.get(dbName) != null)
 //				sessionDatasetLastUsed.remove(dbName);
 //			sessionDatasetPool.remove(dbName);
-			dataset = null;
 		}
 	}
 

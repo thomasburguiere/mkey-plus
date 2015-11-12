@@ -178,13 +178,15 @@ public class HistoryWebService {
 		File folder = new File(Constant.UPLOAD_DESTINATION);
 		File[] listOfFiles = folder.listFiles();
 
-		for (File file : listOfFiles) {
-			String[] filename = file.getName().split("\\.");
-			if (!filename[1].equalsIgnoreCase(Constant.EXTENSION_TEXTFILE)
-					&& spipollsessionid.equals(filename[0])) {
-				image_url = Constant.URL_HISTOCK + file.getName();
-				break;
-			}
+		if (listOfFiles != null) {
+			for (File file : listOfFiles) {
+                String[] filename = file.getName().split("\\.");
+                if (!filename[1].equalsIgnoreCase(Constant.EXTENSION_TEXTFILE)
+                        && spipollsessionid.equals(filename[0])) {
+                    image_url = Constant.URL_HISTOCK + file.getName();
+                    break;
+                }
+            }
 		}
 		// end Get URL Image -------------------
 
