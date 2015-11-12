@@ -1,16 +1,5 @@
 package fr.lis.mkeyplusAPI.services;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import fr.lis.xper3API.model.CategoricalDescriptor;
 import fr.lis.xper3API.model.Description;
 import fr.lis.xper3API.model.DescriptionElementState;
@@ -22,6 +11,17 @@ import fr.lis.xper3API.model.QuantitativeDescriptor;
 import fr.lis.xper3API.model.QuantitativeMeasure;
 import fr.lis.xper3API.model.State;
 import fr.lis.xper3API.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 /**

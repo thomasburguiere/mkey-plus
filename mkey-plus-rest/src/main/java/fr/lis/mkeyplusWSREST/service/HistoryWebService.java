@@ -34,152 +34,151 @@ import javax.ws.rs.core.MediaType;
 @Path("/history")
 public class HistoryWebService {
 
-	// This method is called if TEXT_PLAIN is request
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String sayPlainTextHello() {
-		return "Available services : 'send' and 'get'";
-	}
+    // This method is called if TEXT_PLAIN is request
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String sayPlainTextHello() {
+        return "Available services : 'send' and 'get'";
+    }
 
-	@Path("/send")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
-	public String sendDescription(@QueryParam("callback") String callback,
-			@QueryParam("sddversion") String sddVersion,
-			@QueryParam("spipollsessionid") String spipollsessionid,
-			@QueryParam("history") String jsonDescriptions,
-			@QueryParam("urlimageuser") String urlImageUser,
-			@QueryParam("itemsselected") String jsonItemsSelected) {
-		String jsonData;
-		String status = "ok";
-		String message = "";
+    @Path("/send")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String sendDescription(@QueryParam("callback") String callback,
+                                  @QueryParam("sddversion") String sddVersion,
+                                  @QueryParam("spipollsessionid") String spipollsessionid,
+                                  @QueryParam("history") String jsonDescriptions,
+                                  @QueryParam("urlimageuser") String urlImageUser,
+                                  @QueryParam("itemsselected") String jsonItemsSelected) {
+        String jsonData;
+        String status = "ok";
+        String message = "";
 
-		if (jsonItemsSelected == null || jsonDescriptions == null) {
-			return "{ 'status' : 'Error' , 'message' : 'Error missing parameters' , 'spipollsessionid' : '"
-					+ null + "' }";
-		}
+        if (jsonItemsSelected == null || jsonDescriptions == null) {
+            return "{ 'status' : 'Error' , 'message' : 'Error missing parameters' , 'spipollsessionid' : '"
+                    + null + "' }";
+        }
 
-		// If no spipollsessionid, we generate one with a random number
-		if (spipollsessionid == null) {
-			spipollsessionid = Math.round(Math.random()
-					* Constant.MAX_RAND_NUMBER_UNKNOWN)
-					+ "unknow";
-		}
-		if (urlImageUser == null) {
-			urlImageUser = "none";
-		}
+        // If no spipollsessionid, we generate one with a random number
+        if (spipollsessionid == null) {
+            spipollsessionid = Math.round(Math.random()
+                    * Constant.MAX_RAND_NUMBER_UNKNOWN)
+                    + "unknow";
+        }
+        if (urlImageUser == null) {
+            urlImageUser = "none";
+        }
 
-		if (sddVersion == null) {
-			sddVersion = "unknown";
-		}
+        if (sddVersion == null) {
+            sddVersion = "unknown";
+        }
 
-		// Image Downloading -------------------------
-		URL url;
-		if (!"none".equals(urlImageUser)) {
-			try {
-				url = new URL(urlImageUser);
+        // Image Downloading -------------------------
+        URL url;
+        if (!"none".equals(urlImageUser)) {
+            try {
+                url = new URL(urlImageUser);
 
-				String fileName = url.getFile();
+                String fileName = url.getFile();
 
-				String destName = Constant.UPLOAD_DESTINATION + spipollsessionid
-						+ fileName.substring(fileName.lastIndexOf("."));
+                String destName = Constant.UPLOAD_DESTINATION + spipollsessionid
+                        + fileName.substring(fileName.lastIndexOf("."));
 
-				InputStream is = url.openStream();
-				OutputStream os = new FileOutputStream(destName);
+                InputStream is = url.openStream();
+                OutputStream os = new FileOutputStream(destName);
 
-				byte[] b = new byte[2048];
-				int length;
+                byte[] b = new byte[2048];
+                int length;
 
-				while ((length = is.read(b)) != -1) {
-					os.write(b, 0, length);
-				}
+                while ((length = is.read(b)) != -1) {
+                    os.write(b, 0, length);
+                }
 
-				is.close();
-				os.close();
-				System.out.println(destName + " => copied !");
-				System.out.println(urlImageUser + " image !");
-			} catch (IOException e) {
-				e.printStackTrace();
-				status = "Erreur";
-				message = "Error during the download of : " + urlImageUser;
-			}
-		}
-		// end Image Downloading -------------------------
+                is.close();
+                os.close();
+                System.out.println(destName + " => copied !");
+                System.out.println(urlImageUser + " image !");
+            } catch (IOException e) {
+                e.printStackTrace();
+                status = "Erreur";
+                message = "Error during the download of : " + urlImageUser;
+            }
+        }
+        // end Image Downloading -------------------------
 
-		// Creating File containing historic & RemainingSelected
-		PrintWriter writer;
-		String filetxtname = Constant.UPLOAD_DESTINATION + spipollsessionid
-				+ "." + Constant.EXTENSION_TEXTFILE;
-		try {
+        // Creating File containing historic & RemainingSelected
+        PrintWriter writer;
+        String filetxtname = Constant.UPLOAD_DESTINATION + spipollsessionid
+                + "." + Constant.EXTENSION_TEXTFILE;
+        try {
 
-			writer = new PrintWriter(filetxtname, Constant.ENCODING_TEXTFILE);
-			writer.println("{ '" + Constant.ENTRY_NAME_SDDVERSION + "' : '"
-					+ sddVersion + "', '" + Constant.ENTRY_NAME_DESCRIPTIONS
-					+ "' : " + jsonDescriptions + "  , '"
-					+ Constant.ENTRY_NAME_TAXA + "' : " + jsonItemsSelected
-					+ " }");
-			writer.close();
-			System.out.println(filetxtname + " => created !");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			status = "Error";
-			message = "Error during the creation of : " + filetxtname;
-		} catch (UnsupportedEncodingException e) {
-			status = "Error";
-			message = "Error of encoding during the creation of : "
-					+ filetxtname;
-		}
+            writer = new PrintWriter(filetxtname, Constant.ENCODING_TEXTFILE);
+            writer.println("{ '" + Constant.ENTRY_NAME_SDDVERSION + "' : '"
+                    + sddVersion + "', '" + Constant.ENTRY_NAME_DESCRIPTIONS
+                    + "' : " + jsonDescriptions + "  , '"
+                    + Constant.ENTRY_NAME_TAXA + "' : " + jsonItemsSelected
+                    + " }");
+            writer.close();
+            System.out.println(filetxtname + " => created !");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            status = "Error";
+            message = "Error during the creation of : " + filetxtname;
+        } catch (UnsupportedEncodingException e) {
+            status = "Error";
+            message = "Error of encoding during the creation of : "
+                    + filetxtname;
+        }
 
-		// end Creating File -------------------------
+        // end Creating File -------------------------
 
-		jsonData = "{ 'status' : '" + status + "' , 'message' : '" + message
-				+ "' , 'spipollsessionid' : '" + spipollsessionid + "' }";
-		if (callback != null && callback.trim().length() > 0)
-			return callback + "(" + jsonData + ")";
+        jsonData = "{ 'status' : '" + status + "' , 'message' : '" + message
+                + "' , 'spipollsessionid' : '" + spipollsessionid + "' }";
+        if (callback != null && callback.trim().length() > 0)
+            return callback + "(" + jsonData + ")";
 
-		return jsonData;
-	}
+        return jsonData;
+    }
 
-	
-	
-	@Path("/get")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
-	public String getDescription(@QueryParam("callback") String callback,
-			@QueryParam("spipollsessionid") String spipollsessionid) {
-		String jsonData;
-		String status = "ok";
-		StringBuilder value = new StringBuilder();
-		String image_url = "none";
 
-		if (spipollsessionid == null) {
-			return "{ 'status' : 'Error' , 'message' : 'Error missing parameter : spipollsessionid'  }";
-		}
+    @Path("/get")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String getDescription(@QueryParam("callback") String callback,
+                                 @QueryParam("spipollsessionid") String spipollsessionid) {
+        String jsonData;
+        String status = "ok";
+        StringBuilder value = new StringBuilder();
+        String image_url = "none";
 
-		// Get data -------------------
-		String data_filename = Constant.UPLOAD_DESTINATION + spipollsessionid
-				+ "." + Constant.EXTENSION_TEXTFILE;
-		data_filename = data_filename.replace("\\", "\\\\");
-		try {
-			InputStream ips = new FileInputStream(data_filename);
-			InputStreamReader ipsr = new InputStreamReader(ips);
-			BufferedReader br = new BufferedReader(ipsr);
-			String ligne;
-			while ((ligne = br.readLine()) != null) {
-				value.append(ligne);
-			}
-			br.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-		// end Get data -------------------
+        if (spipollsessionid == null) {
+            return "{ 'status' : 'Error' , 'message' : 'Error missing parameter : spipollsessionid'  }";
+        }
 
-		// Get URL Image -------------------
-		File folder = new File(Constant.UPLOAD_DESTINATION);
-		File[] listOfFiles = folder.listFiles();
+        // Get data -------------------
+        String data_filename = Constant.UPLOAD_DESTINATION + spipollsessionid
+                + "." + Constant.EXTENSION_TEXTFILE;
+        data_filename = data_filename.replace("\\", "\\\\");
+        try {
+            InputStream ips = new FileInputStream(data_filename);
+            InputStreamReader ipsr = new InputStreamReader(ips);
+            BufferedReader br = new BufferedReader(ipsr);
+            String ligne;
+            while ((ligne = br.readLine()) != null) {
+                value.append(ligne);
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        // end Get data -------------------
 
-		if (listOfFiles != null) {
-			for (File file : listOfFiles) {
+        // Get URL Image -------------------
+        File folder = new File(Constant.UPLOAD_DESTINATION);
+        File[] listOfFiles = folder.listFiles();
+
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
                 String[] filename = file.getName().split("\\.");
                 if (!filename[1].equalsIgnoreCase(Constant.EXTENSION_TEXTFILE)
                         && spipollsessionid.equals(filename[0])) {
@@ -187,16 +186,16 @@ public class HistoryWebService {
                     break;
                 }
             }
-		}
-		// end Get URL Image -------------------
+        }
+        // end Get URL Image -------------------
 
-		// end Creating File -------------------------
-		jsonData = "{ 'status' : '" + status + "' , 'data' : " + value.toString()
-				+ " ,  'urlimage' : '" + image_url + "' , }";
-		if (callback != null && callback.trim().length() > 0)
-			return callback + "(" + jsonData + ")";
+        // end Creating File -------------------------
+        jsonData = "{ 'status' : '" + status + "' , 'data' : " + value.toString()
+                + " ,  'urlimage' : '" + image_url + "' , }";
+        if (callback != null && callback.trim().length() > 0)
+            return callback + "(" + jsonData + ")";
 
-		return jsonData;
-	}
-	
+        return jsonData;
+    }
+
 }
