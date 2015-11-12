@@ -118,7 +118,7 @@ public class IdentificationWebService {
                         boolean isDiscarded = false;
                         // Get if this descriptor is discarded
                         for (Integer discardedDescriptorID : discardedDescriptorsIDs) {
-                            Long castedID = new Long(discardedDescriptorID);
+                            Long castedID = Long.valueOf(discardedDescriptorID);
                             if (castedID.equals(descriptorInSDD.getId())) {
                                 isDiscarded = true;
                                 // Get out of the for
@@ -140,7 +140,7 @@ public class IdentificationWebService {
                 // For every item in SDD
                 if (remainingItemsIDs != null) {
                     for (int i = 0; i < remainingItemsIDs.size(); i++) {
-                        Long castedID = new Long(remainingItemsIDs.get(i));
+                        Long castedID = Long.valueOf(remainingItemsIDs.get(i));
                         // If this item in SDD == this remaning item id
                         if (castedID.equals(itemInSDD.getId())) {
                             remainingItems.add(itemInSDD);
@@ -484,7 +484,7 @@ public class IdentificationWebService {
                 // For every item in SDD
                 if (remainingItemsIDs != null) {
                     for (int i = 0; i < remainingItemsIDs.size(); i++) {
-                        Long castedID = new Long(remainingItemsIDs.get(i));
+                        Long castedID = Long.valueOf(remainingItemsIDs.get(i));
                         // If this item in SDD == this remaning item id
                         if (castedID.equals(itemInSDD.getId())) {
                             toRemove.add(itemInSDD);
@@ -621,7 +621,7 @@ public class IdentificationWebService {
                 // For every item in SDD
                 if (remainingItemsIDs != null) {
                     for (int i = 0; i < remainingItemsIDs.size(); i++) {
-                        Long castedID = new Long(remainingItemsIDs.get(i));
+                        Long castedID = Long.valueOf(remainingItemsIDs.get(i));
                         // If this item in SDD == this remaning item id
                         if (castedID.equals(itemInSDD.getId())) {
                             remainingItem.add(itemInSDD);

@@ -50,7 +50,7 @@ public class HistoryWebService {
 			@QueryParam("history") String jsonDescriptions,
 			@QueryParam("urlimageuser") String urlImageUser,
 			@QueryParam("itemsselected") String jsonItemsSelected) {
-		String jsonData = null;
+		String jsonData;
 		String status = "ok";
 		String message = "";
 
@@ -147,9 +147,9 @@ public class HistoryWebService {
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public String getDescription(@QueryParam("callback") String callback,
 			@QueryParam("spipollsessionid") String spipollsessionid) {
-		String jsonData = null;
+		String jsonData;
 		String status = "ok";
-		String value = "";
+		StringBuilder value = new StringBuilder();
 		String image_url = "none";
 
 		if (spipollsessionid == null) {
@@ -166,7 +166,7 @@ public class HistoryWebService {
 			BufferedReader br = new BufferedReader(ipsr);
 			String ligne;
 			while ((ligne = br.readLine()) != null) {
-				value += ligne;
+				value.append(ligne);
 			}
 			br.close();
 		} catch (Exception e) {
@@ -191,7 +191,7 @@ public class HistoryWebService {
 		// end Get URL Image -------------------
 
 		// end Creating File -------------------------
-		jsonData = "{ 'status' : '" + status + "' , 'data' : " + value
+		jsonData = "{ 'status' : '" + status + "' , 'data' : " + value.toString()
 				+ " ,  'urlimage' : '" + image_url + "' , }";
 		if (callback != null && callback.trim().length() > 0)
 			return callback + "(" + jsonData + ")";
