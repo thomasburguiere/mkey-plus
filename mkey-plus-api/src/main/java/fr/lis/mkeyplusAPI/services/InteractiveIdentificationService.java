@@ -108,15 +108,15 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMap(List<Descriptor> descriptors,
+    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMap(List<Descriptor> descriptors,
                                                                           List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
                                                                           DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                                                           boolean withGlobalWeigth) {
-        LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
+        LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
-            HashMap<Descriptor, Float> tempMap = new HashMap<>();
-            float discriminantPower;
+            HashMap<Descriptor, Double> tempMap = new HashMap<>();
+            double discriminantPower;
 
             for (Descriptor descriptor : descriptors) {
                 if (descriptor.isCategoricalType()
@@ -132,13 +132,13 @@ public class InteractiveIdentificationService {
             }
 
             // sorting the final LinkedHashMap
-            List<Float> mapValues = new ArrayList<>(tempMap.values());
+            List<Double> mapValues = new ArrayList<>(tempMap.values());
             Collections.sort(mapValues, Collections.reverseOrder());
 
-            for (Float dpScore : mapValues) {
-                for (Map.Entry<Descriptor, Float> entry : tempMap.entrySet()) {
-                    float dp1 = entry.getValue();
-                    float dp2 = dpScore;
+            for (Double dpScore : mapValues) {
+                for (Map.Entry<Descriptor, Double> entry : tempMap.entrySet()) {
+                    double dp1 = entry.getValue();
+                    double dp2 = dpScore;
 
                     if (dp1 == dp2) {
                         descriptorsScoresMap.put(entry.getKey(), dpScore);
@@ -147,7 +147,7 @@ public class InteractiveIdentificationService {
             }
         } else {
             for (Descriptor descriptor : descriptors)
-                descriptorsScoresMap.put(descriptor, (float) -1);
+                descriptorsScoresMap.put(descriptor, (double) -1);
         }
 
         return descriptorsScoresMap;
@@ -160,7 +160,7 @@ public class InteractiveIdentificationService {
         private int scoreMethod;
         private boolean considerChildScores;
         private DescriptorTree dependencyTree;
-        private HashMap<Descriptor, Float> tempMap;
+        private HashMap<Descriptor, Double> tempMap;
         private DescriptionElementState[][] descriptionMatrix;
         private boolean withGlobalWeight;
 
@@ -179,7 +179,7 @@ public class InteractiveIdentificationService {
 
         @Override
         public void run() {
-            float discriminantPower;
+            double discriminantPower;
             for (Descriptor descriptor : descriptorList) {
                 if (descriptor.isCategoricalType()
                         && ((CategoricalDescriptor) descriptor).getStates().size() <= 0)
@@ -192,7 +192,7 @@ public class InteractiveIdentificationService {
             }
         }
 
-        public HashMap<Descriptor, Float> getTempMap() {
+        public HashMap<Descriptor, Double> getTempMap() {
             return tempMap;
         }
     }
@@ -211,11 +211,11 @@ public class InteractiveIdentificationService {
      * @throws InterruptedException
      * @deprecated
      */
-    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsing4Threads(
+    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMapUsing4Threads(
             List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
             boolean considerChildScores, DescriptionElementState[][] descriptionMatrix)
             throws InterruptedException {
-        LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
+        LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
 
@@ -226,12 +226,12 @@ public class InteractiveIdentificationService {
             List<Descriptor> descriptorList4 = descriptors.subList(quarter * 3, descriptors.size());
             // descriptors.
 
-            HashMap<Descriptor, Float> tempMap = new HashMap<>();
+            HashMap<Descriptor, Double> tempMap = new HashMap<>();
 
-            HashMap<Descriptor, Float> tempMap1;
-            HashMap<Descriptor, Float> tempMap2;
-            HashMap<Descriptor, Float> tempMap3;
-            HashMap<Descriptor, Float> tempMap4;
+            HashMap<Descriptor, Double> tempMap1;
+            HashMap<Descriptor, Double> tempMap2;
+            HashMap<Descriptor, Double> tempMap3;
+            HashMap<Descriptor, Double> tempMap4;
 
             DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
                     scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
@@ -266,13 +266,13 @@ public class InteractiveIdentificationService {
             tempMap.putAll(tempMap4);
 
             // sorting the final LinkedHashMap
-            List<Float> mapValues = new ArrayList<>(tempMap.values());
+            List<Double> mapValues = new ArrayList<>(tempMap.values());
             Collections.sort(mapValues, Collections.reverseOrder());
 
-            for (Float dpScore : mapValues) {
-                for (Map.Entry<Descriptor, Float> entry: tempMap.entrySet()) {
-                    float dp1 = entry.getValue();
-                    float dp2 = dpScore;
+            for (Double dpScore : mapValues) {
+                for (Map.Entry<Descriptor, Double> entry: tempMap.entrySet()) {
+                    double dp1 = entry.getValue();
+                    double dp2 = dpScore;
 
                     if (dp1 == dp2)
                         descriptorsScoresMap.put(entry.getKey(), dpScore);
@@ -285,11 +285,11 @@ public class InteractiveIdentificationService {
     }
 
     @Deprecated
-    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapUsingNThreads(
+    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMapUsingNThreads(
             List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
             boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
             boolean withGlobalWeigth) throws InterruptedException {
-        LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
+        LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
 
@@ -303,7 +303,7 @@ public class InteractiveIdentificationService {
             }
             subLists.add(descriptors.subList(slicer * i, descriptors.size()));
 
-            HashMap<Descriptor, Float> tempMap = new HashMap<>();
+            HashMap<Descriptor, Double> tempMap = new HashMap<>();
 
             DescriptorScoreMapRunnable[] runnables = new DescriptorScoreMapRunnable[nThreads];
             Thread[] threads = new Thread[nThreads];
@@ -324,13 +324,13 @@ public class InteractiveIdentificationService {
                 tempMap.putAll(runnables[j].getTempMap());
 
             // sorting the final LinkedHashMap
-            List<Float> mapValues = new ArrayList<>(tempMap.values());
+            List<Double> mapValues = new ArrayList<>(tempMap.values());
             Collections.sort(mapValues, Collections.reverseOrder());
 
-            for (Float dpScore : mapValues) {
-                for (Map.Entry<Descriptor, Float> entry : tempMap.entrySet()) {
-                    float dp1 = entry.getValue();
-                    float dp2 = dpScore;
+            for (Double dpScore : mapValues) {
+                for (Map.Entry<Descriptor, Double> entry : tempMap.entrySet()) {
+                    double dp1 = entry.getValue();
+                    double dp2 = dpScore;
 
                     if (dp1 == dp2)
                         descriptorsScoresMap.put(entry.getKey(), dpScore);
@@ -357,11 +357,11 @@ public class InteractiveIdentificationService {
      * @param withGlobalWeigth
      * @return {@link float} the discriminant power of this descriptor
      */
-    public static float getDiscriminantPower(Descriptor descriptor, List<Item> items, float value,
+    public static double getDiscriminantPower(Descriptor descriptor, List<Item> items, double value,
                                              int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
                                              DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                              boolean withGlobalWeigth) {
-        float out = 0;
+        double out = 0;
         int cpt = 0;
 
         if (descriptor.isQuantitativeType()) {
@@ -369,7 +369,7 @@ public class InteractiveIdentificationService {
                 Item item1 = items.get(i1);
                 for (int i2 = i1 + 1; i2 < items.size(); i2++) {
                     Item item2 = items.get(i2);
-                    float tmp;
+                    double tmp;
                     tmp = compareWithQuantitativeDescriptor((QuantitativeDescriptor) descriptor, item1,
                             item2, scoreMethod, dependencyTree, descriptionMatrix, descriptorNodeMap);
                     if (tmp >= 0) {
@@ -547,11 +547,11 @@ public class InteractiveIdentificationService {
      * @param descriptorNodeMap
      * @return float
      */
-    private static float compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
+    private static double compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
                                                            Item item2, int scoreMethod, DescriptorTree dependencyTree,
                                                            DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
-        float out;
-        float commonPercentage; // percentage of common values which are
+        double out;
+        double commonPercentage; // percentage of common values which are
         // shared
 
         DescriptorNode node;
@@ -673,12 +673,12 @@ public class InteractiveIdentificationService {
      * @param max2
      * @return the common percentage
      */
-    private static float calculateCommonPercentage(double min1, double max1, double min2, double max2) {
+    private static double calculateCommonPercentage(double min1, double max1, double min2, double max2) {
         double minLowerTmp;
         double maxUpperTmp;
         double minUpperTmp;
         double maxLowerTmp;
-        float res;
+        double res;
 
         if (min1 <= min2) {
             minLowerTmp = min1;
@@ -696,7 +696,7 @@ public class InteractiveIdentificationService {
             maxLowerTmp = max1;
         }
 
-        res = new Double((maxLowerTmp - minUpperTmp) / (maxUpperTmp - minLowerTmp)).floatValue();
+        res = (maxLowerTmp - minUpperTmp) / (maxUpperTmp - minLowerTmp);
 
         if (res < 0) {
             res = 0;

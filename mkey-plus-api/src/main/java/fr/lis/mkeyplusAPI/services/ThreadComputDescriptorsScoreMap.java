@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
 public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
     private Descriptor descriptor = null;
-    private float discriminantPower = -1;
+    private double discriminantPower = -1;
     private List<Item> items = null;
     private DescriptorTree dependencyTree = null;
     private boolean considerChildScores = true;
