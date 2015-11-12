@@ -120,9 +120,9 @@ public class InteractiveIdentificationService {
 
             for (Descriptor descriptor : descriptors) {
                 if (descriptor.isCategoricalType()
-                        && ((CategoricalDescriptor) descriptor).getStates().size() <= 0)
+                        && ((CategoricalDescriptor) descriptor).getStates().size() <= 0) {
                     discriminantPower = 0;
-                else {
+                } else {
                     discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
                             considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,
                             withGlobalWeigth);
@@ -136,12 +136,13 @@ public class InteractiveIdentificationService {
             Collections.sort(mapValues, Collections.reverseOrder());
 
             for (Float dpScore : mapValues) {
-                for (Descriptor desc : tempMap.keySet()) {
-                    float dp1 = tempMap.get(desc);
+                for (Map.Entry<Descriptor, Float> entry : tempMap.entrySet()) {
+                    float dp1 = entry.getValue();
                     float dp2 = dpScore;
 
-                    if (dp1 == dp2)
-                        descriptorsScoresMap.put(desc, dpScore);
+                    if (dp1 == dp2) {
+                        descriptorsScoresMap.put(entry.getKey(), dpScore);
+                    }
                 }
             }
         } else {
@@ -269,12 +270,12 @@ public class InteractiveIdentificationService {
             Collections.sort(mapValues, Collections.reverseOrder());
 
             for (Float dpScore : mapValues) {
-                for (Descriptor desc : tempMap.keySet()) {
-                    float dp1 = tempMap.get(desc);
+                for (Map.Entry<Descriptor, Float> entry: tempMap.entrySet()) {
+                    float dp1 = entry.getValue();
                     float dp2 = dpScore;
 
                     if (dp1 == dp2)
-                        descriptorsScoresMap.put(desc, dpScore);
+                        descriptorsScoresMap.put(entry.getKey(), dpScore);
                 }
             }
 
@@ -327,12 +328,12 @@ public class InteractiveIdentificationService {
             Collections.sort(mapValues, Collections.reverseOrder());
 
             for (Float dpScore : mapValues) {
-                for (Descriptor desc : tempMap.keySet()) {
-                    float dp1 = tempMap.get(desc);
+                for (Map.Entry<Descriptor, Float> entry : tempMap.entrySet()) {
+                    float dp1 = entry.getValue();
                     float dp2 = dpScore;
 
                     if (dp1 == dp2)
-                        descriptorsScoresMap.put(desc, dpScore);
+                        descriptorsScoresMap.put(entry.getKey(), dpScore);
                 }
             }
 
@@ -885,9 +886,10 @@ public class InteractiveIdentificationService {
         float result = 0;
 
         // For each descriptor in this reference description
-        for (Descriptor descriptor : descriptionElements.keySet()) {
+        for (Map.Entry<Descriptor, DescriptionElementState> descriptionElementEntry : descriptionElements.entrySet()) {
             // Get the discardedItem and the reference description DescriptionElementState for this descriptor
-            DescriptionElementState descriptionElement = descriptionElements.get(descriptor);
+            DescriptionElementState descriptionElement = descriptionElementEntry.getValue();
+            final Descriptor descriptor = descriptionElementEntry.getKey();
             DescriptionElementState ItemdescriptionElement = ItemdescriptionElements.get(descriptor);
             // CategoricalType
             if (descriptor.isCategoricalType()) {

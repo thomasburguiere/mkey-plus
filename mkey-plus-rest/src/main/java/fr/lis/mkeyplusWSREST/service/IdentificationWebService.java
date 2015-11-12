@@ -1,18 +1,8 @@
 package fr.lis.mkeyplusWSREST.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
+import fr.lis.mkeyplusAPI.services.InteractiveIdentificationService;
+import fr.lis.mkeyplusWSREST.model.JsonDescriptor;
+import fr.lis.mkeyplusWSREST.model.JsonItem;
 import fr.lis.xper3API.model.Dataset;
 import fr.lis.xper3API.model.Description;
 import fr.lis.xper3API.model.DescriptionElementState;
@@ -23,13 +13,20 @@ import fr.lis.xper3API.model.Item;
 import fr.lis.xper3API.model.QuantitativeMeasure;
 import fr.lis.xper3API.model.Resource;
 import fr.lis.xper3API.model.State;
-
+import fr.lis.xper3API.services.DatasetManagementService;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import fr.lis.xper3API.services.DatasetManagementService;
-import fr.lis.mkeyplusAPI.services.InteractiveIdentificationService;
-import fr.lis.mkeyplusWSREST.model.JsonDescriptor;
-import fr.lis.mkeyplusWSREST.model.JsonItem;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Interactive Identification webservice using REST protocol
@@ -68,7 +65,7 @@ public class IdentificationWebService {
         List<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
 
-        DescriptorTree dependencyTreeInSDD = new DescriptorTree();
+        DescriptorTree dependencyTreeInSDD;
 
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
@@ -155,9 +152,9 @@ public class IdentificationWebService {
             if (descriptionMapList != null) {
                 for (Map<String, Object> descriptionMap : descriptionMapList) {
                     Description description = new Description();
-                    for (String descriptorId : descriptionMap.keySet()) {
+                    for (Map.Entry<String, Object> descriptionMapEntry : descriptionMap.entrySet()) {
                         Descriptor descriptor = null;
-                        Integer id = Integer.parseInt(descriptorId);
+                        Integer id = Integer.parseInt(descriptionMapEntry.getKey());
                         // For each remainingDescriptors
                         for (int i = 0; i < remainingDescriptors.size(); i++) {
                             if (((int) remainingDescriptors.get(i).getId()) == id) {
@@ -170,15 +167,14 @@ public class IdentificationWebService {
                             return "false";
                         }
 
-                        // Creat the descriptionElementMap for this descriptor
-                        Map<String, Object> descriptionElementStateMap = (Map<String, Object>) descriptionMap
-                                .get(descriptorId);
+                        // Create the descriptionElementMap for this descriptor
+                        Map<String, Object> descriptionElementStateMap = (Map<String, Object>) descriptionMapEntry.getValue();
                         DescriptionElementState descriptionElementState = new DescriptionElementState();
 
                         if (descriptor.isCategoricalType()) {
 
                             // Warning only Object class is supported, casting directly to Integer or String fire
-                            // exeption
+                            // exception
                             ArrayList<Object> stateIds = (ArrayList<Object>) descriptionElementStateMap
                                     .get("selectedStatesNames");
                             for (Object stateId : stateIds) {
@@ -222,8 +218,8 @@ public class IdentificationWebService {
                                 dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
                                 descriptionMatrix, descriptorNodeMap, withGlobalWeigth);
 
-                for (Descriptor descriptor : descriptorScoreMap.keySet())
-                    descriptorIdScoreMap.put(descriptor.getId(), descriptorScoreMap.get(descriptor));
+                for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet())
+                    descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
                 data.put("descriptorScoreMap", descriptorIdScoreMap);
             }
             try {
@@ -254,7 +250,7 @@ public class IdentificationWebService {
                                  @QueryParam("sddURL") String sddURLString, @QueryParam("callback") String callback) {
         String jsonData = null;
         Dataset datasetInSDD;
-        DescriptorTree dependencyTreeInSDD = new DescriptorTree();
+        DescriptorTree dependencyTreeInSDD;
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
 
         // Get the data set in the session manager
@@ -355,7 +351,7 @@ public class IdentificationWebService {
         Dataset datasetInSDD;
         List<Item> itemsInSDD;
         List<Descriptor> descriptorsInSDD;
-        DescriptorTree dependencyTreeInSDD = new DescriptorTree();
+        DescriptorTree dependencyTreeInSDD;
         HashMap<String, Object> descriptiveData = new LinkedHashMap<>();
         // Get the data set in the session manager
         // Put Dataset independant an Unique information in the Json Format
@@ -381,8 +377,8 @@ public class IdentificationWebService {
                         descriptorNodeMap, withGlobalWeigth);
 
                 // as descriptorScoreMap return <descriptor,float> and we need <descriptor.id(long),Float>
-                for (Descriptor descriptor : descriptorScoreMap.keySet()) {
-                    descriptorIdScoreMap.put(descriptor.getId(), descriptorScoreMap.get(descriptor));
+                for (Map.Entry<Descriptor, Float> descriptorScoreMapEntry : descriptorScoreMap.entrySet()) {
+                    descriptorIdScoreMap.put(descriptorScoreMapEntry.getKey().getId(), descriptorScoreMapEntry.getValue());
                 }
                 // put the descriptorIdScoreMap in the Json
                 descriptiveData.put("descriptorsScoreMap", descriptorIdScoreMap);
@@ -501,10 +497,10 @@ public class IdentificationWebService {
             if (descriptionMapList != null) {
                 for (Map<String, Object> descriptionMap : descriptionMapList) {
 
-                    for (String descriptorId : descriptionMap.keySet()) {
+                    for (Map.Entry<String, Object> descriptionMapEntry : descriptionMap.entrySet()) {
                         Descriptor descriptor = null;
                         // For each remainingDescriptors
-                        Integer id = Integer.parseInt(descriptorId);
+                        Integer id = Integer.parseInt(descriptionMapEntry.getKey());
                         for (int i = 0; i < descriptorsInSDD.size(); i++) {
                             if (((int) descriptorsInSDD.get(i).getId()) == id) {
                                 descriptor = descriptorsInSDD.get(i);
@@ -513,8 +509,7 @@ public class IdentificationWebService {
                         }
 
                         // Creat the descriptionElementMap for this descriptor
-                        Map<String, Object> descriptionElementStateMap = (Map<String, Object>) descriptionMap
-                                .get(descriptorId);
+                        Map<String, Object> descriptionElementStateMap = (Map<String, Object>) descriptionMapEntry.getValue();
                         DescriptionElementState descriptionElementState = new DescriptionElementState();
 
                         if (descriptor != null) {
@@ -582,7 +577,7 @@ public class IdentificationWebService {
 
         String jsonData = null;
         Dataset datasetInSDD;
-        DescriptorTree dependencyTreeInSDD = new DescriptorTree();
+        DescriptorTree dependencyTreeInSDD;
         List<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
         LinkedHashMap<Long, Float> similarityMap;
@@ -702,7 +697,7 @@ public class IdentificationWebService {
         List<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
         List<Descriptor> discardedDescriptor = new ArrayList<>();
-        DescriptorTree dependencyTreeInSDD = new DescriptorTree();
+        DescriptorTree dependencyTreeInSDD;
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
 
@@ -744,7 +739,7 @@ public class IdentificationWebService {
             if (descriptionMapList != null) {
                 for (Map<String, Object> descriptionMap : descriptionMapList) {
                     if (itemsInSDD.size() > 0) {
-                        Integer id = (Integer) ((Map<String, Integer>) descriptionMap.get("descriptor"))
+                        Integer id = ((Map<String, Integer>) descriptionMap.get("descriptor"))
                                 .get("id");
                         Descriptor descriptor = null;
                         for (Descriptor descriptorInList : descriptorsInSDD) {
@@ -809,8 +804,9 @@ public class IdentificationWebService {
                             InteractiveIdentificationService.SCORE_XPER, true, descriptionMatrix,
                             descriptorNodeMap, true);
 
-            for (Descriptor descriptor : descriptorScoreMap.keySet())
-                descriptorIdScoreMap.put(descriptor.getId(), descriptorScoreMap.get(descriptor));
+            for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
+                descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
+            }
 
             data.put("descriptorScoreMap", descriptorIdScoreMap);
 
