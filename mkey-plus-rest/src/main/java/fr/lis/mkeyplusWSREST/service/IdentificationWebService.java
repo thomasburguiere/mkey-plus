@@ -843,7 +843,7 @@ public class IdentificationWebService {
                 data.put("Items", manager.getJsonItem(sddUrlString));
                 data.put("Descriptors", manager.getJsonDescriptor(sddUrlString));
                 data.put("States", manager.getJsonState(sddUrlString));
-                data.put("Resources", manager.JsonResource(sddUrlString));
+                data.put("Resources", manager.jsonResource(sddUrlString));
                 data.put("DependancyTable", manager.getDependancyTable(sddUrlString));
                 data.put("DescriptorRootId", manager.getRootDescriptorId(sddUrlString));
                 data.put("InvertedDependancyTable", manager.getInvertedDependancyTable(sddUrlString));

@@ -19,7 +19,6 @@ import java.util.concurrent.Callable;
 public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
 
     private Descriptor descriptor = null;
-    private double discriminantPower = -1;
     private List<Item> items = null;
     private DescriptorTree dependencyTree = null;
     private boolean considerChildScores = true;
@@ -45,6 +44,7 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
     public Object[] call() {
         Object[] output = new Object[2];
 
+        double discriminantPower = -1;
         if (descriptor.isCategoricalType() && ((CategoricalDescriptor) descriptor).getStates().size() <= 0) {
             discriminantPower = 0;
         } else {
