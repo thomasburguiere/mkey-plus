@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
  *
  * @author bergamaschi
  */
-public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
+public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
 
     private Descriptor descriptor = null;
     private List<Item> items = null;
@@ -25,12 +25,12 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
     private int scoreMethod = -1;
     private DescriptionElementState[][] descriptionMatrix;
     private DescriptorNode[] descriptorNodeMap;
-    private boolean withGlobalWeigth;
+    private boolean withGlobalWeight;
 
-    public ThreadComputDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
-                                           boolean considerChildScores, Descriptor descriptor,
-                                           DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                           boolean withGlobalWeight) {
+    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+                                            boolean considerChildScores, Descriptor descriptor,
+                                            DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+                                            boolean withGlobalWeight) {
         this.descriptor = descriptor;
         this.items = items;
         this.dependencyTree = dependencyTree;
@@ -38,19 +38,19 @@ public class ThreadComputDescriptorsScoreMap implements Callable<Object[]> {
         this.scoreMethod = scoreMethod;
         this.descriptionMatrix = descriptionMatrix;
         this.descriptorNodeMap = descriptorNodeMap;
-        this.withGlobalWeigth = withGlobalWeight;
+        this.withGlobalWeight = withGlobalWeight;
     }
 
     public Object[] call() {
         Object[] output = new Object[2];
 
-        double discriminantPower = -1;
+        double discriminantPower;
         if (descriptor.isCategoricalType() && ((CategoricalDescriptor) descriptor).getStates().size() <= 0) {
             discriminantPower = 0;
         } else {
             discriminantPower = InteractiveIdentificationService.getDiscriminantPower(descriptor, items, 0,
                     scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,
-                    withGlobalWeigth);
+                    withGlobalWeight);
 
         }
 

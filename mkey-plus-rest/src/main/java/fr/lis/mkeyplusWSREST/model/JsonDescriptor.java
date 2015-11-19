@@ -112,7 +112,7 @@ public class JsonDescriptor {
 	public void setCategoricalType(boolean isCategoricalType) {
 		this.isCategoricalType = isCategoricalType;
 	}
-	
+
 	public long[] getInapplicableState() {
 		return inapplicableState;
 	}

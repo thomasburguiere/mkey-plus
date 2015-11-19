@@ -72,7 +72,7 @@ public class InteractiveIdentificationService {
             Future<Object[]>[] futures = new Future[descriptors.size()];
             int i = 0;
             for (Descriptor descriptor : descriptors) {
-                futures[i] = exec.submit(new ThreadComputDescriptorsScoreMap(items, dependencyTree,
+                futures[i] = exec.submit(new ThreadComputeDescriptorsScoreMap(items, dependencyTree,
                         scoreMethod, considerChildScores, descriptor, descriptionMatrix, descriptorNodeMap,
                         withGlobalWeigth));
                 i++;
