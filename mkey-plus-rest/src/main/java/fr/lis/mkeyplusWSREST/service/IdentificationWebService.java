@@ -46,7 +46,7 @@ public class IdentificationWebService {
      * @param jsonRemainingItemsIDs
      * @param jsonDiscardedDescriptorsIDs
      * @param withScoreMap
-     * @param withGlobalWeigth
+     * @param withGlobalWeight
      * @param callback
      * @return
      */
@@ -59,7 +59,7 @@ public class IdentificationWebService {
             @QueryParam("remainingItemsIDs") String jsonRemainingItemsIDs,
             @QueryParam("discardedDescriptorsIDs") String jsonDiscardedDescriptorsIDs,
             @QueryParam("withScoreMap") Boolean withScoreMap,
-            @QueryParam("withGlobalWeigth") Boolean withGlobalWeigth, @QueryParam("callback") String callback) {
+            @QueryParam("withGlobalWeight") Boolean withGlobalWeight, @QueryParam("callback") String callback) {
         String jsonData = null;
         Dataset datasetInSDD;
         List<Item> itemsInSDD = new ArrayList<>();
@@ -216,7 +216,7 @@ public class IdentificationWebService {
                 HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                         .getDescriptorsScoreMapFuture(remainingDescriptors, remainingItems,
                                 dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
-                                descriptionMatrix, descriptorNodeMap, withGlobalWeigth);
+                                descriptionMatrix, descriptorNodeMap, withGlobalWeight);
 
                 for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet())
                     descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
