@@ -1,7 +1,13 @@
 package fr.lis.mkeyplusWSREST.service;
 
+import com.google.common.io.Closeables;
 import fr.lis.mkeyplusWSREST.constant.Constant;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,12 +20,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import java.nio.charset.Charset;
 
 // Plain old Java Object it does not extend as class or implements 
 // an interface
@@ -76,6 +77,7 @@ public class HistoryWebService {
         // Image Downloading -------------------------
         URL url;
         if (!"none".equals(urlImageUser)) {
+            OutputStream os = null;
             try {
                 url = new URL(urlImageUser);
 
@@ -85,7 +87,7 @@ public class HistoryWebService {
                         + fileName.substring(fileName.lastIndexOf("."));
 
                 InputStream is = url.openStream();
-                OutputStream os = new FileOutputStream(destName);
+                os = new FileOutputStream(destName);
 
                 byte[] b = new byte[2048];
                 int length;
@@ -102,6 +104,14 @@ public class HistoryWebService {
                 e.printStackTrace();
                 status = "Erreur";
                 message = "Error during the download of : " + urlImageUser;
+            } finally {
+                if (os != null) {
+                    try {
+                        Closeables.close(os, true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         // end Image Downloading -------------------------
@@ -161,7 +171,7 @@ public class HistoryWebService {
         data_filename = data_filename.replace("\\", "\\\\");
         try {
             InputStream ips = new FileInputStream(data_filename);
-            InputStreamReader ipsr = new InputStreamReader(ips);
+            InputStreamReader ipsr = new InputStreamReader(ips, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(ipsr);
             String ligne;
             while ((ligne = br.readLine()) != null) {
