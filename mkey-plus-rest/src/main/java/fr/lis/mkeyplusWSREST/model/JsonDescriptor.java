@@ -13,9 +13,9 @@ public class JsonDescriptor {
 	private String unit;
 
 	private long[] resourceIds;
-	private boolean isCategoricalType = false;
-	private boolean isQuantitativeType = false;
-	private boolean isCalculatedType = false;
+	private boolean categoricalType = false;
+	private boolean quantitativeType = false;
+	private boolean calculatedType = false;
 	private long id;
 
 	public JsonDescriptor(Descriptor descriptor) {
@@ -33,31 +33,31 @@ public class JsonDescriptor {
 			for (int j = 0; j < ((CategoricalDescriptor) descriptor).getStates().size(); j++) {
 				stateIds[j] = ((CategoricalDescriptor) descriptor).getStates().get(j).getId();
 			}
-			this.isCategoricalType = true;
+			this.categoricalType = true;
 		}
 		else if ( descriptor.isQuantitativeType() ){
 			this.unit = ((QuantitativeDescriptor)descriptor).getMeasurementUnit();
-			this.isQuantitativeType = true;
+			this.quantitativeType = true;
 		}
 		else if ( descriptor.isCalculatedType() ){
-			this.isCalculatedType = true;
+			this.calculatedType = true;
 		}
 	}
 
 	public boolean isCalculatedType(){
-		return isCalculatedType;
+		return calculatedType;
 	}
-	
+
 	public boolean isQuantitativeType() {
-		return isQuantitativeType;
+		return quantitativeType;
 	}
 
 	public void setCalculatedType(boolean isCalculatedType ){
-		this.isCalculatedType = isCalculatedType;
+		this.calculatedType = isCalculatedType;
 	}
-	
+
 	public void setQuantitativeType(boolean isQuantitativeType) {
-		this.isQuantitativeType = isQuantitativeType;
+		this.quantitativeType = isQuantitativeType;
 	}
 
 	public long getId() {
@@ -109,11 +109,11 @@ public class JsonDescriptor {
 	}
 
 	public boolean isCategoricalType() {
-		return isCategoricalType;
+		return categoricalType;
 	}
 
 	public void setCategoricalType(boolean isCategoricalType) {
-		this.isCategoricalType = isCategoricalType;
+		this.categoricalType = isCategoricalType;
 	}
 
 	public long[] getInapplicableState() {
