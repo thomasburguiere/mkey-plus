@@ -91,8 +91,9 @@ public class InteractiveIdentificationService {
                 exec.shutdown();
             }
         } else {
-            for (Descriptor descriptor : descriptors)
+            for (Descriptor descriptor : descriptors) {
                 descriptorsScoresMap.put(descriptor, (float) -1);
+            }
         }
 
         return descriptorsScoresMap;
@@ -147,8 +148,9 @@ public class InteractiveIdentificationService {
                 }
             }
         } else {
-            for (Descriptor descriptor : descriptors)
+            for (Descriptor descriptor : descriptors) {
                 descriptorsScoresMap.put(descriptor, (double) -1);
+            }
         }
 
         return descriptorsScoresMap;
@@ -156,14 +158,14 @@ public class InteractiveIdentificationService {
 
     @Deprecated
     private static class DescriptorScoreMapRunnable implements Runnable {
-        private List<Descriptor> descriptorList;
-        private List<Item> items;
-        private int scoreMethod;
-        private boolean considerChildScores;
-        private DescriptorTree dependencyTree;
-        private HashMap<Descriptor, Double> tempMap;
-        private DescriptionElementState[][] descriptionMatrix;
-        private boolean withGlobalWeight;
+        private final List<Descriptor> descriptorList;
+        private final List<Item> items;
+        private final int scoreMethod;
+        private final boolean considerChildScores;
+        private final DescriptorTree dependencyTree;
+        private final HashMap<Descriptor, Double> tempMap;
+        private final DescriptionElementState[][] descriptionMatrix;
+        private final boolean withGlobalWeight;
 
         public DescriptorScoreMapRunnable(List<Descriptor> descriptorList, List<Item> items, int scoreMethod,
                                           boolean considerChildScores, DescriptorTree dependencyTree,
@@ -183,9 +185,9 @@ public class InteractiveIdentificationService {
             double discriminantPower;
             for (Descriptor descriptor : descriptorList) {
                 if (descriptor.isCategoricalType()
-                        && ((CategoricalDescriptor) descriptor).getStates().size() <= 0)
+                        && ((CategoricalDescriptor) descriptor).getStates().size() <= 0) {
                     discriminantPower = 0;
-                else {
+                } else {
                     discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
                             considerChildScores, dependencyTree, descriptionMatrix, null, withGlobalWeight);
                 }
@@ -275,8 +277,9 @@ public class InteractiveIdentificationService {
                     double dp1 = entry.getValue();
                     double dp2 = dpScore;
 
-                    if (dp1 == dp2)
+                    if (dp1 == dp2) {
                         descriptorsScoresMap.put(entry.getKey(), dpScore);
+                    }
                 }
             }
 
@@ -315,14 +318,17 @@ public class InteractiveIdentificationService {
                 threads[j] = new Thread(runnables[j]);
             }
 
-            for (int j = 0; j < nThreads; j++)
+            for (int j = 0; j < nThreads; j++) {
                 threads[j].start();
+            }
 
-            for (int j = 0; j < nThreads; j++)
+            for (int j = 0; j < nThreads; j++) {
                 threads[j].join();
+            }
 
-            for (int j = 0; j < nThreads; j++)
+            for (int j = 0; j < nThreads; j++) {
                 tempMap.putAll(runnables[j].getTempMap());
+            }
 
             // sorting the final LinkedHashMap
             List<Double> mapValues = new ArrayList<>(tempMap.values());
@@ -333,8 +339,9 @@ public class InteractiveIdentificationService {
                     double dp1 = entry.getValue();
                     double dp2 = dpScore;
 
-                    if (dp1 == dp2)
+                    if (dp1 == dp2) {
                         descriptorsScoresMap.put(entry.getKey(), dpScore);
+                    }
                 }
             }
 
@@ -401,7 +408,9 @@ public class InteractiveIdentificationService {
         }
         if (out != 0 && cpt != 0)
             // to normalize the number
+        {
             out = out / cpt;
+        }
 
         if (withGlobalWeigth) {
             if (out != 0) {
@@ -414,10 +423,11 @@ public class InteractiveIdentificationService {
         // recursive DP calculation of child descriptors
 
         DescriptorNode node;
-        if (descriptorNodeMap != null)
+        if (descriptorNodeMap != null) {
             node = descriptorNodeMap[(int) descriptor.getId()];
-        else
+        } else {
             node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
+        }
 
         if (considerChildScores && node != null) {
             for (DescriptorNode childNode : node.getChildNodes()) {
@@ -458,13 +468,15 @@ public class InteractiveIdentificationService {
         float other = 0;
 
         DescriptorNode node;
-        if (descriptorNodeMap == null)
+        if (descriptorNodeMap == null) {
             node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
-        else
+        } else {
             node = descriptorNodeMap[(int) descriptor.getId()];
+        }
 
-        if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
+        if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix))) {
             return -1;
+        }
 
         DescriptionElementState des1;
         DescriptionElementState des2;
@@ -486,10 +498,12 @@ public class InteractiveIdentificationService {
         // isAlwaysDescribed = false;
         // }
 
-        if (des1.isUnknown())
+        if (des1.isUnknown()) {
             statesList1 = everyStates;
-        if (des2.isUnknown())
+        }
+        if (des2.isUnknown()) {
             statesList2 = everyStates;
+        }
 
         for (State state : everyStates) {
             if (statesList1.contains(state)) {
@@ -556,13 +570,15 @@ public class InteractiveIdentificationService {
         // shared
 
         DescriptorNode node;
-        if (descriptorNodeMap == null)
+        if (descriptorNodeMap == null) {
             node = dependencyTree.getNodeContainingDescriptor(descriptor.getId(), false);
-        else
+        } else {
             node = descriptorNodeMap[(int) descriptor.getId()];
+        }
 
-        if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix)))
+        if ((isInapplicable(node, item1, descriptionMatrix) || isInapplicable(node, item2, descriptionMatrix))) {
             return -1;
+        }
 
         DescriptionElementState des1;
         DescriptionElementState des2;
@@ -733,8 +749,9 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getStates();
 
                         if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
-                                checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR))
+                                checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR)) {
                             itemsToRemove.add(item);
+                        }
 
                     } else if (descriptor.isQuantitativeType()) {
                         QuantitativeMeasure submittedMeasure = description.getDescriptionElement(
@@ -743,8 +760,9 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
 
                         if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
-                                COMPARISON_OPERATOR_CONTAINS))
+                                COMPARISON_OPERATOR_CONTAINS)) {
                             itemsToRemove.add(item);
+                        }
                     }
                 }
             }
@@ -768,11 +786,14 @@ public class InteractiveIdentificationService {
                                                   Collection<State> checkedStatesInReferenceDescription, int logicalOperator) {
         int commonValues = 0;
 
-        for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription)
-            for (State checkedStateInReferenceDescription : checkedStatesInReferenceDescription)
+        for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription) {
+            for (State checkedStateInReferenceDescription : checkedStatesInReferenceDescription) {
                 if (checkedStateInReferenceDescription
-                        .hasSameNameAsState(selectedStateInSubmittedDescription))
+                        .hasSameNameAsState(selectedStateInSubmittedDescription)) {
                     commonValues++;
+                }
+            }
+        }
 
         switch (logicalOperator) {
             case LOGICAL_OPERATOR_AND:
@@ -799,10 +820,11 @@ public class InteractiveIdentificationService {
             case COMPARISON_OPERATOR_CONTAINS:
 
                 if ((referenceMeasure.isNotFilled() || submittedMeasure.isNotFilled())
-                        && referenceMeasure.getMean() != null && submittedMeasure.getMean() != null)
+                        && referenceMeasure.getMean() != null && submittedMeasure.getMean() != null) {
                     return referenceMeasure.getMean().equals(submittedMeasure.getMean());
-                else
+                } else {
                     return referenceMeasure.contains(submittedMeasure);
+                }
 
             case COMPARISON_OPERATOR_GREATER_THAN:
                 return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, true);

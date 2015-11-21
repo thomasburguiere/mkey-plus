@@ -359,8 +359,9 @@ public enum SessionSddManager {
 
         } else {
             dependencyTree.setType(DescriptorTree.DEPENDENCY_TYPE);
-            for (Descriptor descriptor : dataset.getDescriptors())
+            for (Descriptor descriptor : dataset.getDescriptors()) {
                 dependencyTree.addNode(new DescriptorNode(descriptor));
+            }
             dataset.addDescriptorTree(dependencyTree);
         }
 

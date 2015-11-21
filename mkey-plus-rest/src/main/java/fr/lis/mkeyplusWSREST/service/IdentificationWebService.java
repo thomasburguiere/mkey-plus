@@ -124,8 +124,9 @@ public class IdentificationWebService {
                             }
                         }
                         // If not discarded add to remainingDescriptors
-                        if (!isDiscarded)
+                        if (!isDiscarded) {
                             remainingDescriptors.add(descriptorInSDD);
+                        }
                     }
                 } else {
                     remainingDescriptors = descriptorsInSDD;
@@ -219,8 +220,9 @@ public class IdentificationWebService {
                                 dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
                                 descriptionMatrix, descriptorNodeMap, withGlobalWeight);
 
-                for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet())
+                for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
                     descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
+                }
                 data.put("descriptorScoreMap", descriptorIdScoreMap);
             }
             try {
@@ -231,8 +233,9 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
         return jsonData;
     }
 
@@ -329,8 +332,9 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
         return jsonData;
     }
 
@@ -398,8 +402,9 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonDescriptiveData + ")";
+        }
         return jsonDescriptiveData;
     }
 
@@ -418,8 +423,9 @@ public class IdentificationWebService {
             return "{error}";
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "('youlose')";
+        }
         return "youwin";
     }
 
@@ -553,8 +559,9 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
         return jsonData;
     }
 
@@ -672,8 +679,9 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
         return jsonData;
     }
 
@@ -818,8 +826,9 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
         return jsonData;
     }
 
@@ -908,8 +917,9 @@ public class IdentificationWebService {
      */
     private List<JsonDescriptor> createJsonDescriptorList(Iterable<Descriptor> descriptorList) {
         List<JsonDescriptor> jsonDescriptors = new ArrayList<>();
-        for (Descriptor descriptor : descriptorList)
+        for (Descriptor descriptor : descriptorList) {
             jsonDescriptors.add(new JsonDescriptor(descriptor));
+        }
         return jsonDescriptors;
     }
 
@@ -921,8 +931,9 @@ public class IdentificationWebService {
      */
     private List<JsonItem> createJsonItemList(Iterable<Item> itemList) {
         List<JsonItem> jsonItems = new ArrayList<>();
-        for (Item item : itemList)
+        for (Item item : itemList) {
             jsonItems.add(new JsonItem(item));
+        }
         return jsonItems;
     }
 

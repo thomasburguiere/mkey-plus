@@ -24,13 +24,15 @@ public class JsonDescriptor {
 		this.detail = descriptor.getDetail();
 		this.resourceIds = new long[descriptor.getResources().size()];
 		//Set resources
-		for (int i = 0; i < descriptor.getResources().size(); i++)
+		for (int i = 0; i < descriptor.getResources().size(); i++) {
 			this.resourceIds[i] = descriptor.getResources().get(i).getId();
+		}
 		if (descriptor.isCategoricalType()) {
 			//Set States
 			stateIds = new long[((CategoricalDescriptor) descriptor).getStates().size()];
-			for (int j = 0; j < ((CategoricalDescriptor) descriptor).getStates().size(); j++)
+			for (int j = 0; j < ((CategoricalDescriptor) descriptor).getStates().size(); j++) {
 				stateIds[j] = ((CategoricalDescriptor) descriptor).getStates().get(j).getId();
+			}
 			this.isCategoricalType = true;
 		}
 		else if ( descriptor.isQuantitativeType() ){

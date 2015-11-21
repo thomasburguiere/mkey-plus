@@ -144,8 +144,9 @@ public class HistoryWebService {
 
         jsonData = "{ 'status' : '" + status + "' , 'message' : '" + message
                 + "' , 'spipollsessionid' : '" + spipollsessionid + "' }";
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
 
         return jsonData;
     }
@@ -202,8 +203,9 @@ public class HistoryWebService {
         // end Creating File -------------------------
         jsonData = "{ 'status' : '" + status + "' , 'data' : " + value.toString()
                 + " ,  'urlimage' : '" + image_url + "' , }";
-        if (callback != null && callback.trim().length() > 0)
+        if (callback != null && callback.trim().length() > 0) {
             return callback + "(" + jsonData + ")";
+        }
 
         return jsonData;
     }
