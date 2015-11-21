@@ -46,7 +46,7 @@ public class JsonState {
 		this.id = state.getId();
 		this.resourceIds = new long[state.getResources().size()];
 		for (int i = 0; i < state.getResources().size(); i++) {
-			this.resourceIds[i] = state.getResources().get(i).getId();
+			resourceIds[i] = state.getResources().get(i).getId();
 		}
 	}
 }

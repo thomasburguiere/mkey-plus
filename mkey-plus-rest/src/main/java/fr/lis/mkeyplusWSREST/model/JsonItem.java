@@ -56,7 +56,7 @@ public class JsonItem {
 		this.id = item.getId();
 		this.resourceIds = new long[item.getResources().size()];
 		for (int i = 0; i < item.getResources().size(); i++){
-			this.resourceIds[i] = item.getResources().get(i).getId();
+			resourceIds[i] = item.getResources().get(i).getId();
 		}
 	}
 }

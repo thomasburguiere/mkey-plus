@@ -50,7 +50,7 @@ public enum SessionSddManager {
     private final ConcurrentHashMap<String, DescriptionElementState[][]> sessionDescriptionMatrixPool = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, DescriptorNode[]> sessionDescriptorNodePool = new ConcurrentHashMap<>();
     // private static Map<String, Boolean[][]> sessionInaplicablePool;
-    private Map<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
+    private final Map<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
     private long lastFlushDataset = 0;
 
 //    private static SessionSddManager instance;
@@ -213,7 +213,7 @@ public enum SessionSddManager {
     public void destroyDataset(String dbName) throws Exception {
         Dataset dataset = sessionDatasetPool.get(dbName);
         if (dataset != null) {
-            this.flushDataset(dbName);
+            flushDataset(dbName);
 //			if (sessionDatasetLastUsed.get(dbName) != null)
 //				sessionDatasetLastUsed.remove(dbName);
 //			sessionDatasetPool.remove(dbName);
@@ -327,6 +327,7 @@ public enum SessionSddManager {
         // }
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private void initializeDatasetContent(Dataset dataset, String keyUrl) {
 
         List<JsonResource> tmpArrayResource = new ArrayList<>();
@@ -336,7 +337,7 @@ public enum SessionSddManager {
         ArrayList<JsonItem> arrayItem = new ArrayList<>(dataset.getItems().size());
 
         DescriptorTree dependencyTree = new DescriptorTree();
-        if (dataset.getDescriptorTrees().size() > 0) {
+        if (!dataset.getDescriptorTrees().isEmpty()) {
             dependencyTree.setType(DescriptorTree.DEPENDENCY_TYPE);
             dependencyTree.setNodes(dataset.getDescriptorTrees().get(0).getNodes());
             for (int i = 1; i < dataset.getDescriptorTrees().size(); i++) {

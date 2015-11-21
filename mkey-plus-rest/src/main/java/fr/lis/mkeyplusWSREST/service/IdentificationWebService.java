@@ -51,7 +51,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SizeReplaceableByIsEmpty"})
     @Path("/getRemainingItemsAndDescriptorsUsingIDs")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -110,7 +110,7 @@ public class IdentificationWebService {
 
             // Get the remaining Descriptors
             if (discardedDescriptorsIDs != null) {
-                if (discardedDescriptorsIDs.size() > 0) {
+                if (!discardedDescriptorsIDs.isEmpty()) {
                     // For every descriptor in SDD
                     for (Descriptor descriptorInSDD : descriptorsInSDD) {
                         boolean isDiscarded = false;
@@ -233,7 +233,7 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
         return jsonData;
@@ -247,6 +247,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     @Path("/getDescription")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -304,7 +305,7 @@ public class IdentificationWebService {
 
                     // if categorical descriptor
                     if (descriptionElement.getStates() != null
-                            && descriptionElement.getStates().size() > 0) {
+                            && !descriptionElement.getStates().isEmpty()) {
                         // prune states ref
                         for (State s : descriptionElement.getStates()) {
                             s.setResources(new ArrayList<Resource>());
@@ -332,7 +333,7 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
         return jsonData;
@@ -346,6 +347,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     @Path("getDescriptiveData")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -402,12 +404,13 @@ public class IdentificationWebService {
         }
 
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonDescriptiveData + ")";
         }
         return jsonDescriptiveData;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     @Path("removeSDD")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -423,7 +426,7 @@ public class IdentificationWebService {
             return "{error}";
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "('youlose')";
         }
         return "youwin";
@@ -439,7 +442,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SizeReplaceableByIsEmpty"})
     @Path("getSimilarityMap")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -559,7 +562,7 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
         return jsonData;
@@ -575,7 +578,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SizeReplaceableByIsEmpty"})
     @Path("getSimilarityMapForRemainingItem")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -679,7 +682,7 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
         return jsonData;
@@ -695,7 +698,7 @@ public class IdentificationWebService {
      * @param callback
      * @return
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SizeReplaceableByIsEmpty"})
     @Path("changeDescriptionHistory")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -747,7 +750,7 @@ public class IdentificationWebService {
             //TODO warning null pointer fire here
             if (descriptionMapList != null) {
                 for (Map<String, Object> descriptionMap : descriptionMapList) {
-                    if (itemsInSDD.size() > 0) {
+                    if (!itemsInSDD.isEmpty()) {
                         Integer id = ((Map<String, Integer>) descriptionMap.get("descriptor"))
                                 .get("id");
                         Descriptor descriptor = null;
@@ -826,7 +829,7 @@ public class IdentificationWebService {
             }
         }
         // returning JSON or JSONP formatted descriptive data
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
         return jsonData;

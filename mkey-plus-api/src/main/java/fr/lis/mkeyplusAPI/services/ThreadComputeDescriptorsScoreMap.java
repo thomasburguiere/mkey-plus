@@ -23,9 +23,9 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
     private DescriptorTree dependencyTree = null;
     private boolean considerChildScores = true;
     private int scoreMethod = -1;
-    private DescriptionElementState[][] descriptionMatrix;
-    private DescriptorNode[] descriptorNodeMap;
-    private boolean withGlobalWeight;
+    private final DescriptionElementState[][] descriptionMatrix;
+    private final DescriptorNode[] descriptorNodeMap;
+    private final boolean withGlobalWeight;
 
     public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
                                             boolean considerChildScores, Descriptor descriptor,

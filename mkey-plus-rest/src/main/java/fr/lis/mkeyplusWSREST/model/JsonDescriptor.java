@@ -25,7 +25,7 @@ public class JsonDescriptor {
 		this.resourceIds = new long[descriptor.getResources().size()];
 		//Set resources
 		for (int i = 0; i < descriptor.getResources().size(); i++) {
-			this.resourceIds[i] = descriptor.getResources().get(i).getId();
+			resourceIds[i] = descriptor.getResources().get(i).getId();
 		}
 		if (descriptor.isCategoricalType()) {
 			//Set States

@@ -25,7 +25,7 @@ public class ThreadComputeSimilarity implements Callable<Object[]> {
         Object[] output = new Object[2];
         Float similarity;
         similarity = InteractiveIdentificationService.computeSimilarity(description, item);
-        output[0] = this.item.getId();
+        output[0] = item.getId();
         output[1] = similarity;
         return output;
     }

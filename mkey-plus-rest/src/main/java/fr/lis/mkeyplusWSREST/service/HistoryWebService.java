@@ -42,6 +42,7 @@ public class HistoryWebService {
         return "Available services : 'send' and 'get'";
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     @Path("/send")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -144,7 +145,7 @@ public class HistoryWebService {
 
         jsonData = "{ 'status' : '" + status + "' , 'message' : '" + message
                 + "' , 'spipollsessionid' : '" + spipollsessionid + "' }";
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
 
@@ -152,6 +153,7 @@ public class HistoryWebService {
     }
 
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     @Path("/get")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -203,7 +205,7 @@ public class HistoryWebService {
         // end Creating File -------------------------
         jsonData = "{ 'status' : '" + status + "' , 'data' : " + value.toString()
                 + " ,  'urlimage' : '" + image_url + "' , }";
-        if (callback != null && callback.trim().length() > 0) {
+        if (callback != null && !callback.trim().isEmpty()) {
             return callback + "(" + jsonData + ")";
         }
 
