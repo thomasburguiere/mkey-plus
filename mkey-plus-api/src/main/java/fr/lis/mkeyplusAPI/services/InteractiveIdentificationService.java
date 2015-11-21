@@ -13,6 +13,7 @@ import fr.lis.xper3API.model.State;
 import fr.lis.xper3API.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -59,7 +60,7 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(List<Descriptor> descriptors,
+    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
                                                                                 List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
                                                                                 DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                                                                 boolean withGlobalWeigth) {
@@ -108,14 +109,14 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMap(List<Descriptor> descriptors,
-                                                                          List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
-                                                                          DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                          boolean withGlobalWeigth) {
+    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
+                                                                           List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+                                                                           DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+                                                                           boolean withGlobalWeigth) {
         LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
-            HashMap<Descriptor, Double> tempMap = new HashMap<>();
+            Map<Descriptor, Double> tempMap = new HashMap<>();
             double discriminantPower;
 
             for (Descriptor descriptor : descriptors) {
@@ -226,7 +227,7 @@ public class InteractiveIdentificationService {
             List<Descriptor> descriptorList4 = descriptors.subList(quarter * 3, descriptors.size());
             // descriptors.
 
-            HashMap<Descriptor, Double> tempMap = new HashMap<>();
+            Map<Descriptor, Double> tempMap = new HashMap<>();
 
             HashMap<Descriptor, Double> tempMap1;
             HashMap<Descriptor, Double> tempMap2;
@@ -303,7 +304,7 @@ public class InteractiveIdentificationService {
             }
             subLists.add(descriptors.subList(slicer * i, descriptors.size()));
 
-            HashMap<Descriptor, Double> tempMap = new HashMap<>();
+            Map<Descriptor, Double> tempMap = new HashMap<>();
 
             DescriptorScoreMapRunnable[] runnables = new DescriptorScoreMapRunnable[nThreads];
             Thread[] threads = new Thread[nThreads];
@@ -661,7 +662,7 @@ public class InteractiveIdentificationService {
      * @param descriptors
      * @return
      */
-    public static boolean getIsInaplicable(DescriptorNode descriptorNode, List<Descriptor> descriptors) {
+    public static boolean getIsInaplicable(DescriptorNode descriptorNode, Collection<Descriptor> descriptors) {
         DescriptorNode descriptorNodeParent = descriptorNode.getParentNode();
         return descriptorNodeParent != null && !descriptors.contains(descriptorNodeParent.getDescriptor());
     }
@@ -720,7 +721,7 @@ public class InteractiveIdentificationService {
      * @return
      */
     public static List<Item> getRemainingItems(Description description, List<Item> remainingItems) {
-        List<Item> itemsToRemove = new ArrayList<>();
+        Collection<Item> itemsToRemove = new ArrayList<>();
         for (Item item : remainingItems) {
             for (Descriptor descriptor : description.getDescriptionElements().keySet()) {
                 if (!item.getDescription().getDescriptionElement(descriptor.getId()).isUnknown()) {
@@ -763,8 +764,8 @@ public class InteractiveIdentificationService {
      * @param logicalOperator
      * @return
      */
-    private static boolean matchDescriptionStates(List<State> selectedStatesInSubmittedDescription,
-                                                  List<State> checkedStatesInReferenceDescription, int logicalOperator) {
+    private static boolean matchDescriptionStates(Iterable<State> selectedStatesInSubmittedDescription,
+                                                  Collection<State> checkedStatesInReferenceDescription, int logicalOperator) {
         int commonValues = 0;
 
         for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription)
@@ -823,7 +824,7 @@ public class InteractiveIdentificationService {
      * @return LinkedHashMap, association between an item and the similarity score
      */
     public static LinkedHashMap<Item, Float> getSimilarityMap(Description description,
-                                                              List<Item> discardedItem) {
+                                                              Iterable<Item> discardedItem) {
         LinkedHashMap<Item, Float> descriptorsScoresMap = new LinkedHashMap<>();
         // for each discardedItem
         for (Item item : discardedItem) {
@@ -840,7 +841,7 @@ public class InteractiveIdentificationService {
      * @return LinkedHashMap, association between an item and the similarity score
      */
     public static LinkedHashMap<Long, Float> getSimilarityMapFuture(Description description,
-                                                                    List<Item> discardedItem) {
+                                                                    Collection<Item> discardedItem) {
         LinkedHashMap<Long, Float> itemSimilarityMap = new LinkedHashMap<>();
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 

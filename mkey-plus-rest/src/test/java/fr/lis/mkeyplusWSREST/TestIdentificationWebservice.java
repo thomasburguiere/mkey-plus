@@ -1,6 +1,7 @@
 package fr.lis.mkeyplusWSREST;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import fr.lis.xper3API.model.CategoricalDescriptor;
 import fr.lis.xper3API.model.Descriptor;
+import fr.lis.xper3API.model.IDatasetObjectWithName;
 import fr.lis.xper3API.model.QuantitativeDescriptor;
 import fr.lis.xper3API.model.State;
 
@@ -60,8 +62,8 @@ public class TestIdentificationWebservice {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = mapper.readValue(jsonData, Map.class);
 
-        List<Map<String, Object>> itemsAsMapsList = (List<Map<String, Object>>) map.get("itemList");
-        List<Map<String, Object>> jsonRemainingItems = new ArrayList<Map<String, Object>>();
+        Iterable<Map<String, Object>> itemsAsMapsList = (List<Map<String, Object>>) map.get("itemList");
+        Collection<Map<String, Object>> jsonRemainingItems = new ArrayList<Map<String, Object>>();
         for (Map<String, Object> itemAsMap : itemsAsMapsList) {
             Map<String, Object> i = new HashMap<String, Object>();
             i.put("name", itemAsMap.get("name"));
@@ -71,10 +73,10 @@ public class TestIdentificationWebservice {
             jsonRemainingItems.add(i);
         }
 
-        List<Map<String, Object>> descriptorsAsMapsList = (List<Map<String, Object>>) map
+        Iterable<Map<String, Object>> descriptorsAsMapsList = (List<Map<String, Object>>) map
                 .get("descriptorList");
         Descriptor d = null;
-        State s = new State("auriculate");
+        IDatasetObjectWithName s = new State("auriculate");
         for (Map<String, Object> descriptorAsMap : descriptorsAsMapsList) {
             if (((String) descriptorAsMap.get("name")).toLowerCase().equals("cauline leaves <base>")) {
                 if ((Boolean) descriptorAsMap.get("categoricalType") == true) {
@@ -86,9 +88,9 @@ public class TestIdentificationWebservice {
             }
         }
 
-        List<Object> descriptionsMapsForJson = new ArrayList<Object>();
+        Collection<Object> descriptionsMapsForJson = new ArrayList<Object>();
         Map<String, Object> descriptionElementStateForJson = new HashMap<String, Object>();
-        List<String> selectedStates = new ArrayList<String>();
+        Collection<String> selectedStates = new ArrayList<String>();
         selectedStates.add(s.getName());
         descriptionElementStateForJson.put("selectedStatesNames", selectedStates);
         descriptionElementStateForJson.put("quantitativeMeasure", null);

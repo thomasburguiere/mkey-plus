@@ -23,6 +23,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,7 +63,7 @@ public class IdentificationWebService {
             @QueryParam("withGlobalWeight") Boolean withGlobalWeight, @QueryParam("callback") String callback) {
         String jsonData = null;
         Dataset datasetInSDD;
-        List<Item> itemsInSDD = new ArrayList<>();
+        Collection<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
 
         DescriptorTree dependencyTreeInSDD;
@@ -175,7 +176,7 @@ public class IdentificationWebService {
 
                             // Warning only Object class is supported, casting directly to Integer or String fire
                             // exception
-                            ArrayList<Object> stateIds = (ArrayList<Object>) descriptionElementStateMap
+                            Iterable<Object> stateIds = (ArrayList<Object>) descriptionElementStateMap
                                     .get("selectedStatesNames");
                             for (Object stateId : stateIds) {
                                 State state = datasetInSDD.getStateById(Long.parseLong(stateId.toString()));
@@ -212,7 +213,7 @@ public class IdentificationWebService {
 
             // Add the ScoreMap in the Json
             if (withScoreMap == null || withScoreMap) {
-                HashMap<Long, Float> descriptorIdScoreMap = new HashMap<>();
+                Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
                 HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                         .getDescriptorsScoreMapFuture(remainingDescriptors, remainingItems,
                                 dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
@@ -258,7 +259,7 @@ public class IdentificationWebService {
 
         if (datasetInSDD != null) {
             Map<String, Object> data = new HashMap<>();
-            ArrayList<Long> innapDescriptorID = new ArrayList<>();
+            List<Long> innapDescriptorID = new ArrayList<>();
 
             List<Item> items = datasetInSDD.getItems();
             int i = 0;
@@ -369,7 +370,7 @@ public class IdentificationWebService {
 
             LinkedHashMap<Descriptor, Float> descriptorScoreMap;
             try {
-                HashMap<Long, Float> descriptorIdScoreMap = new HashMap<>();
+                Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
 
                 descriptorScoreMap = InteractiveIdentificationService.getDescriptorsScoreMapFuture(
                         descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
@@ -451,7 +452,7 @@ public class IdentificationWebService {
 
         if (datasetInSDD != null) {
             Map<String, Object> data = new HashMap<>();
-            List<Item> toRemove = new ArrayList<>();
+            Collection<Item> toRemove = new ArrayList<>();
             Description description = new Description();
 
             // Copy the Item object from the invariant SDD
@@ -517,7 +518,7 @@ public class IdentificationWebService {
 
                                 // Warning only Object class is supported, casting directly to Integer or String fire
                                 // exeption
-                                ArrayList<Object> stateIds = (ArrayList<Object>) descriptionElementStateMap
+                                Iterable<Object> stateIds = (ArrayList<Object>) descriptionElementStateMap
                                         .get("selectedStatesNames");
                                 for (Object stateId : stateIds) {
                                     State state = datasetInSDD.getStateById(Long.parseLong(stateId.toString()));
@@ -579,7 +580,7 @@ public class IdentificationWebService {
         Dataset datasetInSDD;
         DescriptorTree dependencyTreeInSDD;
         List<Item> itemsInSDD = new ArrayList<>();
-        List<Descriptor> descriptorsInSDD = new ArrayList<>();
+        Collection<Descriptor> descriptorsInSDD = new ArrayList<>();
         LinkedHashMap<Long, Float> similarityMap;
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
@@ -701,7 +702,7 @@ public class IdentificationWebService {
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
 
-        List<Map<String, Object>> newDescriptions = new ArrayList<>();
+        Collection<Map<String, Object>> newDescriptions = new ArrayList<>();
 
         if (datasetInSDD != null) {
             Map<String, Object> data = new HashMap<>();
@@ -758,7 +759,7 @@ public class IdentificationWebService {
 
                                 // Warning only Object class is supported, casting directly to Integer or String fire
                                 // exeption
-                                ArrayList<Object> stateIds = (ArrayList<Object>) descriptionMap.get("selectedStates");
+                                Iterable<Object> stateIds = (ArrayList<Object>) descriptionMap.get("selectedStates");
                                 for (Object stateId : stateIds) {
                                     State state = datasetInSDD.getStateById(Long.parseLong(stateId.toString()));
                                     descriptionElementState.addState(state);
@@ -798,7 +799,7 @@ public class IdentificationWebService {
             data.put("discardedDescriptors", createJsonDescriptorList(discardedDescriptor));
             data.put("descriptions", newDescriptions);
 
-            HashMap<Long, Float> descriptorIdScoreMap = new HashMap<>();
+            Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
             HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                     .getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
                             InteractiveIdentificationService.SCORE_XPER, true, descriptionMatrix,
@@ -833,7 +834,7 @@ public class IdentificationWebService {
     // }
     // return jsonResource;
     // }
-    private Dataset getDatasetAndInitialize(String sddUrlString, HashMap<String, Object> data) {
+    private Dataset getDatasetAndInitialize(String sddUrlString, Map<String, Object> data) {
         SessionSddManager manager;
         Dataset dataset = null;
         try {
@@ -905,7 +906,7 @@ public class IdentificationWebService {
      * @param descriptorList List<Descriptor>
      * @return List<JsonDescriptor>
      */
-    private List<JsonDescriptor> createJsonDescriptorList(List<Descriptor> descriptorList) {
+    private List<JsonDescriptor> createJsonDescriptorList(Iterable<Descriptor> descriptorList) {
         List<JsonDescriptor> jsonDescriptors = new ArrayList<>();
         for (Descriptor descriptor : descriptorList)
             jsonDescriptors.add(new JsonDescriptor(descriptor));
@@ -918,7 +919,7 @@ public class IdentificationWebService {
      * @param itemList List<Item>
      * @return List<JsonItem>
      */
-    private List<JsonItem> createJsonItemList(List<Item> itemList) {
+    private List<JsonItem> createJsonItemList(Iterable<Item> itemList) {
         List<JsonItem> jsonItems = new ArrayList<>();
         for (Item item : itemList)
             jsonItems.add(new JsonItem(item));

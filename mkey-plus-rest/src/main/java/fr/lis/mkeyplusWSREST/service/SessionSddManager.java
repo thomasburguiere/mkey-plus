@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fr.lis.xper3API.model.CategoricalDescriptor;
@@ -38,18 +39,18 @@ public enum SessionSddManager {
     /**
      * the actual {@link SessionFactory} pool
      */
-    private final ConcurrentHashMap<String, Dataset> sessionDatasetPool = new ConcurrentHashMap<>();
+    private final Map<String, Dataset> sessionDatasetPool = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, JsonResource[]> sessionResourcePool = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, ArrayList<JsonDescriptor>> sessionDescriptorPool = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, ArrayList<JsonItem>> sessionItemPool = new ConcurrentHashMap<>();
+    private final Map<String, ArrayList<JsonDescriptor>> sessionDescriptorPool = new ConcurrentHashMap<>();
+    private final Map<String, ArrayList<JsonItem>> sessionItemPool = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, JsonState[]> sessionStatePool = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, ArrayList<Long>> sessionRootDescriptorIdPool = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, HashMap<Long, long[]>> sessionDependencyTablePool = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, HashMap<Long, Long>> sessionInvertedDependencyTablePool = new ConcurrentHashMap<>();
+    private final Map<String, ArrayList<Long>> sessionRootDescriptorIdPool = new ConcurrentHashMap<>();
+    private final Map<String, HashMap<Long, long[]>> sessionDependencyTablePool = new ConcurrentHashMap<>();
+    private final Map<String, HashMap<Long, Long>> sessionInvertedDependencyTablePool = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, DescriptionElementState[][]> sessionDescriptionMatrixPool = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, DescriptorNode[]> sessionDescriptorNodePool = new ConcurrentHashMap<>();
     // private static Map<String, Boolean[][]> sessionInaplicablePool;
-    private ConcurrentHashMap<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
+    private Map<String, Date> sessionDatasetLastUsed = new ConcurrentHashMap<>();
     private long lastFlushDataset = 0;
 
 //    private static SessionSddManager instance;
@@ -120,11 +121,11 @@ public enum SessionSddManager {
         return sessionResourcePool.get(sddURLString);
     }
 
-    public ArrayList<JsonDescriptor> getJsonDescriptor(String sddURLString) {
+    public List<JsonDescriptor> getJsonDescriptor(String sddURLString) {
         return sessionDescriptorPool.get(sddURLString);
     }
 
-    public ArrayList<JsonItem> getJsonItem(String sddURLString) {
+    public List<JsonItem> getJsonItem(String sddURLString) {
         return sessionItemPool.get(sddURLString);
     }
 
@@ -132,15 +133,15 @@ public enum SessionSddManager {
         return sessionStatePool.get(sddURLString);
     }
 
-    public ArrayList<Long> getRootDescriptorId(String sddURLString) {
+    public List<Long> getRootDescriptorId(String sddURLString) {
         return sessionRootDescriptorIdPool.get(sddURLString);
     }
 
-    public HashMap<Long, long[]> getDependancyTable(String sddURLString) {
+    public Map<Long, long[]> getDependancyTable(String sddURLString) {
         return sessionDependencyTablePool.get(sddURLString);
     }
 
-    public HashMap<Long, Long> getInvertedDependancyTable(String sddURLString) {
+    public Map<Long, Long> getInvertedDependancyTable(String sddURLString) {
         return sessionInvertedDependencyTablePool.get(sddURLString);
     }
 
@@ -328,8 +329,8 @@ public enum SessionSddManager {
 
     private void initializeDatasetContent(Dataset dataset, String keyUrl) {
 
-        ArrayList<JsonResource> tmpArrayResource = new ArrayList<>();
-        ArrayList<JsonState> tmpArrayState = new ArrayList<>();
+        List<JsonResource> tmpArrayResource = new ArrayList<>();
+        List<JsonState> tmpArrayState = new ArrayList<>();
         ArrayList<JsonDescriptor> arrayDescriptor = new ArrayList<>(dataset.getDescriptors()
                 .size());
         ArrayList<JsonItem> arrayItem = new ArrayList<>(dataset.getItems().size());
