@@ -109,11 +109,11 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
-                                                                           List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
-                                                                           DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                           boolean withGlobalWeigth) {
-        LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
+    public static Map<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
+                                                                 List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+                                                                 DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+                                                                 boolean withGlobalWeigth) {
+        Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
             Map<Descriptor, Double> tempMap = new HashMap<>();
@@ -193,7 +193,7 @@ public class InteractiveIdentificationService {
             }
         }
 
-        public HashMap<Descriptor, Double> getTempMap() {
+        public Map<Descriptor, Double> getTempMap() {
             return tempMap;
         }
     }
@@ -229,10 +229,10 @@ public class InteractiveIdentificationService {
 
             Map<Descriptor, Double> tempMap = new HashMap<>();
 
-            HashMap<Descriptor, Double> tempMap1;
-            HashMap<Descriptor, Double> tempMap2;
-            HashMap<Descriptor, Double> tempMap3;
-            HashMap<Descriptor, Double> tempMap4;
+            Map<Descriptor, Double> tempMap1;
+            Map<Descriptor, Double> tempMap2;
+            Map<Descriptor, Double> tempMap3;
+            Map<Descriptor, Double> tempMap4;
 
             DescriptorScoreMapRunnable r1 = new DescriptorScoreMapRunnable(descriptorList1, items,
                     scoreMethod, considerChildScores, dependencyTree, descriptionMatrix, false);
@@ -286,11 +286,11 @@ public class InteractiveIdentificationService {
     }
 
     @Deprecated
-    public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMapUsingNThreads(
+    public static Map<Descriptor, Double> getDescriptorsScoreMapUsingNThreads(
             List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
             boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
             boolean withGlobalWeigth) throws InterruptedException {
-        LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
+        Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
 

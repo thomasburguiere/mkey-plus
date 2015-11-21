@@ -4,6 +4,7 @@ import fr.lis.xper3API.model.CategoricalDescriptor;
 import fr.lis.xper3API.model.Descriptor;
 import fr.lis.xper3API.model.QuantitativeDescriptor;
 
+@SuppressWarnings("CallToSimpleSetterFromWithinClass")
 public class JsonDescriptor {
 	private String name;
 	private String detail;
@@ -30,14 +31,14 @@ public class JsonDescriptor {
 			stateIds = new long[((CategoricalDescriptor) descriptor).getStates().size()];
 			for (int j = 0; j < ((CategoricalDescriptor) descriptor).getStates().size(); j++)
 				stateIds[j] = ((CategoricalDescriptor) descriptor).getStates().get(j).getId();
-			setCategoricalType(true);
+			this.isCategoricalType = true;
 		}
 		else if ( descriptor.isQuantitativeType() ){
-			setUnit(((QuantitativeDescriptor)descriptor).getMeasurementUnit());
-			setQuantitativeType(true);
+			this.unit = ((QuantitativeDescriptor)descriptor).getMeasurementUnit();
+			this.isQuantitativeType = true;
 		}
 		else if ( descriptor.isCalculatedType() ){
-			setCalculatedType(true);
+			this.isCalculatedType = true;
 		}
 	}
 

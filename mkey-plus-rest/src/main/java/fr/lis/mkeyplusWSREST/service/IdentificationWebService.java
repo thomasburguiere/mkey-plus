@@ -72,7 +72,7 @@ public class IdentificationWebService {
         datasetInSDD = getDataset(sddURLString);
 
         if (datasetInSDD != null) {
-            List<Descriptor> discardedDescriptors = new ArrayList<>();
+            Collection<Descriptor> discardedDescriptors = new ArrayList<>();
             List<Item> remainingItems = new ArrayList<>();
             List<Descriptor> remainingDescriptors = new ArrayList<>();
             Map<String, Object> data = new HashMap<>();
@@ -259,7 +259,7 @@ public class IdentificationWebService {
 
         if (datasetInSDD != null) {
             Map<String, Object> data = new HashMap<>();
-            List<Long> innapDescriptorID = new ArrayList<>();
+            Collection<Long> innapDescriptorID = new ArrayList<>();
 
             List<Item> items = datasetInSDD.getItems();
             int i = 0;
@@ -353,7 +353,7 @@ public class IdentificationWebService {
         List<Item> itemsInSDD;
         List<Descriptor> descriptorsInSDD;
         DescriptorTree dependencyTreeInSDD;
-        HashMap<String, Object> descriptiveData = new LinkedHashMap<>();
+        Map<String, Object> descriptiveData = new LinkedHashMap<>();
         // Get the data set in the session manager
         // Put Dataset independant an Unique information in the Json Format
         datasetInSDD = getDatasetAndInitialize(sddURLString, descriptiveData);
@@ -444,7 +444,7 @@ public class IdentificationWebService {
 
         String jsonData = null;
         Dataset datasetInSDD;
-        List<Item> itemsInSDD = new ArrayList<>();
+        Collection<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
         LinkedHashMap<Long, Float> similarityMap;
         // Get the data set in the session manager
@@ -579,7 +579,7 @@ public class IdentificationWebService {
         String jsonData = null;
         Dataset datasetInSDD;
         DescriptorTree dependencyTreeInSDD;
-        List<Item> itemsInSDD = new ArrayList<>();
+        Collection<Item> itemsInSDD = new ArrayList<>();
         Collection<Descriptor> descriptorsInSDD = new ArrayList<>();
         LinkedHashMap<Long, Float> similarityMap;
         // Get the data set in the session manager
@@ -696,8 +696,8 @@ public class IdentificationWebService {
         String jsonData = null;
         Dataset datasetInSDD;
         List<Item> itemsInSDD = new ArrayList<>();
-        List<Descriptor> descriptorsInSDD = new ArrayList<>();
-        List<Descriptor> discardedDescriptor = new ArrayList<>();
+        Collection<Descriptor> descriptorsInSDD = new ArrayList<>();
+        Collection<Descriptor> discardedDescriptor = new ArrayList<>();
         DescriptorTree dependencyTreeInSDD;
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
