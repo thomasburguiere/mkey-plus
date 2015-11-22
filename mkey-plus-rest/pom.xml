@@ -12,10 +12,7 @@
 
     <artifactId>mkey-plus-rest</artifactId>
     <properties>
-        <jackson.version>1.9.12</jackson.version>
-        <jersey.version>1.17.1</jersey.version>
-        <javassist.version>3.18.0-GA</javassist.version>
-        <xerces.version>2.11.0</xerces.version>
+
     </properties>
 
     <dependencies>
@@ -37,26 +34,22 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
             <scope>provided</scope>
         </dependency>
         <!-- Jackson JSON -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <!-- 	servlet -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>com.sun.jersey</groupId>-->
@@ -67,7 +60,6 @@
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>${xerces.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -79,7 +71,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-            <version>4.8.2</version>
         </dependency>
 
 
@@ -87,7 +78,6 @@
             <scope>test</scope>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-apache-client</artifactId>
-            <version>${jersey.version}</version>
         </dependency>
 
 
@@ -96,24 +86,20 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
             <scope>runtime</scope>
         </dependency>
 
