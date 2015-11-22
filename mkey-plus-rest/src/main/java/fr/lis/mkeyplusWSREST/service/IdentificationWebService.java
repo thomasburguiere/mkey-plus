@@ -217,7 +217,7 @@ public class IdentificationWebService {
                 Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
                 HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                         .getDescriptorsScoreMapFuture(remainingDescriptors, remainingItems,
-                                dependencyTreeInSDD, InteractiveIdentificationService.SCORE_XPER, true,
+                                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true,
                                 descriptionMatrix, descriptorNodeMap, withGlobalWeight);
 
                 for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
@@ -380,7 +380,7 @@ public class IdentificationWebService {
 
                 descriptorScoreMap = InteractiveIdentificationService.getDescriptorsScoreMapFuture(
                         descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-                        InteractiveIdentificationService.SCORE_XPER, true, descriptionMatrix,
+                        InteractiveIdentificationService.Score.XPER, true, descriptionMatrix,
                         descriptorNodeMap, withGlobalWeigth);
 
                 // as descriptorScoreMap return <descriptor,float> and we need <descriptor.id(long),Float>
@@ -813,7 +813,7 @@ public class IdentificationWebService {
             Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
             HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                     .getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
-                            InteractiveIdentificationService.SCORE_XPER, true, descriptionMatrix,
+                            InteractiveIdentificationService.Score.XPER, true, descriptionMatrix,
                             descriptorNodeMap, true);
 
             for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {

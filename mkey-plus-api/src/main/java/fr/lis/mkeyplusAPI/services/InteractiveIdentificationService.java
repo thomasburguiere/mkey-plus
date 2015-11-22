@@ -33,19 +33,23 @@ import java.util.concurrent.Future;
  */
 public class InteractiveIdentificationService {
 
-    public static final int SCORE_XPER = 0;
-    public static final int SCORE_SOKAL_MICHENER = 1;
-    public static final int SCORE_JACCARD = 2;
+    public enum Score{
+        XPER,
+        SOKAL_MICHENER,
+        JACCARD,
+        UNKNOWN
+    }
 
-    public static final int LOGICAL_OPERATOR_AND = 3;
-    public static final int LOGICAL_OPERATOR_OR = 4;
-
-    public static final int COMPARISON_OPERATOR_GREATER_THAN = 5;
-    public static final int COMPARISON_OPERATOR_STRICTLY_GREATER_THAN = 6;
-    public static final int COMPARISON_OPERATOR_LOWER_THAN = 7;
-    public static final int COMPARISON_OPERATOR_STRICTLY_LOWER_THAN = 8;
-    public static final int COMPARISON_OPERATOR_CONTAINS = 9;
-    public static final int COMPARISON_OPERATOR_DOES_NOT_CONTAIN = 10;
+    public enum Operator{
+        LOGICAL_AND,
+        LOGICAL_OR,
+        COMPARISON_GREATER_THAN,
+        COMPARISON_STRICTLY_GREATER_THAN,
+        COMPARISON_LOWER_THAN,
+        COMPARISON_STRICTLY_LOWER_THAN,
+        COMPARISON_CONTAINS,
+        COMPARISON_DOES_NOT_CONTAIN
+    }
 
     // DISCRIMINANT POWER FUNCTIONS
 
@@ -61,7 +65,7 @@ public class InteractiveIdentificationService {
      * @throws Exception
      */
     public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
-                                                                                List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+                                                                                List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
                                                                                 DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                                                                 boolean withGlobalWeight) {
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -111,7 +115,7 @@ public class InteractiveIdentificationService {
      * @throws Exception
      */
     public static Map<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
-                                                                 List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
+                                                                 List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
                                                                  DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                                                  boolean withGlobalWeight) {
         Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
@@ -160,14 +164,14 @@ public class InteractiveIdentificationService {
     private static class DescriptorScoreMapRunnable implements Runnable {
         private final List<Descriptor> descriptorList;
         private final List<Item> items;
-        private final int scoreMethod;
+        private final Score scoreMethod;
         private final boolean considerChildScores;
         private final DescriptorTree dependencyTree;
         private final Map<Descriptor, Double> tempMap;
         private final DescriptionElementState[][] descriptionMatrix;
         private final boolean withGlobalWeight;
 
-        public DescriptorScoreMapRunnable(List<Descriptor> descriptorList, List<Item> items, int scoreMethod,
+        public DescriptorScoreMapRunnable(List<Descriptor> descriptorList, List<Item> items, Score scoreMethod,
                                           boolean considerChildScores, DescriptorTree dependencyTree,
                                           DescriptionElementState[][] descriptionMatrix, boolean withGlobalWeight) {
             this.descriptorList = descriptorList;
@@ -215,7 +219,7 @@ public class InteractiveIdentificationService {
      * @deprecated
      */
     public static LinkedHashMap<Descriptor, Double> getDescriptorsScoreMapUsing4Threads(
-            List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+            List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, Score scoreMethod,
             boolean considerChildScores, DescriptionElementState[][] descriptionMatrix)
             throws InterruptedException {
         LinkedHashMap<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
@@ -290,7 +294,7 @@ public class InteractiveIdentificationService {
 
     @Deprecated
     public static Map<Descriptor, Double> getDescriptorsScoreMapUsingNThreads(
-            List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+            List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, Score scoreMethod,
             boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
             boolean withGlobalWeight) throws InterruptedException {
         Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
@@ -366,7 +370,7 @@ public class InteractiveIdentificationService {
      * @return {@link float} the discriminant power of this descriptor
      */
     public static double getDiscriminantPower(Descriptor descriptor, List<Item> items, double value,
-                                             int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
+                                             Score scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
                                              DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                              boolean withGlobalWeight) {
         double out = 0;
@@ -457,7 +461,7 @@ public class InteractiveIdentificationService {
      * @return
      */
     private static float compareWithCategoricalDescriptor(CategoricalDescriptor descriptor, Item item1,
-                                                          Item item2, int scoreMethod, DescriptorTree dependencyTree,
+                                                          Item item2, Score scoreMethod, DescriptorTree dependencyTree,
                                                           DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
         float out;
         // boolean isAlwaysDescribed = true;
@@ -522,13 +526,13 @@ public class InteractiveIdentificationService {
             }
         }
         // // Sokal & Michener method
-        if (scoreMethod == SCORE_SOKAL_MICHENER) {
+        if (scoreMethod == Score.SOKAL_MICHENER) {
             out = 1 - ((commonPresent + commonAbsent) / (commonPresent + commonAbsent + other));
             // round to 10^-3
             out = Utils.roundFloat(out, 3);
         }
         // // Jaccard Method
-        else if (scoreMethod == SCORE_JACCARD) {
+        else if (scoreMethod == Score.JACCARD) {
             try {
                 // // case where description are empty
                 out = 1 - (commonPresent / (commonPresent + other));
@@ -563,7 +567,7 @@ public class InteractiveIdentificationService {
      * @return float
      */
     private static double compareWithQuantitativeDescriptor(QuantitativeDescriptor descriptor, Item item1,
-                                                           Item item2, int scoreMethod, DescriptorTree dependencyTree,
+                                                           Item item2, Score scoreMethod, DescriptorTree dependencyTree,
                                                            DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap) {
         double out;
         double commonPercentage; // percentage of common values which are
@@ -615,7 +619,7 @@ public class InteractiveIdentificationService {
         }
 
         switch (scoreMethod) {
-            case SCORE_XPER:
+            case XPER:
                 if ((commonPercentage <= 0)) {
                     out = 1;
                 } else {
@@ -623,11 +627,11 @@ public class InteractiveIdentificationService {
                 }
                 break;
             //
-            case SCORE_SOKAL_MICHENER:
+            case SOKAL_MICHENER:
                 out = 1 - (commonPercentage / 100);
                 break;
             //
-            case SCORE_JACCARD:
+            case JACCARD:
                 out = 1 - (commonPercentage / 100);
                 break;
 
@@ -749,7 +753,7 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getStates();
 
                         if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
-                                checkedStatesInKnowledgeBaseDescription, LOGICAL_OPERATOR_OR)) {
+                                checkedStatesInKnowledgeBaseDescription, Operator.LOGICAL_OR)) {
                             itemsToRemove.add(item);
                         }
 
@@ -760,7 +764,7 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
 
                         if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
-                                COMPARISON_OPERATOR_CONTAINS)) {
+                                Operator.COMPARISON_CONTAINS)) {
                             itemsToRemove.add(item);
                         }
                     }
@@ -783,7 +787,7 @@ public class InteractiveIdentificationService {
      * @return
      */
     private static boolean matchDescriptionStates(Iterable<State> selectedStatesInSubmittedDescription,
-                                                  Collection<State> checkedStatesInReferenceDescription, int logicalOperator) {
+                                                  Collection<State> checkedStatesInReferenceDescription, Operator logicalOperator) {
         int commonValues = 0;
 
         for (State selectedStateInSubmittedDescription : selectedStatesInSubmittedDescription) {
@@ -796,9 +800,9 @@ public class InteractiveIdentificationService {
         }
 
         switch (logicalOperator) {
-            case LOGICAL_OPERATOR_AND:
+            case LOGICAL_AND:
                 return checkedStatesInReferenceDescription.size() == commonValues;
-            case LOGICAL_OPERATOR_OR:
+            case LOGICAL_OR:
                 return commonValues >= 1;
 
             default:
@@ -815,9 +819,9 @@ public class InteractiveIdentificationService {
      * @return
      */
     private static boolean matchDescriptionsQuantitativeMeasures(QuantitativeMeasure submittedMeasure,
-                                                                 QuantitativeMeasure referenceMeasure, int comparisonOperator) {
+                                                                 QuantitativeMeasure referenceMeasure, Operator comparisonOperator) {
         switch (comparisonOperator) {
-            case COMPARISON_OPERATOR_CONTAINS:
+            case COMPARISON_CONTAINS:
 
                 if ((referenceMeasure.isNotFilled() || submittedMeasure.isNotFilled())
                         && referenceMeasure.getMean() != null && submittedMeasure.getMean() != null) {
@@ -826,10 +830,10 @@ public class InteractiveIdentificationService {
                     return referenceMeasure.contains(submittedMeasure);
                 }
 
-            case COMPARISON_OPERATOR_GREATER_THAN:
+            case COMPARISON_GREATER_THAN:
                 return referenceMeasure.isGreaterOrEqualTo(submittedMeasure, true);
 
-            case COMPARISON_OPERATOR_LOWER_THAN:
+            case COMPARISON_LOWER_THAN:
                 return referenceMeasure.isLowerOrEqualTo(submittedMeasure, true);
 
             default:

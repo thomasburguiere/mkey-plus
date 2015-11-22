@@ -22,12 +22,12 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
     private List<Item> items = null;
     private DescriptorTree dependencyTree = null;
     private boolean considerChildScores = true;
-    private int scoreMethod = -1;
+    private InteractiveIdentificationService.Score scoreMethod = InteractiveIdentificationService.Score.UNKNOWN;
     private final DescriptionElementState[][] descriptionMatrix;
     private final DescriptorNode[] descriptorNodeMap;
     private final boolean withGlobalWeight;
 
-    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
+    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, InteractiveIdentificationService.Score scoreMethod,
                                             boolean considerChildScores, Descriptor descriptor,
                                             DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                             boolean withGlobalWeight) {
