@@ -1,5 +1,6 @@
 package fr.lis.mkeyplusAPI.services;
 
+import fr.lis.mkeyplusAPI.services.InteractiveIdentificationService.Score;
 import fr.lis.xper3API.model.CategoricalDescriptor;
 import fr.lis.xper3API.model.DescriptionElementState;
 import fr.lis.xper3API.model.Descriptor;
@@ -9,6 +10,8 @@ import fr.lis.xper3API.model.Item;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import static fr.lis.mkeyplusAPI.services.InteractiveIdentificationService.Score.*;
 
 
 /**
@@ -22,12 +25,12 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
     private List<Item> items = null;
     private DescriptorTree dependencyTree = null;
     private boolean considerChildScores = true;
-    private InteractiveIdentificationService.Score scoreMethod = InteractiveIdentificationService.Score.UNKNOWN;
+    private Score scoreMethod = UNKNOWN;
     private final DescriptionElementState[][] descriptionMatrix;
     private final DescriptorNode[] descriptorNodeMap;
     private final boolean withGlobalWeight;
 
-    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, InteractiveIdentificationService.Score scoreMethod,
+    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, Score scoreMethod,
                                             boolean considerChildScores, Descriptor descriptor,
                                             DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                             boolean withGlobalWeight) {

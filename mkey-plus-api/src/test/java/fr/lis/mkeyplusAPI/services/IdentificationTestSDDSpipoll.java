@@ -20,6 +20,8 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static fr.lis.mkeyplusAPI.services.InteractiveIdentificationService.*;
+
 
 public class IdentificationTestSDDSpipoll {
     public Logger logger = Logger.getRootLogger();
@@ -276,54 +278,54 @@ public class IdentificationTestSDDSpipoll {
     // }
     @Test
     public void testScore8Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 8,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 8,
                 descriptionMatrixInSDD, false);
         logger.info("done");
     }
 
     @Test
     public void testScore7Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 7,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 7,
                 descriptionMatrixInSDD, false);
         logger.info("done");
     }
 
     @Test
     public void testScore6Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 6,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 6,
                 descriptionMatrixInSDD, false);
     }
 
     @Test
     public void testScore5Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 5,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 5,
                 descriptionMatrixInSDD, false);
         logger.info("done");
     }
 
     @Test
     public void testScore4Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 4,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 4,
                 descriptionMatrixInSDD, false);
     }
 
     @Test
     public void testScore3Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 3,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 3,
                 descriptionMatrixInSDD, false);
         logger.info("done");
     }
 
     @Test
     public void testScore2Threads() throws Exception {
-        InteractiveIdentificationService.getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true, 2,
+        getDescriptorsScoreMapUsingNThreads(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true, 2,
                 descriptionMatrixInSDD, false);
         logger.info("done");
     }
@@ -332,8 +334,8 @@ public class IdentificationTestSDDSpipoll {
     public void testScore() throws Exception {
         Chrono c = new Chrono();
         c.start();
-        InteractiveIdentificationService.getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
-                dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true,
+        getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
+                dependencyTreeInSDD, Score.XPER, true,
                 descriptionMatrixInSDD, descriptorNodeMapInSDD, false);
         logger.info("done");
         c.stop();

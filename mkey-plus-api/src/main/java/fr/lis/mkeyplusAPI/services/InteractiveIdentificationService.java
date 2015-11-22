@@ -24,6 +24,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static fr.lis.mkeyplusAPI.services.InteractiveIdentificationService.Operator.*;
+import static fr.lis.mkeyplusAPI.services.InteractiveIdentificationService.Score.*;
+
 
 /**
  * This class contains all the methods necessary to perform an Interactive Identification it is closely based
@@ -526,13 +529,13 @@ public class InteractiveIdentificationService {
             }
         }
         // // Sokal & Michener method
-        if (scoreMethod == Score.SOKAL_MICHENER) {
+        if (scoreMethod == SOKAL_MICHENER) {
             out = 1 - ((commonPresent + commonAbsent) / (commonPresent + commonAbsent + other));
             // round to 10^-3
             out = Utils.roundFloat(out, 3);
         }
         // // Jaccard Method
-        else if (scoreMethod == Score.JACCARD) {
+        else if (scoreMethod == JACCARD) {
             try {
                 // // case where description are empty
                 out = 1 - (commonPresent / (commonPresent + other));
@@ -753,7 +756,7 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getStates();
 
                         if (!matchDescriptionStates(checkedStatesInSubmittedDescription,
-                                checkedStatesInKnowledgeBaseDescription, Operator.LOGICAL_OR)) {
+                                checkedStatesInKnowledgeBaseDescription, LOGICAL_OR)) {
                             itemsToRemove.add(item);
                         }
 
@@ -764,7 +767,7 @@ public class InteractiveIdentificationService {
                                 .getDescriptionElement(descriptor.getId()).getQuantitativeMeasure();
 
                         if (!matchDescriptionsQuantitativeMeasures(submittedMeasure, knowledgeBaseMeasure,
-                                Operator.COMPARISON_CONTAINS)) {
+                                COMPARISON_CONTAINS)) {
                             itemsToRemove.add(item);
                         }
                     }
