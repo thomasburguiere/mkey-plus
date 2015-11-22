@@ -11,14 +11,6 @@
 
     <artifactId>mkey-plus-api</artifactId>
     <dependencies>
-        <dependency>
-            <groupId>xper3API</groupId>
-            <artifactId>xper3API</artifactId>
-            <scope>system</scope>
-            <version>1.0</version>
-            <systemPath>${project.basedir}/src/main/resources/lib/xper3API-1.0.jar</systemPath>
-        </dependency>
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>

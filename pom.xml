@@ -17,7 +17,7 @@
         <version.log4j>1.2.16</version.log4j>
         <version.guava>18.0</version.guava>
         <jackson.version>1.9.12</jackson.version>
-        <jersey.version>1.17</jersey.version>
+        <jersey.version>1.6</jersey.version>
         <javassist.version>3.18.0-GA</javassist.version>
         <xerces.version>2.11.0</xerces.version>
     </properties>
@@ -48,7 +48,12 @@
             <dependency>
                 <groupId>com.sun.jersey</groupId>
                 <artifactId>jersey-server</artifactId>
-                <version>1.6</version>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey.contribs</groupId>
+                <artifactId>jersey-apache-client</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
             <!--<dependency>-->
             <!--<groupId>com.sun.jersey</groupId>-->
@@ -62,11 +67,6 @@
                 <version>${xerces.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.sun.jersey.contribs</groupId>
-                <artifactId>jersey-apache-client</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
             <!-- Logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>

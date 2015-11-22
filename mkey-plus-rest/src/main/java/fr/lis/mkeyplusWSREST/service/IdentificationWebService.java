@@ -39,6 +39,12 @@ import java.util.Map;
 @Path("/identification")
 public class IdentificationWebService {
 
+    @Path("/")
+    @GET
+    public String Landing(){
+        return "it works";
+    }
+
     /**
      * Basic function to call every time a new description is submitted
      *
