@@ -64,10 +64,10 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
-                                                                                List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
-                                                                                DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                                boolean withGlobalWeight) {
+    public static Map<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
+                                                                      List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
+                                                                      DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+                                                                      boolean withGlobalWeight) {
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
@@ -866,8 +866,8 @@ public class InteractiveIdentificationService {
      * @param discardedItem
      * @return LinkedHashMap, association between an item and the similarity score
      */
-    public static LinkedHashMap<Long, Float> getSimilarityMapFuture(Description description,
-                                                                    Collection<Item> discardedItem) {
+    public static Map<Long, Float> getSimilarityMapFuture(Description description,
+                                                          Collection<Item> discardedItem) {
         LinkedHashMap<Long, Float> itemSimilarityMap = new LinkedHashMap<>();
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 

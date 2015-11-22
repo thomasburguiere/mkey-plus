@@ -215,7 +215,7 @@ public class IdentificationWebService {
             // Add the ScoreMap in the Json
             if (withScoreMap == null || withScoreMap) {
                 Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
-                HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
+                Map<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                         .getDescriptorsScoreMapFuture(remainingDescriptors, remainingItems,
                                 dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true,
                                 descriptionMatrix, descriptorNodeMap, withGlobalWeight);
@@ -374,7 +374,7 @@ public class IdentificationWebService {
             DescriptionElementState[][] descriptionMatrix = getDescriptionMatrix(sddURLString);
             DescriptorNode[] descriptorNodeMap = getDescriptorNodeMap(sddURLString);
 
-            LinkedHashMap<Descriptor, Float> descriptorScoreMap;
+            Map<Descriptor, Float> descriptorScoreMap;
             try {
                 Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
 
@@ -455,7 +455,7 @@ public class IdentificationWebService {
         Dataset datasetInSDD;
         Collection<Item> itemsInSDD = new ArrayList<>();
         List<Descriptor> descriptorsInSDD = new ArrayList<>();
-        LinkedHashMap<Long, Float> similarityMap;
+        Map<Long, Float> similarityMap;
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
 
@@ -591,7 +591,7 @@ public class IdentificationWebService {
         DescriptorTree dependencyTreeInSDD;
         Collection<Item> itemsInSDD = new ArrayList<>();
         Collection<Descriptor> descriptorsInSDD = new ArrayList<>();
-        LinkedHashMap<Long, Float> similarityMap;
+        Map<Long, Float> similarityMap;
         // Get the data set in the session manager
         datasetInSDD = getDataset(sddURLString);
 
@@ -654,7 +654,7 @@ public class IdentificationWebService {
                 if (descriptor.isCategoricalType()) {
                     // Warning here intersection is taken but it could be union
                     // Get Intersection between every Items
-                    ArrayList<State> states = DatasetManagementService.getIntersectionCategorical(
+                    List<State> states = DatasetManagementService.getIntersectionCategorical(
                             remainingItem, descriptor, inapplicableStats);
                     // Add the intersection states as basic descriptionElementState for this descriptor
                     descriptionElementState.setStates(states);
@@ -811,7 +811,7 @@ public class IdentificationWebService {
             data.put("descriptions", newDescriptions);
 
             Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
-            HashMap<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
+            Map<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
                     .getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
                             InteractiveIdentificationService.Score.XPER, true, descriptionMatrix,
                             descriptorNodeMap, true);
