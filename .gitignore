@@ -7,5 +7,9 @@ lib/xper3API-1.0-sources.jar
 target
 *.class
 /bin
-.idea
+# idea
+.idea/*
+*.iml
+!.idea/runConfigurations
+
 node_modules
