@@ -15,7 +15,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey REST Service</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/identification/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
