@@ -8,6 +8,7 @@
     <modules>
         <module>mkey-plus-api</module>
         <module>mkey-plus-rest</module>
+        <module>mkey-plus-web</module>
     </modules>
 
     <name>mkey-plus</name>
