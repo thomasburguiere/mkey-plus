@@ -41,6 +41,7 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
         this.withGlobalWeight = withGlobalWeight;
     }
 
+    @Override
     public Object[] call() {
         Object[] output = new Object[2];
 

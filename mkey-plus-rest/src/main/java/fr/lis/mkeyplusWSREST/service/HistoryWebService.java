@@ -35,6 +35,8 @@ import java.nio.charset.Charset;
 @Path("/history")
 public class HistoryWebService {
 
+    public static final int INITIAL_SIZE = 2048;
+
     // This method is called if TEXT_PLAIN is request
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -90,7 +92,7 @@ public class HistoryWebService {
                 InputStream is = url.openStream();
                 os = new FileOutputStream(destName);
 
-                byte[] b = new byte[2048];
+                byte[] b = new byte[INITIAL_SIZE];
                 int length;
 
                 while ((length = is.read(b)) != -1) {

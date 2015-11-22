@@ -21,6 +21,7 @@ public class ThreadComputeSimilarity implements Callable<Object[]> {
         this.item = item;
     }
 
+    @Override
     public Object[] call() {
         Object[] output = new Object[2];
         Float similarity;

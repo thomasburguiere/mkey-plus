@@ -63,7 +63,7 @@ public class InteractiveIdentificationService {
     public static LinkedHashMap<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
                                                                                 List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
                                                                                 DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                                boolean withGlobalWeigth) {
+                                                                                boolean withGlobalWeight) {
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
@@ -75,12 +75,12 @@ public class InteractiveIdentificationService {
             for (Descriptor descriptor : descriptors) {
                 futures[i] = exec.submit(new ThreadComputeDescriptorsScoreMap(items, dependencyTree,
                         scoreMethod, considerChildScores, descriptor, descriptionMatrix, descriptorNodeMap,
-                        withGlobalWeigth));
+                        withGlobalWeight));
                 i++;
             }
             try {
-                for (Future<Object[]> fute : futures) {
-                    Object[] result = fute.get();
+                for (Future<Object[]> future : futures) {
+                    Object[] result = future.get();
                     descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
                 }
                 // InteractiveIdentificationService.exec.shutdown();
@@ -113,7 +113,7 @@ public class InteractiveIdentificationService {
     public static Map<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
                                                                  List<Item> items, DescriptorTree dependencyTree, int scoreMethod, boolean considerChildScores,
                                                                  DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                 boolean withGlobalWeigth) {
+                                                                 boolean withGlobalWeight) {
         Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
@@ -127,7 +127,7 @@ public class InteractiveIdentificationService {
                 } else {
                     discriminantPower = getDiscriminantPower(descriptor, items, 0, scoreMethod,
                             considerChildScores, dependencyTree, descriptionMatrix, descriptorNodeMap,
-                            withGlobalWeigth);
+                            withGlobalWeight);
                 }
 
                 tempMap.put(descriptor, discriminantPower);
@@ -163,7 +163,7 @@ public class InteractiveIdentificationService {
         private final int scoreMethod;
         private final boolean considerChildScores;
         private final DescriptorTree dependencyTree;
-        private final HashMap<Descriptor, Double> tempMap;
+        private final Map<Descriptor, Double> tempMap;
         private final DescriptionElementState[][] descriptionMatrix;
         private final boolean withGlobalWeight;
 
@@ -203,7 +203,7 @@ public class InteractiveIdentificationService {
     /**
      * returns a {@link LinkedHashMap} containing in keys the descriptors, and in values their discriminant
      * power. This map is sorted by the discriminant power of the descriptors, in descending order. The map is
-     * generated using 4 separate threads, each working on sublist of descriptors
+     * generated using 4 separate threads, each working on subList of descriptors
      *
      * @param descriptors
      * @param items
@@ -292,7 +292,7 @@ public class InteractiveIdentificationService {
     public static Map<Descriptor, Double> getDescriptorsScoreMapUsingNThreads(
             List<Descriptor> descriptors, List<Item> items, DescriptorTree dependencyTree, int scoreMethod,
             boolean considerChildScores, int nThreads, DescriptionElementState[][] descriptionMatrix,
-            boolean withGlobalWeigth) throws InterruptedException {
+            boolean withGlobalWeight) throws InterruptedException {
         Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
@@ -314,7 +314,7 @@ public class InteractiveIdentificationService {
 
             for (int j = 0; j < nThreads; j++) {
                 runnables[j] = new DescriptorScoreMapRunnable(subLists.get(j), items, scoreMethod,
-                        considerChildScores, dependencyTree, descriptionMatrix, withGlobalWeigth);
+                        considerChildScores, dependencyTree, descriptionMatrix, withGlobalWeight);
                 threads[j] = new Thread(runnables[j]);
             }
 
@@ -357,18 +357,18 @@ public class InteractiveIdentificationService {
      * @param descriptor          {@link Descriptor}, the {@link Descriptor} to evaluate.
      * @param items               {@link List}, the ArrayList of {@link Item} used to evaluate this descriptor.
      * @param value               {@link float}, the current score in the recursive call
-     * @param scoreMethod         {@link int}, the score methode to be use
+     * @param scoreMethod         {@link int}, the score method to be used
      * @param considerChildScores
      * @param dependencyTree
      * @param descriptionMatrix
      * @param descriptorNodeMap
-     * @param withGlobalWeigth
+     * @param withGlobalWeight
      * @return {@link float} the discriminant power of this descriptor
      */
     public static double getDiscriminantPower(Descriptor descriptor, List<Item> items, double value,
                                              int scoreMethod, boolean considerChildScores, DescriptorTree dependencyTree,
                                              DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                             boolean withGlobalWeigth) {
+                                             boolean withGlobalWeight) {
         double out = 0;
         int cpt = 0;
 
@@ -412,7 +412,7 @@ public class InteractiveIdentificationService {
             out = out / cpt;
         }
 
-        if (withGlobalWeigth) {
+        if (withGlobalWeight) {
             if (out != 0) {
                 out += descriptor.getGlobalWeight();
             } else {
@@ -436,7 +436,7 @@ public class InteractiveIdentificationService {
                 out = Math.max(
                         value,
                         getDiscriminantPower(childDescriptor, items, out, scoreMethod, true, dependencyTree,
-                                descriptionMatrix, descriptorNodeMap, withGlobalWeigth));
+                                descriptionMatrix, descriptorNodeMap, withGlobalWeight));
             }
         }
         return Math.max(out, value);
@@ -672,13 +672,13 @@ public class InteractiveIdentificationService {
 
     /**
      * Return True if this descriptor Node has is parent already in the descriptors list, or if this
-     * descriptor node dont have parents.
+     * descriptor node doesn't have parents.
      *
      * @param descriptorNode
      * @param descriptors
      * @return
      */
-    public static boolean getIsInaplicable(DescriptorNode descriptorNode, Collection<Descriptor> descriptors) {
+    public static boolean getIsInapplicable(DescriptorNode descriptorNode, Collection<Descriptor> descriptors) {
         DescriptorNode descriptorNodeParent = descriptorNode.getParentNode();
         return descriptorNodeParent != null && !descriptors.contains(descriptorNodeParent.getDescriptor());
     }
@@ -727,7 +727,7 @@ public class InteractiveIdentificationService {
 
     /**
      * This method receives a list of {@link Item}s, and a {@link Description}, which contains the description
-     * of one unitentified Item, according to one or several {@link Descriptor}s. It then loops over the Items
+     * of one unidentified Item, according to one or several {@link Descriptor}s. It then loops over the Items
      * passed in parameter, eliminates those who are not compatible with the description of the unidentified
      * Item, and returns the list of the remaining Items compatible with the description of the unidentified
      * Item
@@ -877,8 +877,8 @@ public class InteractiveIdentificationService {
             i++;
         }
         try {
-            for (Future<Object[]> fute : futures) {
-                Object[] result = fute.get();
+            for (Future<Object[]> future : futures) {
+                Object[] result = future.get();
                 itemSimilarityMap.put((Long) result[0], (Float) result[1]);
             }
         } catch (InterruptedException | ExecutionException e) {
@@ -902,7 +902,7 @@ public class InteractiveIdentificationService {
      */
     public static float computeSimilarity(Description description, Item discardedItem) {
         Map<Descriptor, DescriptionElementState> descriptionElements = description.getDescriptionElements();
-        Map<Descriptor, DescriptionElementState> ItemdescriptionElements = discardedItem.getDescription()
+        Map<Descriptor, DescriptionElementState> ItemDescriptionElements = discardedItem.getDescription()
                 .getDescriptionElements();
 
         float commonValues;
@@ -913,15 +913,15 @@ public class InteractiveIdentificationService {
             // Get the discardedItem and the reference description DescriptionElementState for this descriptor
             DescriptionElementState descriptionElement = descriptionElementEntry.getValue();
             final Descriptor descriptor = descriptionElementEntry.getKey();
-            DescriptionElementState ItemdescriptionElement = ItemdescriptionElements.get(descriptor);
+            DescriptionElementState ItemDescriptionElement = ItemDescriptionElements.get(descriptor);
             // CategoricalType
             if (descriptor.isCategoricalType()) {
                 commonValues = 0;
                 // For every State in the reference description
                 for (State selectedStateReferenceDescription : descriptionElement.getStates()) {
                     // For every State in the discardedItem
-                    for (State stateInTheDiscardedItem : ItemdescriptionElement.getStates()) {
-                        // If the two States have the same name, assume there are equals commomValues + 1
+                    for (State stateInTheDiscardedItem : ItemDescriptionElement.getStates()) {
+                        // If the two States have the same name, assume there are equals commonValues + 1
                         if (selectedStateReferenceDescription.hasSameNameAsState(stateInTheDiscardedItem)) {
                             commonValues++;
                         }
@@ -932,15 +932,15 @@ public class InteractiveIdentificationService {
                 // else return ]0,1[
                 // Result = commonValues / maximum(description.numberOfState or discardedItem.numberOfState)
                 result += commonValues
-                        / ((float) Math.max(descriptionElement.getStates().size(), ItemdescriptionElement
+                        / ((float) Math.max(descriptionElement.getStates().size(), ItemDescriptionElement
                         .getStates().size()));
             }
             // QuantitativeType
             else if (descriptor.isQuantitativeType()) {
                 QuantitativeMeasure descriptionQm = descriptionElement.getQuantitativeMeasure();
-                QuantitativeMeasure discardedItemQm = ItemdescriptionElement.getQuantitativeMeasure();
+                QuantitativeMeasure discardedItemQm = ItemDescriptionElement.getQuantitativeMeasure();
 
-                // If the ref description quantitaive measure contains the discardedItem quantative measure,
+                // If the ref description quantitative measure contains the discardedItem quantitative measure,
                 // return 1; ( no diff )
                 result += descriptionQm.containsPercent(discardedItemQm);
 

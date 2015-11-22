@@ -34,6 +34,9 @@ import fr.lis.mkeyplusWSREST.model.JsonState;
 public enum SessionSddManager {
     INSTANCE;
 
+    public static final int TEN_MINUTES = 600000;
+    public static final int ONE_MINUTE = 60000;
+    public static final double CPU_LOAD_MAX = 0.8;
     private final MemoryMXBean memoryMxBean = ManagementFactory.getMemoryMXBean();
     private boolean lockInitialization = false;
     /**
@@ -103,7 +106,7 @@ public enum SessionSddManager {
                 initializeDatasetContent(dataset, sddURLString);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                flushDataset(sddURLString);
+                deleteDataset(sddURLString);
                 dataset = null;
             } finally {
                 //unlock initialization
@@ -207,18 +210,6 @@ public enum SessionSddManager {
         return dataset;
     }
 
-    /**
-     * @param dbName
-     */
-    public void destroyDataset(String dbName) throws Exception {
-        Dataset dataset = sessionDatasetPool.get(dbName);
-        if (dataset != null) {
-            flushDataset(dbName);
-//			if (sessionDatasetLastUsed.get(dbName) != null)
-//				sessionDatasetLastUsed.remove(dbName);
-//			sessionDatasetPool.remove(dbName);
-        }
-    }
 
     /**
      * Updates the last used date of a given sessionFactory to the current date
@@ -263,19 +254,6 @@ public enum SessionSddManager {
         sessionDatasetLastUsed.clear();
     }
 
-    private void flushDataset(String keyUrl) {
-        sessionDatasetPool.remove(keyUrl);
-        sessionResourcePool.remove(keyUrl);
-        sessionDescriptorPool.remove(keyUrl);
-        sessionItemPool.remove(keyUrl);
-        sessionStatePool.remove(keyUrl);
-        sessionRootDescriptorIdPool.remove(keyUrl);
-        sessionDependencyTablePool.remove(keyUrl);
-        sessionInvertedDependencyTablePool.remove(keyUrl);
-        sessionDescriptionMatrixPool.remove(keyUrl);
-        sessionDescriptorNodePool.remove(keyUrl);
-        sessionDatasetLastUsed.remove(keyUrl);
-    }
 
     /**
      * This method launch the job to flush the pool of sessionFactory each day and to flush the pool of
@@ -587,11 +565,11 @@ public enum SessionSddManager {
 
     private void deleteOldDataset() {
         while (!checkHeapSize()) {
-            flushDataset(getOldestDataset());
+            deleteDataset(getOldestDataset());
         }
 
         long currentTime = System.currentTimeMillis();
-        if ((currentTime - lastFlushDataset) > 60000) {
+        if ((currentTime - lastFlushDataset) > ONE_MINUTE) {
             //1800000 == 30min
             //300000 == 5 min
             //86400000 == 24h
@@ -605,8 +583,8 @@ public enum SessionSddManager {
                 //3600000 = 1h
                 //60000 = 1min
                 if ((lastFlushDataset - sessionDatasetLastUsed
-                        .get(keyUrl).getTime()) > 600000) {
-                    flushDataset(keyUrl);
+                        .get(keyUrl).getTime()) > TEN_MINUTES) {
+                    deleteDataset(keyUrl);
                     memoryMxBean.gc();
                 }
             }
@@ -637,7 +615,7 @@ public enum SessionSddManager {
         MemoryUsage mu = memoryMxBean.getHeapMemoryUsage();
 //		double m = 1000000;
         //If Heap Size - 10 * 1M is inferior to current Used HeapSize
-        return (mu.getMax() * 0.8) > mu.getUsed();
+        return (mu.getMax() * CPU_LOAD_MAX) > mu.getUsed();
     }
 
 }

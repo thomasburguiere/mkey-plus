@@ -785,7 +785,7 @@ public class IdentificationWebService {
                             }
 
                             node = descriptorNodeMap[(int) descriptor.getId()];
-                            if (!InteractiveIdentificationService.getIsInaplicable(node, discardedDescriptor)) {
+                            if (!InteractiveIdentificationService.getIsInapplicable(node, discardedDescriptor)) {
 
                                 description.addDescriptionElement(descriptor, descriptionElementState);
 
