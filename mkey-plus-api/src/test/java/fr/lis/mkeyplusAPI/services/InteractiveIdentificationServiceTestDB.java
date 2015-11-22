@@ -86,9 +86,11 @@ public class InteractiveIdentificationServiceTestDB {
     public void testGetRemainingItems() throws Exception {
         Description testDescription = new Description();
         CategoricalDescriptor ringsOnTail = null;
-        for (Descriptor desc : descriptorsInKb)
-            if (desc.getName().toLowerCase().startsWith("rings on tail"))
+        for (Descriptor desc : descriptorsInKb) {
+            if (desc.getName().toLowerCase().startsWith("rings on tail")) {
                 ringsOnTail = (CategoricalDescriptor) desc;
+            }
+        }
         DescriptionElementState ringsOnTailDescriptionElementState = new DescriptionElementState();
 
         State selectedState = new State("present");

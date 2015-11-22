@@ -98,11 +98,12 @@ public class IdentificationTestSDDCichorieae {
         }
 
         long descriptorNodeCounter = 0;
-        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees())
+        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
             for (DescriptorNode node : tree.getNodes()) {
                 node.setId(descriptorNodeCounter);
                 descriptorNodeCounter++;
             }
+        }
         DescriptorTree depTree = null;
         // select or initialize the dependency tree
         dependencyTreeInSDD = null;
@@ -110,14 +111,16 @@ public class IdentificationTestSDDCichorieae {
             depTree = descriptorTreesInSDD.get(0);
             for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
                 DescriptorTree tree = descriptorTreesInSDD.get(i);
-                if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE))
+                if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE)) {
                     depTree = tree;
+                }
             }
         } else {
             depTree = new DescriptorTree();
             depTree.setType(DescriptorTree.DEPENDENCY_TYPE);
-            for (Descriptor descriptor : datasetInSDD.getDescriptors())
+            for (Descriptor descriptor : datasetInSDD.getDescriptors()) {
                 depTree.addNode(new DescriptorNode(descriptor));
+            }
         }
 
         dependencyTreeInSDD = depTree;
@@ -210,11 +213,12 @@ public class IdentificationTestSDDCichorieae {
         }
 
         long descriptorNodeCounter = 0;
-        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees())
+        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
             for (DescriptorNode node : tree.getNodes()) {
                 node.setId(descriptorNodeCounter);
                 descriptorNodeCounter++;
             }
+        }
     }
 
     /**
@@ -245,14 +249,16 @@ public class IdentificationTestSDDCichorieae {
             dependencyTreeInSDD = descriptorTreesInSDD.get(0);
             for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
                 DescriptorTree tree = descriptorTreesInSDD.get(i);
-                if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE))
+                if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE)) {
                     dependencyTreeInSDD = tree;
+                }
             }
         } else {
             dependencyTreeInSDD = new DescriptorTree();
             dependencyTreeInSDD.setType(DescriptorTree.DEPENDENCY_TYPE);
-            for (Descriptor descriptor : datasetInSDD.getDescriptors())
+            for (Descriptor descriptor : datasetInSDD.getDescriptors()) {
                 dependencyTreeInSDD.addNode(new DescriptorNode(descriptor));
+            }
         }
     }
 
