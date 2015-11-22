@@ -21,6 +21,7 @@
         <jersey.version>1.6</jersey.version>
         <javassist.version>3.18.0-GA</javassist.version>
         <xerces.version>2.11.0</xerces.version>
+        <version.maven-war-plugin>2.6</version.maven-war-plugin>
     </properties>
 
     <dependencyManagement>
