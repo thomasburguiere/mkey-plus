@@ -67,13 +67,13 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static Map<Descriptor, Float> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
+    public static Map<Descriptor, Double> getDescriptorsScoreMapFuture(Collection<Descriptor> descriptors,
                                                                       List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
                                                                       DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
                                                                       boolean withGlobalWeight) {
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        LinkedHashMap<Descriptor, Float> descriptorsScoresMap = new LinkedHashMap<>();
+        Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
             @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public class InteractiveIdentificationService {
             try {
                 for (Future<Object[]> future : futures) {
                     Object[] result = future.get();
-                    descriptorsScoresMap.put((Descriptor) result[0], (Float) result[1]);
+                    descriptorsScoresMap.put((Descriptor) result[0], (Double) result[1]);
                 }
                 // InteractiveIdentificationService.exec.shutdown();
 
@@ -99,7 +99,7 @@ public class InteractiveIdentificationService {
             }
         } else {
             for (Descriptor descriptor : descriptors) {
-                descriptorsScoresMap.put(descriptor, (float) -1);
+                descriptorsScoresMap.put(descriptor, (double) -1);
             }
         }
 
@@ -117,10 +117,10 @@ public class InteractiveIdentificationService {
      * @return
      * @throws Exception
      */
-    public static Map<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
-                                                                 List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
-                                                                 DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                                                 boolean withGlobalWeight) {
+    static Map<Descriptor, Double> getDescriptorsScoreMap(Iterable<Descriptor> descriptors,
+                                                          List<Item> items, DescriptorTree dependencyTree, Score scoreMethod, boolean considerChildScores,
+                                                          DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
+                                                          boolean withGlobalWeight) {
         Map<Descriptor, Double> descriptorsScoresMap = new LinkedHashMap<>();
 
         if (items.size() > 1) {
@@ -871,7 +871,7 @@ public class InteractiveIdentificationService {
      */
     public static Map<Long, Float> getSimilarityMapFuture(Description description,
                                                           Collection<Item> discardedItem) {
-        LinkedHashMap<Long, Float> itemSimilarityMap = new LinkedHashMap<>();
+        Map<Long, Float> itemSimilarityMap = new LinkedHashMap<>();
         ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         @SuppressWarnings("unchecked")

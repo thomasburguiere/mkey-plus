@@ -220,13 +220,13 @@ public class IdentificationWebService {
 
             // Add the ScoreMap in the Json
             if (withScoreMap == null || withScoreMap) {
-                Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
-                Map<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
+                Map<Long, Double> descriptorIdScoreMap = new HashMap<>();
+                Map<Descriptor, Double> descriptorScoreMap = InteractiveIdentificationService
                         .getDescriptorsScoreMapFuture(remainingDescriptors, remainingItems,
                                 dependencyTreeInSDD, InteractiveIdentificationService.Score.XPER, true,
                                 descriptionMatrix, descriptorNodeMap, withGlobalWeight);
 
-                for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
+                for (Map.Entry<Descriptor, Double> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
                     descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
                 }
                 data.put("descriptorScoreMap", descriptorIdScoreMap);
@@ -380,9 +380,9 @@ public class IdentificationWebService {
             DescriptionElementState[][] descriptionMatrix = getDescriptionMatrix(sddURLString);
             DescriptorNode[] descriptorNodeMap = getDescriptorNodeMap(sddURLString);
 
-            Map<Descriptor, Float> descriptorScoreMap;
+            Map<Descriptor, Double> descriptorScoreMap;
             try {
-                Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
+                Map<Long, Double> descriptorIdScoreMap = new HashMap<>();
 
                 descriptorScoreMap = InteractiveIdentificationService.getDescriptorsScoreMapFuture(
                         descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
@@ -390,7 +390,7 @@ public class IdentificationWebService {
                         descriptorNodeMap, withGlobalWeigth);
 
                 // as descriptorScoreMap return <descriptor,float> and we need <descriptor.id(long),Float>
-                for (Map.Entry<Descriptor, Float> descriptorScoreMapEntry : descriptorScoreMap.entrySet()) {
+                for (Map.Entry<Descriptor, Double> descriptorScoreMapEntry : descriptorScoreMap.entrySet()) {
                     descriptorIdScoreMap.put(descriptorScoreMapEntry.getKey().getId(), descriptorScoreMapEntry.getValue());
                 }
                 // put the descriptorIdScoreMap in the Json
@@ -816,13 +816,13 @@ public class IdentificationWebService {
             data.put("discardedDescriptors", createJsonDescriptorList(discardedDescriptor));
             data.put("descriptions", newDescriptions);
 
-            Map<Long, Float> descriptorIdScoreMap = new HashMap<>();
-            Map<Descriptor, Float> descriptorScoreMap = InteractiveIdentificationService
+            Map<Long, Double> descriptorIdScoreMap = new HashMap<>();
+            Map<Descriptor, Double> descriptorScoreMap = InteractiveIdentificationService
                     .getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD, dependencyTreeInSDD,
                             InteractiveIdentificationService.Score.XPER, true, descriptionMatrix,
                             descriptorNodeMap, true);
 
-            for (Map.Entry<Descriptor, Float> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
+            for (Map.Entry<Descriptor, Double> descriptorScoreEntry : descriptorScoreMap.entrySet()) {
                 descriptorIdScoreMap.put(descriptorScoreEntry.getKey().getId(), descriptorScoreEntry.getValue());
             }
 

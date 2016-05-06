@@ -31,7 +31,7 @@ public class IdentificationTestSDDGenetta {
     private static List<Descriptor> descriptorsInSDD;
     private static DescriptorTree dependencyTreeInSDD;
     private static List<DescriptorTree> descriptorTreesInSDD;
-    private static String sddUrlString = "http://localhost:8080/miscFiles/genetta.sdd.xml";
+    private static String sddUrlString = "https://www.dropbox.com/s/tr7kon3uc4b7tpq/genetta.sdd.xml?dl=1";
     private static DescriptionElementState[][] descriptionMatrixInSDD;
     private static DescriptorNode[] descriptorNodeMapInSDD;
 
