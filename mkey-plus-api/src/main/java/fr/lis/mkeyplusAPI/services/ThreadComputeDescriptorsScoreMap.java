@@ -30,10 +30,11 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
     private final DescriptorNode[] descriptorNodeMap;
     private final boolean withGlobalWeight;
 
-    public ThreadComputeDescriptorsScoreMap(List<Item> items, DescriptorTree dependencyTree, Score scoreMethod,
-                                            boolean considerChildScores, Descriptor descriptor,
-                                            DescriptionElementState[][] descriptionMatrix, DescriptorNode[] descriptorNodeMap,
-                                            boolean withGlobalWeight) {
+    public ThreadComputeDescriptorsScoreMap(
+        final List<Item> items, final DescriptorTree dependencyTree, final Score scoreMethod,
+        final boolean considerChildScores, final Descriptor descriptor,
+        final DescriptionElementState[][] descriptionMatrix, final DescriptorNode[] descriptorNodeMap,
+        final boolean withGlobalWeight) {
         this.descriptor = descriptor;
         this.items = items;
         this.dependencyTree = dependencyTree;
@@ -46,9 +47,9 @@ public class ThreadComputeDescriptorsScoreMap implements Callable<Object[]> {
 
     @Override
     public Object[] call() {
-        Object[] output = new Object[2];
+        final Object[] output = new Object[2];
 
-        double discriminantPower;
+        final double discriminantPower;
         if (descriptor.isCategoricalType() && ((CategoricalDescriptor) descriptor).getStates().size() <= 0) {
             discriminantPower = 0;
         } else {

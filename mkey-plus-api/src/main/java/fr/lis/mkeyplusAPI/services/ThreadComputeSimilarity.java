@@ -16,15 +16,15 @@ public class ThreadComputeSimilarity implements Callable<Object[]> {
     private Description description = null;
     private Item item = null;
 
-    public ThreadComputeSimilarity(Description description, Item item) {
+    public ThreadComputeSimilarity(final Description description, final Item item) {
         this.description = description;
         this.item = item;
     }
 
     @Override
     public Object[] call() {
-        Object[] output = new Object[2];
-        Float similarity;
+        final Object[] output = new Object[2];
+        final Float similarity;
         similarity = InteractiveIdentificationService.computeSimilarity(description, item);
         output[0] = item.getId();
         output[1] = similarity;

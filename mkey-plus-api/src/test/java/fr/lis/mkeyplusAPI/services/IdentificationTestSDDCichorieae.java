@@ -31,7 +31,7 @@ public class IdentificationTestSDDCichorieae {
     private static List<Descriptor> descriptorsInSDD;
     private static DescriptorTree dependencyTreeInSDD;
     private static List<DescriptorTree> descriptorTreesInSDD;
-    private static String sddUrlString = "http://localhost:8080/miscFiles/Cichorieae-fullSDD.xml";
+    private static final String sddUrlString = "http://localhost:8080/miscFiles/Cichorieae-fullSDD.xml";
     private static DescriptionElementState[][] descriptionMatrixInSDD;
     private static DescriptorNode[] descriptorNodeMapInSDD;
 
@@ -50,7 +50,7 @@ public class IdentificationTestSDDCichorieae {
         URLConnection urlConnection = null;
 
         // testing the sdd URL validity
-        URL sddFileUrl = new URL(sddUrlString);
+        final URL sddFileUrl = new URL(sddUrlString);
         // open URL (HTTP query)
         urlConnection = sddFileUrl.openConnection();
         // Open data stream to test the connection
@@ -67,11 +67,11 @@ public class IdentificationTestSDDCichorieae {
 
         long descriptorCounter = 0;
         long stateCounter = 0;
-        for (Descriptor dInSdd : descriptorsInSDD) {
+        for (final Descriptor dInSdd : descriptorsInSDD) {
             dInSdd.setId(descriptorCounter);
             descriptorCounter++;
             if (dInSdd.isCategoricalType()) {
-                for (State s : ((CategoricalDescriptor) dInSdd).getStates()) {
+                for (final State s : ((CategoricalDescriptor) dInSdd).getStates()) {
                     s.setId(stateCounter);
                     stateCounter++;
                 }
@@ -82,12 +82,12 @@ public class IdentificationTestSDDCichorieae {
         long measureCounter = 0;
         long descriptionCounter = 0;
         long descriptionElementStateCounter = 0;
-        for (Item itemInSDD : itemsInSDD) {
+        for (final Item itemInSDD : itemsInSDD) {
             itemInSDD.setId(itemCounter);
             itemCounter++;
             itemInSDD.getDescription().setId(descriptionCounter);
             descriptionCounter++;
-            for (DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
+            for (final DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
                 des.setId(descriptionElementStateCounter);
                 descriptionElementStateCounter++;
                 if (des.getQuantitativeMeasure() != null) {
@@ -98,8 +98,8 @@ public class IdentificationTestSDDCichorieae {
         }
 
         long descriptorNodeCounter = 0;
-        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
-            for (DescriptorNode node : tree.getNodes()) {
+        for (final DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
+            for (final DescriptorNode node : tree.getNodes()) {
                 node.setId(descriptorNodeCounter);
                 descriptorNodeCounter++;
             }
@@ -110,7 +110,7 @@ public class IdentificationTestSDDCichorieae {
         if (descriptorTreesInSDD.size() > 0) {
             depTree = descriptorTreesInSDD.get(0);
             for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
-                DescriptorTree tree = descriptorTreesInSDD.get(i);
+                final DescriptorTree tree = descriptorTreesInSDD.get(i);
                 if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE)) {
                     depTree = tree;
                 }
@@ -118,7 +118,7 @@ public class IdentificationTestSDDCichorieae {
         } else {
             depTree = new DescriptorTree();
             depTree.setType(DescriptorTree.DEPENDENCY_TYPE);
-            for (Descriptor descriptor : datasetInSDD.getDescriptors()) {
+            for (final Descriptor descriptor : datasetInSDD.getDescriptors()) {
                 depTree.addNode(new DescriptorNode(descriptor));
             }
         }
@@ -126,10 +126,10 @@ public class IdentificationTestSDDCichorieae {
         dependencyTreeInSDD = depTree;
 
         // initialize empty descriptions
-        for (Item itemInSDD : itemsInSDD) {
-            for (Descriptor descriptor : descriptorsInSDD) {
+        for (final Item itemInSDD : itemsInSDD) {
+            for (final Descriptor descriptor : descriptorsInSDD) {
                 if (itemInSDD.getDescriptionElement(descriptor.getId()) == null) {
-                    DescriptionElementState descriptionElementState = new DescriptionElementState();
+                    final DescriptionElementState descriptionElementState = new DescriptionElementState();
                     if (descriptor.isQuantitativeType()) {
                         descriptionElementState.setQuantitativeMeasure(new QuantitativeMeasure());
                     }
@@ -139,15 +139,15 @@ public class IdentificationTestSDDCichorieae {
         }
 
         // initialize descriptionMatrix
-        int nItems = itemsInSDD.size();
-        int nDescriptors = descriptorsInSDD.size();
+        final int nItems = itemsInSDD.size();
+        final int nDescriptors = descriptorsInSDD.size();
         descriptionMatrixInSDD = new DescriptionElementState[nItems][nDescriptors];
         descriptorNodeMapInSDD = new DescriptorNode[nDescriptors];
         for (int itemIndex = 0; itemIndex < nItems; itemIndex++) {
             for (int descriptorIndex = 0; descriptorIndex < nDescriptors; descriptorIndex++) {
                 descriptionMatrixInSDD[itemIndex][descriptorIndex] = itemsInSDD.get(itemIndex)
                         .getDescriptionElement(descriptorsInSDD.get(descriptorIndex).getId());
-                int currentDescriptorIndex = (int) descriptorsInSDD.get(descriptorIndex).getId();
+                final int currentDescriptorIndex = (int) descriptorsInSDD.get(descriptorIndex).getId();
                 descriptorNodeMapInSDD[currentDescriptorIndex] = dependencyTreeInSDD
                         .getNodeContainingDescriptor(descriptorsInSDD.get(descriptorIndex).getId());
             }
@@ -164,7 +164,7 @@ public class IdentificationTestSDDCichorieae {
         URLConnection urlConnection = null;
 
         // testing the sdd URL validity
-        URL sddFileUrl = new URL(sddUrlString);
+        final URL sddFileUrl = new URL(sddUrlString);
         // open URL (HTTP query)
         urlConnection = sddFileUrl.openConnection();
         // Open data stream to test the connection
@@ -182,11 +182,11 @@ public class IdentificationTestSDDCichorieae {
     public void testInitializeIds() throws Exception {
         long descriptorCounter = 0;
         long stateCounter = 0;
-        for (Descriptor dInSdd : descriptorsInSDD) {
+        for (final Descriptor dInSdd : descriptorsInSDD) {
             dInSdd.setId(descriptorCounter);
             descriptorCounter++;
             if (dInSdd.isCategoricalType()) {
-                for (State s : ((CategoricalDescriptor) dInSdd).getStates()) {
+                for (final State s : ((CategoricalDescriptor) dInSdd).getStates()) {
                     s.setId(stateCounter);
                     stateCounter++;
                 }
@@ -197,12 +197,12 @@ public class IdentificationTestSDDCichorieae {
         long measureCounter = 0;
         long descriptionCounter = 0;
         long descriptionElementStateCounter = 0;
-        for (Item itemInSDD : itemsInSDD) {
+        for (final Item itemInSDD : itemsInSDD) {
             itemInSDD.setId(itemCounter);
             itemCounter++;
             itemInSDD.getDescription().setId(descriptionCounter);
             descriptionCounter++;
-            for (DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
+            for (final DescriptionElementState des : itemInSDD.getDescription().getDescriptionElements().values()) {
                 des.setId(descriptionElementStateCounter);
                 descriptionElementStateCounter++;
                 if (des.getQuantitativeMeasure() != null) {
@@ -213,8 +213,8 @@ public class IdentificationTestSDDCichorieae {
         }
 
         long descriptorNodeCounter = 0;
-        for (DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
-            for (DescriptorNode node : tree.getNodes()) {
+        for (final DescriptorTree tree : datasetInSDD.getDescriptorTrees()) {
+            for (final DescriptorNode node : tree.getNodes()) {
                 node.setId(descriptorNodeCounter);
                 descriptorNodeCounter++;
             }
@@ -226,10 +226,10 @@ public class IdentificationTestSDDCichorieae {
      */
     @Test
     public void testInitializeEmptyDescriptions() throws Exception {
-        for (Item itemInSDD : itemsInSDD) {
-            for (Descriptor descriptor : descriptorsInSDD) {
+        for (final Item itemInSDD : itemsInSDD) {
+            for (final Descriptor descriptor : descriptorsInSDD) {
                 if (itemInSDD.getDescriptionElement(descriptor.getId()) == null) {
-                    DescriptionElementState descriptionElementState = new DescriptionElementState();
+                    final DescriptionElementState descriptionElementState = new DescriptionElementState();
                     if (descriptor.isQuantitativeType()) {
                         descriptionElementState.setQuantitativeMeasure(new QuantitativeMeasure());
                     }
@@ -248,7 +248,7 @@ public class IdentificationTestSDDCichorieae {
         if (descriptorTreesInSDD.size() > 0) {
             dependencyTreeInSDD = descriptorTreesInSDD.get(0);
             for (int i = 1; i < descriptorTreesInSDD.size(); i++) {
-                DescriptorTree tree = descriptorTreesInSDD.get(i);
+                final DescriptorTree tree = descriptorTreesInSDD.get(i);
                 if (tree.getType().equalsIgnoreCase(DescriptorTree.DEPENDENCY_TYPE)) {
                     dependencyTreeInSDD = tree;
                 }
@@ -256,7 +256,7 @@ public class IdentificationTestSDDCichorieae {
         } else {
             dependencyTreeInSDD = new DescriptorTree();
             dependencyTreeInSDD.setType(DescriptorTree.DEPENDENCY_TYPE);
-            for (Descriptor descriptor : datasetInSDD.getDescriptors()) {
+            for (final Descriptor descriptor : datasetInSDD.getDescriptors()) {
                 dependencyTreeInSDD.addNode(new DescriptorNode(descriptor));
             }
         }
@@ -338,7 +338,7 @@ public class IdentificationTestSDDCichorieae {
 
     @Test
     public void testScore() throws Exception {
-        Chrono c = new Chrono();
+        final Chrono c = new Chrono();
         c.start();
         getDescriptorsScoreMapFuture(descriptorsInSDD, itemsInSDD,
                 dependencyTreeInSDD, Score.XPER, true,
